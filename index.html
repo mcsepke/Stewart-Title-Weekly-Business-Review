@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stewart Title – Rubrik Security Cloud | Weekly Support Review</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #9B1C1C; --red-light: #c0392b; --dark: #111827; --mid: #1f2937;
+    --card: #fff; --border: #e5e7eb; --text: #111827; --muted: #6b7280;
+    --success: #059669; --warning: #d97706; --danger: #dc2626; --info: #2563eb;
+    --accent: #7c1d1d; --bg: #f3f4f6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+  .top-header { background: var(--dark); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 70px; border-bottom: 3px solid var(--red); position: sticky; top: 0; z-index: 100; }
+  .header-left { display: flex; align-items: center; gap: 1.2rem; }
+  .logo-img { height: 44px; width: 44px; border-radius: 6px; object-fit: contain; background: #fff; padding: 3px; }
+  .header-title h1 { font-size: 1.05rem; font-weight: 700; color: #fff; letter-spacing: 0.02em; line-height: 1.2; }
+  .header-title p { font-size: 0.72rem; color: #9ca3af; font-weight: 400; letter-spacing: 0.06em; text-transform: uppercase; }
+  .header-right { display: flex; align-items: center; gap: 1rem; }
+  .date-label { font-size: 0.72rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.06em; }
+  .date-select { background: var(--mid); color: #fff; border: 1px solid #374151; border-radius: 6px; padding: 6px 12px; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; cursor: pointer; outline: none; }
+  .date-select:focus { border-color: var(--red-light); }
+  .rubrik-badge { background: var(--red); color: #fff; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 4px; }
+  .nav-tabs { background: #fff; border-bottom: 1px solid var(--border); display: flex; padding: 0 2rem; gap: 0; overflow-x: auto; position: sticky; top: 70px; z-index: 99; }
+  .nav-tab { padding: 14px 22px; font-size: 0.82rem; font-weight: 500; color: var(--muted); cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; transition: all 0.18s; display: flex; align-items: center; gap: 7px; }
+  .nav-tab:hover { color: var(--text); border-bottom-color: #d1d5db; }
+  .nav-tab.active { color: var(--red); border-bottom-color: var(--red); font-weight: 600; }
+  .tab-icon { font-size: 0.9rem; }
+  .main { padding: 2rem; max-width: 1400px; margin: 0 auto; }
+  .page { display: none; }
+  .page.active { display: block; }
+  .section-header { margin-bottom: 1.5rem; }
+  .section-header h2 { font-size: 1.3rem; font-weight: 700; color: var(--dark); }
+  .section-header p { font-size: 0.83rem; color: var(--muted); margin-top: 3px; }
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.2rem; margin-bottom: 2rem; }
+  .stat-card { background: #fff; border-radius: 10px; border: 1px solid var(--border); padding: 1.25rem 1.4rem; display: flex; flex-direction: column; gap: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); border-left: 4px solid var(--border); }
+  .stat-card.red { border-left-color: var(--red); }
+  .stat-card.blue { border-left-color: var(--info); }
+  .stat-card.green { border-left-color: var(--success); }
+  .stat-card.orange { border-left-color: var(--warning); }
+  .stat-label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); }
+  .stat-value { font-size: 2rem; font-weight: 700; color: var(--dark); line-height: 1; }
+  .stat-sub { font-size: 0.78rem; color: var(--muted); }
+  .table-card { background: #fff; border-radius: 10px; border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.06); overflow: hidden; margin-bottom: 2rem; }
+  .table-card-header { padding: 1rem 1.4rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .table-card-header h3 { font-size: 0.92rem; font-weight: 700; color: var(--dark); }
+  .table-card-header span { font-size: 0.75rem; color: var(--muted); }
+  .data-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  .data-table th { background: #f9fafb; padding: 10px 14px; text-align: left; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); border-bottom: 1px solid var(--border); }
+  .data-table td { padding: 11px 14px; border-bottom: 1px solid #f3f4f6; color: var(--text); vertical-align: top; }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: #fafafa; }
+  .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 999px; font-size: 0.7rem; font-weight: 600; }
+  .badge-red { background: #fee2e2; color: #991b1b; }
+  .badge-orange { background: #fef3c7; color: #92400e; }
+  .badge-blue { background: #dbeafe; color: #1e40af; }
+  .badge-green { background: #d1fae5; color: #065f46; }
+  .badge-gray { background: #f3f4f6; color: #374151; }
+  .badge-yellow { background: #fef9c3; color: #713f12; }
+  .progress-bar-wrap { background: #e5e7eb; border-radius: 999px; height: 8px; flex: 1; min-width: 80px; }
+  .progress-bar { height: 8px; border-radius: 999px; }
+  .progress-green { background: var(--success); }
+  .progress-orange { background: var(--warning); }
+  .progress-red { background: var(--danger); }
+  .progress-blue { background: var(--info); }
+  .progress-row { display: flex; align-items: center; gap: 10px; }
+  .progress-label { font-size: 0.78rem; color: var(--muted); min-width: 160px; }
+  .progress-val { font-size: 0.78rem; font-weight: 600; color: var(--dark); min-width: 42px; text-align: right; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 2rem; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.2rem; margin-bottom: 2rem; }
+  @media(max-width: 900px) { .two-col, .three-col { grid-template-columns: 1fr; } }
+  .info-card { background: #fff; border-radius: 10px; border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 1.25rem 1.4rem; }
+  .info-card h3 { font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem; color: var(--dark); }
+  .cluster-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f3f4f6; }
+  .cluster-row:last-child { border-bottom: none; }
+  .cluster-name { font-size: 0.82rem; font-weight: 600; color: var(--dark); min-width: 110px; }
+  .cluster-used { font-size: 0.75rem; color: var(--muted); min-width: 120px; }
+  .adoption-item { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid #f3f4f6; }
+  .adoption-item:last-child { border-bottom: none; }
+  .adoption-name { font-size: 0.8rem; color: var(--dark); min-width: 160px; flex-shrink: 0; }
+  .adoption-pct { font-size: 0.78rem; font-weight: 600; min-width: 38px; text-align: right; }
+  .alert-box { border-radius: 8px; padding: 12px 16px; margin-bottom: 1rem; display: flex; align-items: flex-start; gap: 10px; font-size: 0.83rem; }
+  .alert-red { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+  .alert-orange { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
+  .alert-blue { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+  .alert-green { background: #f0fdf4; border: 1px solid #bbf7d0; color: #065f46; }
+
+  /* ─── TOOLTIPS ─── */
+  .case-num-wrap { display: inline-block; cursor: pointer; border-bottom: 1px dashed var(--info); }
+  #globalTooltip {
+    display: none;
+    position: fixed;
+    z-index: 99999;
+    background: #1f2937;
+    color: #f9fafb;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    font-family: 'DM Sans', sans-serif;
+    width: 640px;
+    padding: 14px 18px;
+    border-radius: 9px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.35);
+    pointer-events: none;
+    white-space: normal;
+    text-align: left;
+  }
+  #globalTooltip strong {
+    color: #fbbf24;
+    font-size: 0.7rem;
+    display: block;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  #globalTooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%; left: 20px;
+    border: 7px solid transparent;
+    border-top-color: #1f2937;
+  }
+  .mono { font-family: 'DM Mono', monospace; font-size: 0.78rem; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+  .footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.75rem; }
+</style>
+</head>
+<body>
+
+
+<div id="authGate" style="display:none;position:fixed;inset:0;z-index:999999;background:linear-gradient(135deg,#111827 0%,#1f2937 100%);display:flex;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:14px;padding:2.5rem 2.8rem;width:360px;box-shadow:0 24px 60px rgba(0,0,0,0.4);text-align:center;">
+    <div style="margin-bottom:1.4rem;">
+      <div style="width:52px;height:52px;background:#9B1C1C;border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:1.1rem;font-weight:700;color:#111827;margin-bottom:4px;">Stewart Title</div>
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:0.75rem;color:#6b7280;text-transform:uppercase;letter-spacing:0.07em;">Rubrik Security Cloud · Weekly Review</div>
+    </div>
+    <input id="pwInput" type="password" placeholder="Enter password"
+      style="width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:8px;font-family:'DM Sans',Arial,sans-serif;font-size:0.9rem;outline:none;margin-bottom:10px;box-sizing:border-box;transition:border-color 0.15s;"
+      onkeydown="if(event.key==='Enter')checkAuth()"
+      onfocus="this.style.borderColor='#9B1C1C'"
+      onblur="this.style.borderColor='#e5e7eb'"
+    />
+    <div id="authError" style="display:none;color:#dc2626;font-size:0.78rem;font-family:'DM Sans',Arial,sans-serif;margin-bottom:10px;">Incorrect password. Please try again.</div>
+    <button onclick="checkAuth()"
+      style="width:100%;padding:11px;background:#9B1C1C;color:#fff;border:none;border-radius:8px;font-family:'DM Sans',Arial,sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;transition:background 0.15s;"
+      onmouseover="this.style.background='#7f1d1d'"
+      onmouseout="this.style.background='#9B1C1C'"
+    >Access Dashboard</button>
+    <div style="margin-top:1rem;font-family:'DM Sans',Arial,sans-serif;font-size:0.72rem;color:#9ca3af;">Confidential · Authorized users only</div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const HASH = "0138fe0584c5c700b87a669c683684b878df3f7422f547085b5dbc2efa0ee73e";
+  const SESSION_MS = 24 * 60 * 60 * 1000;
+  const KEY = "rsc_auth_expiry";
+
+  async function sha256(str) {
+    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,"0")).join("");
+  }
+
+  function showDashboard() {
+    document.getElementById("authGate").style.display = "none";
+    document.body.style.overflow = "";
+  }
+
+  function showGate() {
+    document.getElementById("authGate").style.display = "flex";
+    document.body.style.overflow = "hidden";
+    setTimeout(() => document.getElementById("pwInput").focus(), 100);
+  }
+
+  window.checkAuth = async function() {
+    const val = document.getElementById("pwInput").value;
+    const hashed = await sha256(val);
+    if (hashed === HASH) {
+      localStorage.setItem(KEY, Date.now() + SESSION_MS);
+      document.getElementById("authError").style.display = "none";
+      showDashboard();
+    } else {
+      document.getElementById("authError").style.display = "block";
+      document.getElementById("pwInput").value = "";
+      document.getElementById("pwInput").focus();
+    }
+  };
+
+  // Check existing session
+  const expiry = localStorage.getItem(KEY);
+  if (expiry && Date.now() < parseInt(expiry)) {
+    showDashboard();
+  } else {
+    localStorage.removeItem(KEY);
+    showGate();
+  }
+})();
+</script>
+
+<div id="globalTooltip"></div>
+<header class="top-header">
+  <div class="header-left">
+    <img class="logo-img" src="data:image/jpeg;base64,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0kn33AHw8AujPDLFCNf7+/ENf+cpHdqF02OVdtpfrPpHwRc7yepYWjZOyfmUEep84kGGfrTcMerqCkeKZ1PG+aJ75WTvY1rvccQ3XO3YJX6yzMLhYb1QW4YnX1zLjVeyUdRDVU7WyS9y+Ugh7wWgNjeNkeIHquC8YzdKrhNb8ahEH6Qp4KBjw6TTNwyROfp2vRjtdOvRdlmVlrrrecUqqQRd3a7wayp536Pd+y1EXu9Op5pG9OnTfog+iHIh+sVssNVb6imrq+3TV5a57HNhET4WOY4tJ27czda2Oh6+G+DLcmmslztNso7LVXasuZmEUcMscfKI2hziS9wHgV1+VW/Io+INnySzWqmuUFNa6yimjkrO4cHSy072kba4Eahdv5hdXn+PXnJavF7nUY1S1fsDqk1lA+5mPl52BrS2Rrfe8N+A8UE6stVW1lCJ6+1y2ycuIMEkrJHAeR2wkdfmvtUesFpEuIvstdZzaKdzXxezU9we9wY47JEreVwJJPgQR6rrfoyxT7e/EFf+cgmaKGfRlin29+IK/wDOT6MsU+3vxBX/AJyCZooZ9GWKfb34gr/zk+jLFPt78QV/5yCZooZ9GWKfb34gr/zk+jLFPt78QV/5yCZouoxnHLXjsU8ds9u5Z3Bz/aq+epOwNDRle4t+Q0u3QEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERB//2Q==" alt="Stewart Title Logo">
+    <div class="header-title">
+      <h1>Stewart Title Company</h1>
+      <p>Rubrik Security Cloud · Weekly Support Review</p>
+    </div>
+  </div>
+  <div class="header-right">
+    <span class="rubrik-badge">RSC</span>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span class="date-label">Report Date</span>
+      <select class="date-select" id="reportDate" onchange="switchReport(this.value)">
+        <option value="May 28, 2026" selected>May 28, 2026</option>
+        <option value="May 20, 2026">May 20, 2026</option>
+        <option value="May 14, 2026">May 14, 2026</option>
+        <option value="May 7, 2026">May 7, 2026</option>
+      </select>
+    </div>
+  </div>
+</header>
+
+<nav class="nav-tabs">
+  <div class="nav-tab active" onclick="showPage('summary')" id="tab-summary"><span class="tab-icon">📊</span> Executive Summary</div>
+  <div class="nav-tab" onclick="showPage('cases')" id="tab-cases"><span class="tab-icon">🎫</span> Support Cases</div>
+  <div class="nav-tab" onclick="showPage('jiras')" id="tab-jiras"><span class="tab-icon">🔧</span> Engineering Jiras</div>
+  <div class="nav-tab" onclick="showPage('clusters')" id="tab-clusters"><span class="tab-icon">🖥️</span> Clusters</div>
+  <div class="nav-tab" onclick="showPage('licenses')" id="tab-licenses"><span class="tab-icon">🔑</span> Licenses</div>
+  <div class="nav-tab" onclick="showPage('features')" id="tab-features"><span class="tab-icon">✨</span> Feature Adoption</div>
+  <div class="nav-tab" onclick="showPage('actions')" id="tab-actions"><span class="tab-icon">✅</span> Action Items</div>
+</nav>
+
+<div class="main" id="mainContent"></div>
+
+<div class="footer" id="footerContent"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// REPORT DATA — one entry per week
+// ═══════════════════════════════════════════════════════════
+const REPORTS = {
+
+"May 7, 2026": {
+  summary: {
+    openCases: 5, jiras: 2, p1: 1, p2: 3,
+    avgScore: 82.0, capacityUpgrade: 0, versionUpgrade: 1,
+    caseBreakdown: [
+      {label:"In Progress", val:2, pct:40, color:"progress-blue"},
+      {label:"Waiting for Customer", val:2, pct:40, color:"progress-orange"},
+      {label:"Pending RMA", val:1, pct:20, color:"progress-red"}
+    ],
+    jiraBreakdown: [
+      {label:"To Do", val:1, pct:50, color:"progress-blue"},
+      {label:"Waiting for Engineering", val:1, pct:50, color:"progress-orange"}
+    ],
+    clusters: [
+      {name:"RICBRIK_01", used:"620.5 TB / 71.7%", pct:72, scoreBadge:"badge-green", score:"97%"},
+      {name:"HOUBRIK_01", used:"696.1 TB / 70.4%", pct:70, scoreBadge:"badge-orange", score:"90%"},
+      {name:"ricvault01", used:"272.3 TB / 58.4%", pct:58, scoreBadge:"badge-red", score:"63%"},
+      {name:"houvault01", used:"156.2 TB / 50.3%", pct:50, scoreBadge:"badge-red", score:"46%"},
+      {name:"eus2rubrik",  used:"5.7 TB / 5.4%",   pct:5,  scoreBadge:"badge-green", score:"96%"},
+      {name:"scusrubrik",  used:"5.5 TB / 5.2%",   pct:5,  scoreBadge:"badge-green", score:"100%"}
+    ],
+    alerts: [
+      {type:"alert-orange", text:"<strong>Version Upgrade Recommended:</strong> houvault01 is running 9.4.3-p1-31252 while other clusters are on 9.4.3-31180. Verify patch compatibility and consider standardizing cluster versions."},
+      {type:"alert-red",    text:"<strong>Low Performance Scores:</strong> ricvault01 (63%) and houvault01 (46%) have performance scores below acceptable thresholds. Review replication jobs and archival configuration."},
+      {type:"alert-blue",   text:"<strong>Capacity Projections:</strong> ricvault01 is projected to reach 100% capacity as early as May 25, 2026. houvault01 projected at 100% by June 9, 2026. Capacity planning should be initiated."}
+    ]
+  },
+  cases: {
+    stats: [{label:"Total Open",val:5,cls:"red"},{label:"P1 Critical",val:1,cls:"red"},{label:"P2 High",val:3,cls:"orange"},{label:"P3 Medium",val:1,cls:"blue"},{label:"In Progress",val:2,cls:"green"}],
+    rows: [
+      {num:"1055506", subject:"[StewartTitleCompany] Proactive Case: Activity log not working properly",                   pri:"P1", priCls:"badge-red",    status:"In Progress",             stCls:"badge-blue",   owner:"Orin Israely",    jira:"—"},
+      {num:"1096748", subject:"RBS stopped running suddenly in the server and has to be manually restart it",             pri:"P2", priCls:"badge-orange", status:"Waiting for Customer",    stCls:"badge-yellow", owner:"Neeraj Yadav",    jira:"CDM-533329"},
+      {num:"1170726", subject:"Log Shipping Replication from PR to DR is broking out",                                    pri:"P2", priCls:"badge-orange", status:"In Progress",             stCls:"badge-blue",   owner:"Renjithraj Rajan",jira:"—"},
+      {num:"1188228", subject:"Alert From Jira – Less than expected active streams",                                       pri:"P3", priCls:"badge-gray",   status:"Waiting for Customer",   stCls:"badge-yellow", owner:"Rohith M",        jira:"ALERT-538521"},
+      {num:"1204649", subject:"Proactive Case: (Cluster: RICBRIK_01) Hardware Health Check Failure",                     pri:"P2", priCls:"badge-orange", status:"Pending RMA",             stCls:"badge-red",    owner:"Deepika Singh N", jira:"—"}
+    ],
+    alerts: [
+      {type:"alert-red",    text:"<strong>Case 1204649 – Hardware Health Check Failure (RICBRIK_01):</strong> Pending RMA status. Ensure replacement hardware is on order and track delivery timeline to minimize risk window for this cluster."},
+      {type:"alert-orange", text:"<strong>Case 1055506 – Activity Log Issue (P1):</strong> In Progress. This is the highest-priority open case. Ensure active investigation is ongoing and customer has received a status update this week."}
+    ]
+  },
+  jiras: {
+    stats: [{label:"Total Jiras",val:2,cls:"blue"},{label:"To Do",val:1,cls:"orange"},{label:"Waiting for Eng.",val:1,cls:"blue"}],
+    rows: [
+      {ref:"CDM-533329",   refCls:"badge-blue",   subject:"[Stewart Title] RBS stopped running suddenly in the server and has to be manually restart it", caseNum:"1096748", owner:"Neeraj Yadav", status:"To Do",                   stCls:"badge-gray",   component:"RBS"},
+      {ref:"ALERT-538521", refCls:"badge-orange", subject:"Less than expected active streams",                                                              caseNum:"1188228", owner:"Rohith M",    status:"Waiting for Engineering", stCls:"badge-orange", component:"Callisto - CDC"}
+    ],
+    alerts: [
+      {type:"alert-blue",   text:"<strong>CDM-533329 (RBS Restart):</strong> Status is To Do in Jira while the linked case (1096748) is in Waiting for Customer Input. Confirm whether customer information has been provided to engineering to allow Jira to advance."},
+      {type:"alert-orange", text:"<strong>ALERT-538521 (Active Streams):</strong> Waiting for engineering response. Verify Callisto-CDC team has visibility and provide estimated resolution timeline to the customer."}
+    ]
+  },
+  clusters: {
+    avgScore: 82.0, capacityUpgrade: 0, versionUpgrade: 1, activeAppliance: 4, activeCloud: 2,
+    rows: [
+      {name:"RICBRIK_01", platform:"RH-6416S-01",       nodes:28, version:"9.4.3-31180",    vCls:"", used:"620.5 TB", pct:"71.7%", growth:"11.43 TB/yr", score:"97%", sCls:"badge-green"},
+      {name:"HOUBRIK_01", platform:"RH-6416S-01",       nodes:32, version:"9.4.3-31180",    vCls:"", used:"696.1 TB", pct:"70.4%", growth:"23.84 TB/yr", score:"90%", sCls:"badge-orange"},
+      {name:"ricvault01", platform:"RHA-7420-01",       nodes:12, version:"9.4.3-31180",    vCls:"", used:"272.3 TB", pct:"58.4%", growth:"0 TB/yr",     score:"63% ⚠", sCls:"badge-red"},
+      {name:"houvault01", platform:"RHA-7420-01",       nodes:8,  version:"9.4.3-p1-31252", vCls:"style='color:var(--warning)'", used:"156.2 TB", pct:"50.3%", growth:"0 TB/yr", score:"46% ⚠", sCls:"badge-red"},
+      {name:"eus2rubrik",  platform:"Azure Cloud",      nodes:3,  version:"9.4.3-31180",    vCls:"", used:"5.7 TB",   pct:"5.4%",  growth:"4.11 TB/yr",  score:"96%", sCls:"badge-green"},
+      {name:"scusrubrik",  platform:"Azure Cloud",      nodes:3,  version:"9.4.3-31180",    vCls:"", used:"5.5 TB",   pct:"5.2%",  growth:"0 TB/yr",     score:"100%", sCls:"badge-green"}
+    ],
+    projections: [
+      {name:"ricvault01", p80:"May 11, 2026", p85:"May 14, 2026", p90:"May 18, 2026", p95:"May 21, 2026", p100:"May 25, 2026", risk:"badge-red"},
+      {name:"houvault01", p80:"May 27, 2026", p85:"May 30, 2026", p90:"Jun 4, 2026",  p95:"Jun 9, 2026",  p100:"Jun 9, 2026",  risk:"badge-red"}
+    ],
+    alerts: [
+      {type:"alert-red",    text:"<strong>URGENT – ricvault01 Capacity:</strong> Projected to reach 80% on May 11 and 100% by May 25, 2026. Immediate capacity review and expansion planning required."},
+      {type:"alert-orange", text:"<strong>houvault01 Patch Version:</strong> Running 9.4.3-p1-31252 (patched variant) while all other clusters are on 9.4.3-31180. Verify patch compatibility across environment."}
+    ]
+  },
+  actions: `
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>📋 Meeting Recap</h3>
+      <p style="font-size:0.85rem;color:var(--muted);line-height:1.8;margin-top:0.6rem;">
+        Mark presented a new dashboard tool for monitoring phone home metrics, support cases, and cluster capacity — this report — which will be shared with the team for ongoing weekly tracking. Tim and Mark discussed deploying a Rubrik Edge device; Mark provided guidance on the OVA deployment process and noted that VLAN tagging should be skipped for virtual machines. The team addressed a support case regarding domain controller log retention requirements. Tatyana raised concerns about sensitive data detection capabilities, acknowledged as an ongoing challenge due to previous team member departures. The call concluded with a discussion on backup options for an AWS SQL Server database, exploring both file-level backups and potential cloud cluster deployment.
+      </p>
+    </div>
+    <div class="two-col" style="margin-bottom:1.5rem;">
+      <div class="info-card">
+        <h3 style="display:flex;align-items:center;gap:8px;"><span style="background:#dbeafe;color:#1e40af;border-radius:6px;padding:3px 10px;font-size:0.78rem;">Bryan</span></h3>
+        <div style="margin-top:0.9rem;display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="margin-top:2px;flex-shrink:0;">⬜</span><span>Wait for response from Orin regarding the required log retention period for domain controllers. If no timely response, add Mark to the follow-up email to ensure engagement from the right team.</span></div>
+        </div>
+      </div>
+      <div class="info-card">
+        <h3 style="display:flex;align-items:center;gap:8px;"><span style="background:#d1fae5;color:#065f46;border-radius:6px;padding:3px 10px;font-size:0.78rem;">Tim</span></h3>
+        <div style="margin-top:0.9rem;display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="margin-top:2px;flex-shrink:0;">⬜</span><span>Download and review the Rubrik Edge OVA and deployment guide, and attempt deployment. Coordinate with Mark for assistance or professional services support if needed.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="margin-top:2px;flex-shrink:0;">⬜</span><span>Change affected Windows servers from Windows Volume Group to FileSet backup method to avoid VSS issues, and monitor results.</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3 style="display:flex;align-items:center;gap:8px;"><span style="background:#fee2e2;color:#991b1b;border-radius:6px;padding:3px 10px;font-size:0.78rem;">Mark</span></h3>
+      <div style="margin-top:0.9rem;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="margin-top:2px;flex-shrink:0;">⬜</span><span>Research and follow up with Tim regarding the latest CPU and RAM requirements for the Rubrik Edge deployment.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="margin-top:2px;flex-shrink:0;">⬜</span><span>Share the dashboard/report with the team after calls for ongoing tracking of support cases, code levels, and capacity planning.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="margin-top:2px;flex-shrink:0;">⬜</span><span>Reach out to the product team (via technical product manager) to restart the sensitive data detection initiative for SQL, and share the relevant white paper with Tatyana.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="margin-top:2px;flex-shrink:0;">⬜</span><span>Offer to schedule time with Tim for Edge deployment as needed.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="margin-top:2px;flex-shrink:0;">⬜</span><span>Discuss Cloud Unstructured License and capabilities with Scott &amp; Cloud team regarding Azure Blob and S3 protection.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="margin-top:2px;flex-shrink:0;">⬜</span><span>Look through AI meeting notes for any additional action items not captured in this recap.</span></div>
+      </div>
+    </div>
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3 style="display:flex;align-items:center;gap:8px;"><span style="background:#f3f4f6;color:#374151;border-radius:6px;padding:3px 10px;font-size:0.78rem;">Collaboration</span></h3>
+      <div style="margin-top:0.9rem;display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="margin-top:2px;flex-shrink:0;">⬜</span><span><strong>Tatyana / Scott:</strong> Discuss options for backing up the AWS SQL Server database using Rubrik, including RBS installation and/or leveraging cloud cluster resources. Decide on the preferred approach.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="margin-top:2px;flex-shrink:0;">⬜</span><span><strong>Team:</strong> Register for the virtual Rubrik Forward event as appropriate.</span></div>
+      </div>
+    </div>
+    <div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Check boxes above are for visual reference during the call. Update action item status each week as items are completed or carried forward to the next review.</div></div>`
+},
+
+// ─────────────────────────────────────────────────────────────
+"May 14, 2026": {
+  summary: {
+    openCases: 5, jiras: 2, p1: 1, p2: 3,
+    avgScore: 83.6, capacityUpgrade: 0, versionUpgrade: 1,
+    caseBreakdown: [
+      {label:"In Progress",              val:2, pct:40, color:"progress-blue"},
+      {label:"Waiting for Rubrik Support",val:1, pct:20, color:"progress-blue"},
+      {label:"Pending Fix",              val:1, pct:20, color:"progress-orange"},
+      {label:"Waiting for Customer Input",val:1, pct:20, color:"progress-orange"}
+    ],
+    jiraBreakdown: [
+      {label:"To Do",                  val:1, pct:50, color:"progress-blue"},
+      {label:"Waiting for Engineering", val:1, pct:50, color:"progress-orange"}
+    ],
+    clusters: [
+      {name:"RICBRIK_01", used:"624.29 TB / 72.1%", pct:72, scoreBadge:"badge-green",  score:"99%"},
+      {name:"HOUBRIK_01", used:"702.88 TB / 71.1%", pct:71, scoreBadge:"badge-green",  score:"95%"},
+      {name:"ricvault01", used:"267.11 TB / 57.3%", pct:57, scoreBadge:"badge-red",    score:"66%"},
+      {name:"houvault01", used:"158.72 TB / 51.1%", pct:51, scoreBadge:"badge-red",    score:"54%"},
+      {name:"eus2rubrik",  used:"6.64 TB / 6.3%",   pct:6,  scoreBadge:"badge-orange", score:"87%"},
+      {name:"scusrubrik",  used:"6.45 TB / 6.1%",   pct:6,  scoreBadge:"badge-green",  score:"100%"}
+    ],
+    alerts: [
+      {type:"alert-orange", text:"<strong>Version Upgrade Recommended:</strong> houvault01 is running 9.4.3-p1-31252 while other clusters are on 9.4.3-31180. Verify patch compatibility and consider standardizing cluster versions."},
+      {type:"alert-red",    text:"<strong>Low Performance Scores:</strong> ricvault01 (66%) and houvault01 (54%) have performance scores below acceptable thresholds. Review replication jobs and archival configuration."},
+      {type:"alert-blue",   text:"<strong>Capacity Projections:</strong> ricvault01 is projected to reach 100% capacity by June 10, 2026. houvault01 projected at 100% by June 18, 2026. Capacity planning should be initiated."}
+    ]
+  },
+  cases: {
+    stats: [{label:"Total Open",val:5,cls:"red"},{label:"P1 Critical",val:1,cls:"red"},{label:"P2 High",val:3,cls:"orange"},{label:"P3 Medium",val:1,cls:"blue"},{label:"In Progress",val:2,cls:"green"}],
+    rows: [
+      {num:"1055506", subject:"[StewartTitleCompany] Proactive Case: Activity log not working properly",                                                              pri:"P1", priCls:"badge-red",    status:"In Progress",              stCls:"badge-blue",   owner:"Orin Israely",    jira:"—"},
+      {num:"1096748", subject:"RBS stopped running suddenly in the server and has to be manually restart it",                                                        pri:"P2", priCls:"badge-orange", status:"Waiting for Rubrik Support", stCls:"badge-blue",   owner:"Neeraj Yadav",    jira:"CDM-533329"},
+      {num:"1188228", subject:"Alert From Jira – Less than expected active streams",                                                                                  pri:"P3", priCls:"badge-gray",   status:"Pending Fix",              stCls:"badge-orange", owner:"Rohith M",        jira:"ALERT-538521"},
+      {num:"1204649", subject:"Proactive Case: (Cluster: RICBRIK_01) Hardware Health Check Failure",                                                                 pri:"P2", priCls:"badge-orange", status:"Waiting for Customer Input", stCls:"badge-yellow", owner:"Deepika Singh N", jira:"—"},
+      {num:"1217497", subject:"The semaphore timeout period has expired for Windows server Active Directory Domain Controller \'TXHOUDC013.stewart.net\'",          pri:"P2", priCls:"badge-orange", status:"In Progress",              stCls:"badge-blue",   owner:"Muthumariyappan U",jira:"—"}
+    ],
+    alerts: [
+      {type:"alert-orange", text:"<strong>Case 1204649 – Hardware Health Check Failure (RICBRIK_01):</strong> Status updated to Waiting for Customer Input. Confirm required information has been submitted to advance resolution."},
+      {type:"alert-red",    text:"<strong>Case 1055506 – Activity Log Issue (P1):</strong> In Progress. Highest-priority open case — ensure active investigation continues. New case 1217497 (AD Domain Controller semaphore timeout) has also been opened at P2."},
+      {type:"alert-blue",   text:"<strong>Case 1170726 (Log Shipping Replication)</strong> has been closed since last week\'s report."}
+    ]
+  },
+  jiras: {
+    stats: [{label:"Total Jiras",val:2,cls:"blue"},{label:"To Do",val:1,cls:"orange"},{label:"Waiting for Eng.",val:1,cls:"blue"}],
+    rows: [
+      {ref:"CDM-533329",   refCls:"badge-blue",   subject:"[Stewart Title] RBS stopped running suddenly in the server and has to be manually restart it", caseNum:"1096748", owner:"Neeraj Yadav", status:"To Do",                   stCls:"badge-gray",   component:"RBS"},
+      {ref:"ALERT-538521", refCls:"badge-orange", subject:"Less than expected active streams",                                                              caseNum:"1188228", owner:"Rohith M",    status:"Waiting for Engineering", stCls:"badge-orange", component:"Callisto - CDC"}
+    ],
+    alerts: [
+      {type:"alert-blue",   text:"<strong>CDM-533329 (RBS Restart):</strong> Status is To Do — case 1096748 now shows Waiting for Rubrik Support. Confirm engineering has picked this up."},
+      {type:"alert-orange", text:"<strong>ALERT-538521 (Active Streams):</strong> Case 1188228 now shows Pending Fix. Verify engineering has a fix in progress and communicate expected timeline to the customer."}
+    ]
+  },
+  clusters: {
+    avgScore: 83.6, capacityUpgrade: 0, versionUpgrade: 1, activeAppliance: 4, activeCloud: 2,
+    rows: [
+      {name:"RICBRIK_01", platform:"RH-6416S-01",  nodes:28, version:"9.4.3-31180",    vCls:"", used:"624.29 TB", pct:"72.1%", growth:"11.43 TB/yr", score:"99%",    sCls:"badge-green"},
+      {name:"HOUBRIK_01", platform:"RH-6416S-01",  nodes:32, version:"9.4.3-31180",    vCls:"", used:"702.88 TB", pct:"71.1%", growth:"23.84 TB/yr", score:"95%",    sCls:"badge-green"},
+      {name:"ricvault01", platform:"RHA-7420-01",  nodes:12, version:"9.4.3-31180",    vCls:"", used:"267.11 TB", pct:"57.3%", growth:"0 TB/yr",     score:"66% ⚠",  sCls:"badge-red"},
+      {name:"houvault01", platform:"RHA-7420-01",  nodes:8,  version:"9.4.3-p1-31252", vCls:"style='color:var(--warning)'", used:"158.72 TB", pct:"51.1%", growth:"0 TB/yr", score:"54% ⚠", sCls:"badge-red"},
+      {name:"eus2rubrik",  platform:"Azure Cloud", nodes:3,  version:"9.4.3-31180",    vCls:"", used:"6.64 TB",   pct:"6.3%",  growth:"4.11 TB/yr",  score:"87%",    sCls:"badge-orange"},
+      {name:"scusrubrik",  platform:"Azure Cloud", nodes:3,  version:"9.4.3-31180",    vCls:"", used:"6.45 TB",   pct:"6.1%",  growth:"0 TB/yr",     score:"100%",   sCls:"badge-green"}
+    ],
+    projections: [
+      {name:"ricvault01", p80:"May 21, 2026", p85:"May 26, 2026", p90:"May 31, 2026", p95:"Jun 5, 2026",  p100:"Jun 10, 2026", risk:"badge-red"},
+      {name:"houvault01", p80:"May 29, 2026", p85:"Jun 4, 2026",  p90:"Jun 9, 2026",  p95:"Jun 15, 2026", p100:"Jun 18, 2026", risk:"badge-red"}
+    ],
+    alerts: [
+      {type:"alert-red",    text:"<strong>URGENT – ricvault01 Capacity:</strong> Projected to reach 80% on May 21 and 100% by Jun 10, 2026. Immediate capacity review and expansion planning required."},
+      {type:"alert-orange", text:"<strong>houvault01 Patch Version:</strong> Running 9.4.3-p1-31252 while all other clusters are on 9.4.3-31180. Verify patch compatibility across environment."}
+    ]
+  },
+  actions: `
+    <!-- Participants -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>👥 Participants</h3>
+      <div style="display:flex;gap:2rem;margin-top:0.75rem;flex-wrap:wrap;">
+        <div style="font-size:0.83rem;"><strong style="color:var(--muted);font-size:0.72rem;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px;">Stewart Title</strong>Tim, Tatyana, Ulises, Jake, Frank</div>
+        <div style="font-size:0.83rem;"><strong style="color:var(--muted);font-size:0.72rem;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px;">Rubrik</strong>Mark Csepke, Mitch</div>
+      </div>
+    </div>
+
+    <!-- Key Outcomes -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>🎯 Key Outcomes</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span>Release 9.5.1-p2 slipped to <strong>May 18th</strong> due to emergency fixes.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span><strong>Multi-region RCV entitlements</strong> are now active and require new RCV locations with updated SLAs for critical Azure VM workloads.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span><strong>Sensitive data detection</strong> will be improved by adjusting sampling defaults from 1%/1,000 rows to <strong>10%/50,000 rows</strong> via support case.</span></div>
+      </div>
+    </div>
+
+    <!-- Decisions + Pending two-col -->
+    <div class="two-col" style="margin-bottom:1.5rem;">
+      <div class="info-card">
+        <h3>✅ Decisions Made</h3>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>Sensitive data sampling:</strong> Increase defaults to 10% and 50,000 rows; test on Azure VMs first, then apply to on-prem if successful.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>Multi-region RCV:</strong> Create new RCV locations with multi-region selection; existing single-zone backups will lifecycle naturally over ~1 year without forced deletion.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>EverPure integration:</strong> Schedule configuration session for week of <strong>May 25th</strong> to allow time for fleet management preparation.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>DR exercise:</strong> Postponed to next week due to end-of-life DC replacements in lower environments.</span></div>
+        </div>
+      </div>
+      <div class="info-card">
+        <h3>⏳ Pending Confirmation</h3>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>Azure Cosmos DB protection:</strong> Beta program not yet defined for Q3 release; Mark to add team per Joe Burrus' request.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>SQL database in AWS:</strong> Tatyana confirmed feasibility to Joe Burrus; awaiting discussion on implementation approach.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>Domain controller log retention:</strong> Bryan out earlier in week; Ulysses and Bryan discussed Wednesday — need more time to dive deeper.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>Azure Blob protection:</strong> Detailed write-up ready for Scott's review when he returns next week.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Items by Owner -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>📋 Action Items by Owner</h3>
+      <div style="margin-top:0.9rem;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="padding:10px 12px;background:#fef2f2;border-radius:8px;border-left:3px solid var(--red);">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--red);margin-bottom:8px;">Mark</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Coordinate EverPure specialist availability for week of May 25th configuration session.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Add team to Azure Cosmos DB beta program when available (per Joe Burrus).</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Present Azure Blob protection details to Scott next week.</span></div>
+          </div>
+        </div>
+        <div style="padding:10px 12px;background:#eff6ff;border-radius:8px;border-left:3px solid var(--info);">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--info);margin-bottom:8px;">Tatyana</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Open support case with Tatyana to adjust sensitive data sampling on Azure VM cluster; apply to on-prem if successful.</span></div>
+          </div>
+        </div>
+        <div style="padding:10px 12px;background:#f0fdf4;border-radius:8px;border-left:3px solid var(--success);">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--success);margin-bottom:8px;">Tim / Cloud Team</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Identify critical Azure workloads requiring multi-region RCV protection and update SLAs.</span></div>
+          </div>
+        </div>
+        <div style="padding:10px 12px;background:#f3f4f6;border-radius:8px;border-left:3px solid #6b7280;">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#6b7280;margin-bottom:8px;">Team</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Complete RBS client installation on remaining end-of-life DC replacements.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Technical Updates -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>🔧 Technical Updates</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:0.75rem;">
+        <div>
+          <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px;">Release Roadmap</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">🗓</span><span><strong>CDM 9.6 (July):</strong> Gen 2 Kubernetes protection; volume-level snapshots without VM proxy for Pure storage integration into immutable Cyber Vault.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">🗓</span><span><strong>Rubrik Forward (virtual):</strong> Summer release details available; Mitch can register attendees.</span></div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px;">Infrastructure Changes</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">🖥️</span><span>End-of-life DCs replaced in PickDev and Stewart Dev domains last weekend; RBS client reinstallation completed on some systems, team working on remainder.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">🛡️</span><span>Active Directory backups replicate to Cyber Vaults.</span></div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px;">SLA Architecture</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">☁️</span><span>Cloud team uses resource group-based protection for automatic inclusion of new Azure VMs.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">☁️</span><span>Multi-region protection requires identifying STEPS-related workloads and other critical Azure assets for SLA updates.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Open Issues -->
+    <div class="two-col" style="margin-bottom:1.5rem;">
+      <div class="info-card">
+        <h3>🔓 Open Issues</h3>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔴</span><span><strong>Backup configuration progress:</strong> No progress on item from previous week due to staff absences and other priorities; Mark offered assistance if roadblocks emerge.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🟡</span><span><strong>License renewals:</strong> Resilience renewal due September; Leslie working on quotes to maintain service continuity.</span></div>
+        </div>
+      </div>
+      <div class="alert-box alert-blue" style="margin-bottom:0;align-self:start;">ℹ️ <div><strong>Note:</strong> Check boxes above are for visual reference during the call. Carry forward any open items to next week's review.</div></div>
+    </div>`
+}
+
+
+,
+
+"May 20, 2026": {
+  summary: {
+    openCases: 4, jiras: 2, p1: 1, p2: 0,
+    avgScore: 72.3, capacityUpgrade: 0, versionUpgrade: 1,
+    caseBreakdown: [
+      {label:"In Progress",               val:1, pct:25, color:"progress-blue"},
+      {label:"Pending Fix",               val:2, pct:50, color:"progress-orange"},
+      {label:"Waiting for Customer Input", val:1, pct:25, color:"progress-orange"}
+    ],
+    jiraBreakdown: [
+      {label:"To Do",                   val:1, pct:50, color:"progress-blue"},
+      {label:"Waiting for Engineering",  val:1, pct:50, color:"progress-orange"}
+    ],
+    clusters: [
+      {name:"RICBRIK_01", used:"621.46 TB / 71.8%", pct:72, scoreBadge:"badge-green",  score:"98%"},
+      {name:"HOUBRIK_01", used:"703.39 TB / 71.1%", pct:71, scoreBadge:"badge-red",    score:"54%"},
+      {name:"ricvault01", used:"266.26 TB / 57.1%", pct:57, scoreBadge:"badge-red",    score:"58%"},
+      {name:"houvault01", used:"159.06 TB / 51.2%", pct:51, scoreBadge:"badge-red",    score:"35%"},
+      {name:"eus2rubrik",  used:"9.03 TB / 8.6%",   pct:9,  scoreBadge:"badge-orange", score:"89%"},
+      {name:"scusrubrik",  used:"8.90 TB / 8.4%",   pct:8,  scoreBadge:"badge-green",  score:"100%"}
+    ],
+    alerts: [
+      {type:"alert-orange", text:"<strong>Version Upgrade Recommended:</strong> houvault01 is running 9.4.3-p1-31252 while other clusters are on 9.4.3-31180. Verify patch compatibility and consider standardizing cluster versions."},
+      {type:"alert-red",    text:"<strong>Low Performance Scores:</strong> HOUBRIK_01 (54%), ricvault01 (58%), and houvault01 (35%) have performance scores below acceptable thresholds. Review replication and archival configuration."},
+      {type:"alert-blue",   text:"<strong>Capacity Projections:</strong> ricvault01 projected to reach 100% by June 30, 2026. houvault01 projected at 100% by July 2, 2026. Capacity planning should be initiated."}
+    ]
+  },
+  cases: {
+    stats: [{label:"Total Open",val:4,cls:"red"},{label:"P1 Critical",val:1,cls:"red"},{label:"P2 High",val:0,cls:"orange"},{label:"P3 Medium",val:3,cls:"blue"},{label:"In Progress",val:1,cls:"green"}],
+    rows: [
+      {num:"1055506", subject:"[StewartTitleCompany] Proactive Case: Activity log not working properly",              pri:"P1", priCls:"badge-red",    status:"In Progress",              stCls:"badge-blue",   owner:"Orin Israely",    jira:"—"},
+      {num:"1096748", subject:"RBS stopped running suddenly in the server and has to be manually restart it",        pri:"P2", priCls:"badge-orange", status:"Pending Fix",               stCls:"badge-orange", owner:"Neeraj Yadav",    jira:"CDM-533329"},
+      {num:"1188228", subject:"Alert From Jira – (ALERT-538521) Less than expected active streams",                  pri:"P3", priCls:"badge-gray",   status:"Pending Fix",               stCls:"badge-orange", owner:"Rohith M",        jira:"ALERT-538521"},
+      {num:"1221115", subject:"AZVMCADC-0, AZVMCADC-1 and AZVMCADC backup failing",                                 pri:"P3", priCls:"badge-gray",   status:"Waiting for Customer Input", stCls:"badge-yellow", owner:"Boggarapu Nikhil",jira:"—"}
+    ],
+    alerts: [
+      {type:"alert-red",    text:"<strong>Case 1055506 – Activity Log Issue (P1):</strong> Still In Progress. Longest-running open case — ensure escalation path is active and customer has a current status update."},
+      {type:"alert-blue",   text:"<strong>Cases 1217497 and 1204649</strong> have been closed since the May 14 report. New case 1221115 opened for Azure VM backup failures (AZVMCADC-0, AZVMCADC-1)."},
+      {type:"alert-orange", text:"<strong>Case 1221115 – Azure VM Backup Failures:</strong> Waiting for Customer Input. Confirm what information has been requested and ensure the team is aware action is needed."}
+    ]
+  },
+  jiras: {
+    stats: [{label:"Total Jiras",val:2,cls:"blue"},{label:"To Do",val:1,cls:"orange"},{label:"Waiting for Eng.",val:1,cls:"blue"}],
+    rows: [
+      {ref:"CDM-533329",   refCls:"badge-blue",   subject:"[Stewart Title] RBS stopped running suddenly in the server and has to be manually restart it", caseNum:"1096748", owner:"Neeraj Yadav", status:"To Do",                   stCls:"badge-gray",   component:"RBS"},
+      {ref:"ALERT-538521", refCls:"badge-orange", subject:"Less than expected active streams",                                                              caseNum:"1188228", owner:"Rohith M",    status:"Waiting for Engineering", stCls:"badge-orange", component:"Callisto - CDC"}
+    ],
+    alerts: [
+      {type:"alert-orange", text:"<strong>CDM-533329 (RBS Restart):</strong> Still in To Do status. Case 1096748 now shows Pending Fix — confirm engineering has picked this up and is actively working it."},
+      {type:"alert-orange", text:"<strong>ALERT-538521 (Active Streams):</strong> Still Waiting for Engineering. Case 1188228 now shows Pending Fix. Verify a fix is in progress and communicate timeline to customer."}
+    ]
+  },
+  clusters: {
+    avgScore: 72.3, capacityUpgrade: 0, versionUpgrade: 1, activeAppliance: 4, activeCloud: 2,
+    rows: [
+      {name:"RICBRIK_01", platform:"RH-6416S-01",  nodes:28, version:"9.4.3-31180",    vCls:"", used:"621.46 TB", pct:"71.8%", growth:"11.43 TB/yr", score:"98%",    sCls:"badge-green"},
+      {name:"HOUBRIK_01", platform:"RH-6416S-01",  nodes:32, version:"9.4.3-31180",    vCls:"", used:"703.39 TB", pct:"71.1%", growth:"23.84 TB/yr", score:"54% ⚠",  sCls:"badge-red"},
+      {name:"ricvault01", platform:"RHA-7420-01",  nodes:12, version:"9.4.3-31180",    vCls:"", used:"266.26 TB", pct:"57.1%", growth:"0 TB/yr",     score:"58% ⚠",  sCls:"badge-red"},
+      {name:"houvault01", platform:"RHA-7420-01",  nodes:8,  version:"9.4.3-p1-31252", vCls:"style='color:var(--warning)'", used:"159.06 TB", pct:"51.2%", growth:"0 TB/yr", score:"35% ⚠", sCls:"badge-red"},
+      {name:"eus2rubrik",  platform:"Azure Cloud", nodes:3,  version:"9.4.3-31180",    vCls:"", used:"9.03 TB",   pct:"8.6%",  growth:"4.11 TB/yr",  score:"89%",    sCls:"badge-orange"},
+      {name:"scusrubrik",  platform:"Azure Cloud", nodes:3,  version:"9.4.3-31180",    vCls:"", used:"8.90 TB",   pct:"8.4%",  growth:"0 TB/yr",     score:"100%",   sCls:"badge-green"}
+    ],
+    projections: [
+      {name:"ricvault01", p80:"Jun 3, 2026",  p85:"Jun 9, 2026",  p90:"Jun 16, 2026", p95:"Jun 23, 2026", p100:"Jun 30, 2026", risk:"badge-red"},
+      {name:"houvault01", p80:"Jun 9, 2026",  p85:"Jun 16, 2026", p90:"Jun 20, 2026", p95:"Jun 26, 2026", p100:"Jul 2, 2026",  risk:"badge-red"}
+    ],
+    alerts: [
+      {type:"alert-red",    text:"<strong>URGENT – ricvault01 &amp; houvault01 Capacity:</strong> ricvault01 projected to reach 100% by Jun 30; houvault01 by Jul 2. Capacity expansion planning required immediately."},
+      {type:"alert-red",    text:"<strong>HOUBRIK_01 Performance Score Dropped:</strong> Score fell to 54% this week from 95%. Review replication job health and archival configuration on this cluster."},
+      {type:"alert-orange", text:"<strong>houvault01 Patch Version:</strong> Running 9.4.3-p1-31252 while all other clusters are on 9.4.3-31180. Verify patch compatibility across environment."}
+    ]
+  },
+  actions: `
+    <!-- Key Outcomes -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>🎯 Key Outcomes</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span>Release <strong>9.5.1-p2</strong> is now available across all clusters. Planned upgrade scheduled for <strong>Tuesday next week</strong> to address performance issues and enable multi-node restore capabilities.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span><strong>Azure East US 2</strong> cluster experiencing 4× slower restore performance vs. South Central (6 hours vs. 1–1.5 hours for same database). Network validation and iPerf testing required.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span><strong>EverPure integration</strong> tentatively scheduled for June 4th but may be delayed due to SSO/code level compatibility issues with FleetDB.</span></div>
+      </div>
+    </div>
+
+    <!-- Decisions + Blockers two-col -->
+    <div class="two-col" style="margin-bottom:1.5rem;">
+      <div class="info-card">
+        <h3>✅ Decisions Made</h3>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>Upgrade timing:</strong> Cloud clusters will be upgraded to 9.5.1-p2 on Tuesday.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>Performance investigation:</strong> iPerf tests to be conducted between Azure regions to identify network bottlenecks.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>Multi-node restore:</strong> Feature flag will be enabled post-upgrade to improve restore speeds (becomes default in 9.6).</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>Active Directory integration:</strong> Azure cloud clusters need to be added to AD domains to enable SQL live mounts.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>DR testing:</strong> Next AD DR test will be more comprehensive, using Rubrik orchestration tools for domain controller and forest-level recovery.</span></div>
+        </div>
+      </div>
+      <div class="info-card">
+        <h3>🚧 Blockers Requiring Action</h3>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔴</span><span><strong>FleetDB SSO conflict:</strong> SSO configuration incompatible with current Pure Storage array code level; requires feature release code upgrade — long-life code not yet available.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔴</span><span><strong>Azure SQL live mounts failing:</strong> Cloud clusters not joined to Active Directory domains, preventing live mount operations.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔴</span><span><strong>Data classification not triggering:</strong> Azure VM SQL databases show assigned classifications but generate no classification events (works correctly on-prem).</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔴</span><span><strong>Inter-cluster communication (Case 2281):</strong> Ports 7100, 7101, 7102 potentially blocked between nodes.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pending Confirmation -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>⏳ Pending Confirmation</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>Edge deployment status:</strong> Tim to begin Edge VM deployment; expected to take a couple days once submitted.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>EverPure integration date:</strong> June 4th at 1 PM may need rescheduling pending FleetDB resolution.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>Network port validation:</strong> Security team to confirm ports 7100–7102 are open between cluster nodes.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>Azure performance root cause:</strong> Network team previously claimed configs identical between regions; needs re-validation with iPerf data.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>Forward conference attendance:</strong> Virtual event registration needed for team members unable to attend in-person (week of June 8th).</span></div>
+      </div>
+    </div>
+
+    <!-- Action Items by Owner -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>📋 Action Items by Owner</h3>
+      <div style="margin-top:0.9rem;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+
+        <div style="padding:10px 12px;background:#d1fae5;border-radius:8px;border-left:3px solid var(--success);">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--success);margin-bottom:8px;">Tim</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Submit Edge VM deployment request; target start tomorrow.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Coordinate with security team on port 7100–7102 validation.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Update Mark on EverPure integration timeline after FleetDB investigation.</span></div>
+          </div>
+        </div>
+
+        <div style="padding:10px 12px;background:#eff6ff;border-radius:8px;border-left:3px solid var(--info);">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--info);margin-bottom:8px;">Tatyana</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Open support case for Azure SQL classification event issue.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Coordinate with Tim on upgrade timing before opening new classification case.</span></div>
+          </div>
+        </div>
+
+        <div style="padding:10px 12px;background:#fef2f2;border-radius:8px;border-left:3px solid var(--red);">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--red);margin-bottom:8px;">Mark</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Provide iPerf testing assistance for Azure performance comparison.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Enable multi-node restore feature flag after 9.5.1-p2 upgrade.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Work with Jake to add Azure cloud clusters to Active Directory domains (stewart.com).</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Follow up with Tatyana on sensitive data identification support case closure.</span></div>
+          </div>
+        </div>
+
+        <div style="padding:10px 12px;background:#f3f4f6;border-radius:8px;border-left:3px solid #6b7280;">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#6b7280;margin-bottom:8px;">Ben / Mitch</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span><strong>Ben:</strong> Work with John on renewal quotes received from Leslie/Mark.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span><strong>Mitch:</strong> Send remaining co-term renewal quote to Ben by end of day.</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Technical Issues -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>🔧 Technical Issues Under Investigation</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-top:0.75rem;">
+
+        <div>
+          <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px;">Data Classification (Tatyana)</div>
+          <div style="display:flex;flex-direction:column;gap:7px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">•</span><span>Policies assigned at cluster level and to specific StatDB databases.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">•</span><span>Visible in UI but not triggering events on Azure VM SQL databases; works correctly on-prem.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">•</span><span>Tatyana to open new support case. Feature supported since 9.1.</span></div>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px;">Azure Restore Performance</div>
+          <div style="display:flex;flex-direction:column;gap:7px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">•</span><span>Same TB+ database: <strong>6 hrs</strong> in East US 2 vs <strong>1–1.5 hrs</strong> in South Central.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">•</span><span>Suspected network/firewall issue on customer side.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">•</span><span>Plan: iPerf throughput tests between cloud cluster nodes and target VMs in both regions. Enable multi-node restore flag post-upgrade.</span></div>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px;">Port Connectivity (Case 2281)</div>
+          <div style="display:flex;flex-direction:column;gap:7px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">•</span><span>Ports 7100, 7101, 7102 potentially blocked between cluster nodes (node-to-node communication).</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">•</span><span>Customer network team does not implement switch-level blocking; likely firewall-level.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">•</span><span>Plan: Validate with security team, then retest after Tuesday cluster reboot.</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Capacity & Next Steps -->
+    <div class="two-col" style="margin-bottom:1.5rem;">
+      <div class="info-card">
+        <h3>📊 Capacity &amp; Workload Updates</h3>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:0.75rem;font-size:0.83rem;">
+          <div style="display:flex;gap:8px;align-items:flex-start;"><span>•</span><span>Current utilization: Low 70s across main clusters — no immediate capacity concerns.</span></div>
+          <div style="display:flex;gap:8px;align-items:flex-start;"><span>•</span><span>No new workloads: No acquisitions or capacity additions planned.</span></div>
+          <div style="display:flex;gap:8px;align-items:flex-start;"><span>•</span><span>Cloud data protection renewal: End of July.</span></div>
+          <div style="display:flex;gap:8px;align-items:flex-start;"><span>•</span><span>Identity renewal: September.</span></div>
+        </div>
+      </div>
+      <div class="info-card">
+        <h3>🗓 Next Steps</h3>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:0.75rem;font-size:0.83rem;">
+          <div style="display:flex;gap:8px;align-items:flex-start;"><span>1.</span><span><strong>Tuesday upgrade:</strong> Cloud clusters to 9.5.1-p2 with node reboot.</span></div>
+          <div style="display:flex;gap:8px;align-items:flex-start;"><span>2.</span><span><strong>Post-upgrade validation:</strong> Retest port connectivity and enable multi-node restore.</span></div>
+          <div style="display:flex;gap:8px;align-items:flex-start;"><span>3.</span><span><strong>Azure AD integration:</strong> Schedule cloud cluster domain join for live mount enablement.</span></div>
+          <div style="display:flex;gap:8px;align-items:flex-start;"><span>4.</span><span><strong>Performance baseline:</strong> Establish iPerf benchmarks between Azure regions.</span></div>
+          <div style="display:flex;gap:8px;align-items:flex-start;"><span>5.</span><span><strong>Forward conference:</strong> Ensure team registration for virtual event (Oracle/SQL/RDS sensitive data topics).</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Check boxes above are for visual reference during the call. Carry forward any open items to next week's review.</div></div>`
+}
+
+,
+
+"May 28, 2026": {
+  summary: {
+    openCases: 8, jiras: 2, p1: 1, p2: 4,
+    avgScore: 83.0, capacityUpgrade: 0, versionUpgrade: 0,
+    caseBreakdown: [
+      {label:"In Progress",               val:2, pct:25, color:"progress-blue"},
+      {label:"Pending Fix",               val:1, pct:13, color:"progress-orange"},
+      {label:"Waiting for Customer Input", val:3, pct:38, color:"progress-orange"},
+      {label:"Pending RMA",               val:1, pct:13, color:"progress-red"},
+      {label:"Waiting for Rubrik Support", val:1, pct:13, color:"progress-blue"}
+    ],
+    jiraBreakdown: [
+      {label:"To Do",                   val:1, pct:50, color:"progress-blue"},
+      {label:"Waiting for Engineering",  val:1, pct:50, color:"progress-orange"}
+    ],
+    clusters: [
+      {name:"RICBRIK_01", used:"621.77 TB / 71.8%", pct:72, scoreBadge:"badge-green",  score:"99%"},
+      {name:"HOUBRIK_01", used:"688.33 TB / 71.8%", pct:72, scoreBadge:"badge-green",  score:"99%"},
+      {name:"ricvault01", used:"268.72 TB / 59.3%", pct:59, scoreBadge:"badge-red",    score:"64%"},
+      {name:"houvault01", used:"160.49 TB / 51.7%", pct:52, scoreBadge:"badge-red",    score:"54%"},
+      {name:"eus2rubrik",  used:"8.34 TB / 7.9%",   pct:8,  scoreBadge:"badge-orange", score:"83%"},
+      {name:"scusrubrik",  used:"8.38 TB / 7.9%",   pct:8,  scoreBadge:"badge-green",  score:"100%"}
+    ],
+    alerts: [
+      {type:"alert-green",  text:"<strong>All Clusters Upgraded:</strong> All clusters now running 9.5.1-p2-36376 (appliance) or 9.4.3-p3-31404 (Azure cloud). No version upgrade actions required this week."},
+      {type:"alert-red",    text:"<strong>Low Performance Scores:</strong> ricvault01 (64%) and houvault01 (54%) remain below acceptable thresholds. Review replication and archival configuration."},
+      {type:"alert-orange", text:"<strong>Case Volume Increased:</strong> 8 open cases this week (up from 4). Three new upgrade-related cases (1225639, 1225950, 1226252) and a new hardware health check case (1225747) have been opened."},
+      {type:"alert-blue",   text:"<strong>Capacity Projections:</strong> ricvault01 projected at 100% by July 17, 2026. houvault01 projected at 100% by July 22, 2026. Continue monitoring."}
+    ]
+  },
+  cases: {
+    stats: [{label:"Total Open",val:8,cls:"red"},{label:"P1 Critical",val:1,cls:"red"},{label:"P2 High",val:4,cls:"orange"},{label:"P3 Medium",val:3,cls:"blue"},{label:"In Progress",val:2,cls:"green"}],
+    rows: [
+      {num:"<span class=\"case-num-wrap\" data-tip=\"Customer&#39;s activities are not being ingested at all. Case is In Progress; next step is to investigate and restore proper activity log ingestion.\"><span class=\"mono\">1055506</span></span>", subject:"[StewartTitleCompany] Proactive Case: Activity log not working properly", pri:"P1", priCls:"badge-red", status:"In Progress", stCls:"badge-blue", owner:"Orin Israely", jira:"—"},
+      {num:"<span class=\"case-num-wrap\" data-tip=\"Customer is seeing RBS instability requiring manual restarts. Support has identified the issue and CDM 9.5.1-P1 has been released. Customer is being asked to plan an upgrade and then monitor RBS.\"><span class=\"mono\">1096748</span></span>", subject:"RBS stopped running suddenly in the server and has to be manually restart it", pri:"P2", priCls:"badge-orange", status:"Pending Fix", stCls:"badge-orange", owner:"Neeraj Yadav", jira:"CDM-533329"},
+      {num:"<span class=\"case-num-wrap\" data-tip=\"Proactive alert for fewer than expected active streams. Support is coordinating whitelisting of ports 7100, 7101, and 7102 for intra-cluster CDC communication and planning internal review of unreachable streams.\"><span class=\"mono\">1188228</span></span>", subject:"Alert From Jira \u2013 (ALERT-538521) Less than expected active streams", pri:"P3", priCls:"badge-gray", status:"In Progress", stCls:"badge-blue", owner:"Rohith M", jira:"ALERT-538521"},
+      {num:"<span class=\"case-num-wrap\" data-tip=\"Azure VM backups for AZVMCADC-0/-1 were failing but now succeed after RSC support access was granted and no filesystem corruption was found. Next step is deeper analysis of indexing while the case remains open.\"><span class=\"mono\">1221115</span></span>", subject:"AZVMCADC-0, AZVMCADC-1 and AZVMCADC backup failing", pri:"P3", priCls:"badge-gray", status:"Waiting for Customer Input", stCls:"badge-yellow", owner:"Boggarapu Nikhil", jira:"—"},
+      {num:"<span class=\"case-num-wrap\" data-tip=\"Upgrade precheck RBK10900076 is failing because nodes use Premium V1 SSD disks. Support recommended migrating LUN 1 and 2 to PremiumV2_LRS and re-running prechecks; customer is consulting internal teams on the storage change.\"><span class=\"mono\">1225639</span></span>", subject:"Rubrik Upgrade Failing", pri:"P2", priCls:"badge-orange", status:"Waiting for Customer Input", stCls:"badge-yellow", owner:"Akshay Kumar", jira:"—"},
+      {num:"<span class=\"case-num-wrap\" data-tip=\"Proactive hardware health alert on ricvault01 identified a failing HDD. Replacement drive has been shipped via FedEx. Support will monitor until the disk is READY_TO_REMOVE before coordinating physical replacement.\"><span class=\"mono\">1225747</span></span>", subject:"[StewartTitleCompany] Proactive Case: (Cluster: ricvault01) Hardware Health Check Failure", pri:"P2", priCls:"badge-orange", status:"Pending RMA", stCls:"badge-red", owner:"Alishan Khan", jira:"—"},
+      {num:"<span class=\"case-num-wrap\" data-tip=\"Upgrade on HOUBRIK-01 failed due to missing HDDs and SAS link errors on node RVMHM243S000734. Support bypassed the node and provided onsite steps to reseat hardware, validate with hw_health, and re-run the upgrade.\"><span class=\"mono\">1225950</span></span>", subject:"Upgrade failure on HOUBRIK-01 cluster", pri:"P2", priCls:"badge-orange", status:"Waiting for Customer Input", stCls:"badge-yellow", owner:"Suvradeep Chanda", jira:"—"},
+      {num:"<span class=\"case-num-wrap\" data-tip=\"Customer is seeing storage latency after a Rubrik code upgrade, but this case is a duplicate of 01225950. Rubrik has asked the customer to execute the previously defined action plan from that case to resolve the issue.\"><span class=\"mono\">1226252</span></span>", subject:"Storage latency observed after Rubrik code upgrade", pri:"P2", priCls:"badge-orange", status:"Waiting for Rubrik Support", stCls:"badge-blue", owner:"Eric Knowles", jira:"—"}
+    ],
+    alerts: [
+      {type:"alert-red",    text:"<strong>Case 1055506 – Activity Log Issue (P1):</strong> Still In Progress. Longest-running open case — ensure active escalation continues."},
+      {type:"alert-orange", text:"<strong>3 Upgrade-Related Cases Opened:</strong> Cases 1225639 (Upgrade Failing), 1225950 (HOUBRIK-01 upgrade failure), and 1226252 (Storage latency post-upgrade) all opened this week following the 9.5.1-p2 upgrade."},
+      {type:"alert-red",    text:"<strong>Case 1225747 – ricvault01 Hardware Health Check Failure:</strong> Pending RMA. Ensure replacement hardware is on order — second hardware failure case in recent weeks."},
+      {type:"alert-blue",   text:"<strong>Case 1221115 closed since last week</strong> has re-appeared as Waiting for Customer Input. Confirm current status with Boggarapu Nikhil."}
+    ]
+  },
+  jiras: {
+    stats: [{label:"Total Jiras",val:2,cls:"blue"},{label:"To Do",val:1,cls:"orange"},{label:"Waiting for Eng.",val:1,cls:"blue"}],
+    rows: [
+      {ref:"CDM-533329",   refCls:"badge-blue",   subject:"[Stewart Title] RBS stopped running suddenly in the server and has to be manually restart it", caseNum:"1096748", owner:"Neeraj Yadav", status:"To Do",                   stCls:"badge-gray",   component:"RBS"},
+      {ref:"ALERT-538521", refCls:"badge-orange", subject:"Less than expected active streams",                                                              caseNum:"1188228", owner:"Rohith M",    status:"Waiting for Engineering", stCls:"badge-orange", component:"Callisto - CDC"}
+    ],
+    alerts: [
+      {type:"alert-orange", text:"<strong>CDM-533329 (RBS Restart):</strong> Remains in To Do status. Case 1096748 now shows Pending Fix — confirm engineering is actively working this item."},
+      {type:"alert-orange", text:"<strong>ALERT-538521 (Active Streams):</strong> Still Waiting for Engineering. Case 1188228 now shows In Progress. Verify fix timeline and communicate to customer."}
+    ]
+  },
+  clusters: {
+    avgScore: 83.0, capacityUpgrade: 0, versionUpgrade: 0, activeAppliance: 4, activeCloud: 2,
+    rows: [
+      {name:"RICBRIK_01", platform:"RH-6416S-01",  nodes:28, version:"9.5.1-p2-36376", vCls:"", used:"621.77 TB", pct:"71.8%", growth:"11.43 TB/yr", score:"99%",    sCls:"badge-green"},
+      {name:"HOUBRIK_01", platform:"RH-6416S-01",  nodes:32, version:"9.5.1-p2-36376", vCls:"", used:"688.33 TB", pct:"71.8%", growth:"23.84 TB/yr", score:"99%",    sCls:"badge-green"},
+      {name:"ricvault01", platform:"RHA-7420-01",  nodes:12, version:"9.5.1-p2-36376", vCls:"", used:"268.72 TB", pct:"59.3%", growth:"0 TB/yr",     score:"64% ⚠",  sCls:"badge-red"},
+      {name:"houvault01", platform:"RHA-7420-01",  nodes:8,  version:"9.5.1-p2-36376", vCls:"", used:"160.49 TB", pct:"51.7%", growth:"0 TB/yr",     score:"54% ⚠",  sCls:"badge-red"},
+      {name:"eus2rubrik",  platform:"Azure Cloud", nodes:3,  version:"9.4.3-p3-31404", vCls:"", used:"8.34 TB",   pct:"7.9%",  growth:"7.79 TB/yr",  score:"83%",    sCls:"badge-orange"},
+      {name:"scusrubrik",  platform:"Azure Cloud", nodes:3,  version:"9.4.3-p3-31404", vCls:"", used:"8.38 TB",   pct:"7.9%",  growth:"0 TB/yr",     score:"100%",   sCls:"badge-green"}
+    ],
+    projections: [
+      {name:"ricvault01", p80:"Jun 13, 2026", p85:"Jun 22, 2026", p90:"Jun 30, 2026", p95:"Jul 8, 2026",  p100:"Jul 17, 2026", risk:"badge-orange"},
+      {name:"houvault01", p80:"Jun 23, 2026", p85:"Jun 30, 2026", p90:"Jul 7, 2026",  p95:"Jul 15, 2026", p100:"Jul 22, 2026", risk:"badge-orange"}
+    ],
+    alerts: [
+      {type:"alert-green",  text:"<strong>All Clusters Upgraded to 9.5.1-p2:</strong> Appliance clusters now on 9.5.1-p2-36376; Azure cloud clusters on 9.4.3-p3-31404. No version upgrade actions required."},
+      {type:"alert-orange", text:"<strong>ricvault01 &amp; houvault01 Capacity:</strong> 100% projected for mid-to-late July. Projections have improved vs. last week — continue monitoring. Begin capacity planning conversations."},
+      {type:"alert-red",    text:"<strong>ricvault01 Performance (64%) &amp; houvault01 (54%):</strong> Scores remain low. May be related to post-upgrade replication activity — monitor over the next week."},
+      {type:"alert-orange", text:"<strong>Storage Latency Post-Upgrade (Case 1226252):</strong> Storage latency reported after 9.5.1-p2 upgrade. Waiting for Rubrik Support — monitor closely for impact on cluster performance scores."}
+    ]
+  },
+  actions: `
+    <!-- Key Outcomes -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>🎯 Key Outcomes</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span>Mark coordinated resolution paths for multiple P1 support cases affecting Rubrik infrastructure, including physical drive/node failures and Azure cloud cluster upgrade requirements.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span>Cloud cluster upgrade to <strong>Premium V2 disks</strong> will proceed after support confirms automation details. Physical node troubleshooting scheduled for <strong>11 AM same day</strong>.</span></div>
+      </div>
+    </div>
+
+    <!-- Decisions + Blockers -->
+    <div class="two-col" style="margin-bottom:1.5rem;">
+      <div class="info-card">
+        <h3>✅ Decisions Made</h3>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>Cloud cluster upgrade:</strong> Use automated RSC workflow to migrate 3-node Azure clusters to Premium V2 disks. Mark to confirm if all nodes can upgrade simultaneously or require sequential batching (1–3 hrs per node).</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>Pure Storage integration postponed:</strong> CLI configuration changes blocked until Pure releases long-term support code (not feature release). Rescheduled to <strong>July timeframe</strong> pending code availability and 2-week change ticket lead time.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>SMB signing enabled:</strong> No Rubrik configuration changes required. Mark confirmed compatibility via email to Roy before call.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>SLA pause capability:</strong> New object-level pause feature available in RSC settings for maintenance windows — particularly useful for SQL availability group reseeding.</span></div>
+        </div>
+      </div>
+      <div class="info-card">
+        <h3>🚧 Blockers Requiring Action</h3>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔴</span><span><strong>Physical vault drive failure:</strong> Drive disappeared from shelf during code upgrade. Technician scheduled to power cycle shelf and reseat drive at 11 AM.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔴</span><span><strong>Storage latency spike:</strong> Richardson cluster experienced ~3× normal SQL backup load Tuesday evening post-upgrade. Rubrik claims no code-related cause, but timing is suspicious.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔴</span><span><strong>Citrix/SIFT Extreme (Case 1115):</strong> Requires coordinated call with Citrix team as responsible party. Tim has access but will not make changes without team involvement.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pending Confirmation + Open Questions -->
+    <div class="two-col" style="margin-bottom:1.5rem;">
+      <div class="info-card">
+        <h3>⏳ Pending Confirmation</h3>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>Cloud cluster upgrade automation:</strong> Mark to verify IP subnet requirements, whether RSC fully automates node provisioning in Azure, and optimal batch size (1 vs 3 nodes).</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>Node replacement vs. troubleshooting:</strong> Physical node issue may resolve with drive reseat. Replacement decision pending 11 AM technician visit results.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>Pure Storage permissions:</strong> Verify if code level (not user rights) blocks CLI changes. Tim and Frank confirmed peer user login still prevented required modifications.</span></div>
+        </div>
+      </div>
+      <div class="info-card">
+        <h3>❓ Open Questions</h3>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">?</span><span><strong>SQL backup surge root cause:</strong> Why did Rubrik trigger ~3× normal SQL backups simultaneously at 6:30 PM Tuesday when the code upgrade completed at 11 AM, leaving hours for job scheduling normalization?</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">?</span><span><strong>Cloud cluster downtime:</strong> Documentation states "no downtime" but unclear if this applies when upgrading all 3 nodes in a single 3-hour batch vs. sequential 1-node batches.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Items by Owner -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>📋 Action Items by Owner</h3>
+      <div style="margin-top:0.9rem;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+
+        <div style="padding:10px 12px;background:#fef2f2;border-radius:8px;border-left:3px solid var(--red);">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--red);margin-bottom:8px;">Mark</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">☑</span><span class="case-num-wrap" data-tip="<strong style=\'display:block;margin-bottom:6px;\'>Azure Disk V2 Upgrade — Clarification</strong>The upgrade uses a one-click RSC process that temporarily doubles node count (3→6→3) to migrate data from V1 to V2 disks, taking approximately 3 hours with temporary Azure storage cost increases.<br><br><strong style=\'display:block;margin:6px 0 4px;color:#fbbf24;font-size:0.7rem;text-transform:uppercase;\'>Decisions Made</strong>• Upgrade timing: Perform during maintenance window despite no official downtime requirement.<br>• Process approach: Use default batch settings to upgrade all three nodes simultaneously.<br>• Pre-upgrade coordination: Schedule call with customer and cloud team before execution.<br><br><strong style=\'display:block;margin:6px 0 4px;color:#fbbf24;font-size:0.7rem;text-transform:uppercase;\'>Upgrade Process</strong>• Trigger: Single-click &quot;Upgrade Disks&quot; button in RSC.<br>• Data migration: New V2 nodes join cluster, data redistributes across 6-node cluster, then old V1 nodes drain and decommission.<br>• Scope: Only data disks upgraded (3 total); OS disk unchanged.<br>• Current state: Customer has up to 3 V1 data disks requiring migration on each node.<br><br><strong style=\'display:block;margin:6px 0 4px;color:#fbbf24;font-size:0.7rem;text-transform:uppercase;\'>Version History</strong>• 9.4.x: V2 upgrade appeared as non-blocking warning during pre-check.<br>• 9.5: Upgraded to blocking requirement; upgrade fails at pre-check without V2 disks.<br><br><strong style=\'display:block;margin:6px 0 4px;color:#fbbf24;font-size:0.7rem;text-transform:uppercase;\'>Cost Impact</strong>• Temporary doubling: Azure costs will show twice the compute &amp; storage during the 3–6 hour migration window. Storage costs may continue due to object immutability.<br><br><strong style=\'display:block;margin:6px 0 4px;color:#fbbf24;font-size:0.7rem;text-transform:uppercase;\'>Pending Confirmation</strong>• Immutable storage: Impact on node decommissioning and Azure storage costs when immutability is configured requires investigation.<br>• Customer questions: Share any additional questions ahead of the Zoom call with support.<br><br><strong style=\'display:block;margin:6px 0 4px;color:#fbbf24;font-size:0.7rem;text-transform:uppercase;\'>Limitations &amp; Constraints</strong>• No in-place upgrade: Cannot power off nodes and change disk type — causes data corruption.<br>• Pre-check skip: Backend option exists to bypass V2 requirement but not recommended.<br>• Mandatory: All 9.5 upgrades blocked without V2 disk migration; no proceed option at pre-check.<br><br><strong style=\'display:block;margin:6px 0 4px;color:#fbbf24;font-size:0.7rem;text-transform:uppercase;\'>Action Items</strong>• Documentation: RSC documentation already shared with customer for reference." style="cursor:pointer;border-bottom:1px dashed #9ca3af;"><span style="text-decoration:line-through;color:#9ca3af;">Connect with support case owners for cloud cluster upgrade and coordinate Zoom session with Tim. Provide answers on automation scope, IP requirements, and batch recommendations.</span> <span style="font-size:0.72rem;color:var(--info);">ℹ hover for details</span></span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Check Pure Storage code release schedule and email Tim next week to reschedule integration work to appropriate July window.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Monitor drive/node reseat results after 11 AM and follow up on storage latency case resolution.</span></div>
+          </div>
+        </div>
+
+        <div style="padding:10px 12px;background:#d1fae5;border-radius:8px;border-left:3px solid var(--success);">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--success);margin-bottom:8px;">Tim</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Review RSC cloud cluster upgrade documentation and prepare questions for support call. Target launch today or tomorrow.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Schedule coordinated call with Citrix team and Rubrik support for Case 1115 (SIFT Extreme environment).</span></div>
+          </div>
+        </div>
+
+        <div style="padding:10px 12px;background:#f3f4f6;border-radius:8px;border-left:3px solid #6b7280;grid-column:1/-1;">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#6b7280;margin-bottom:8px;">Tim / Roy</div>
+          <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Add Active Directory objects for cloud clusters to enable SQL live mounts once V2 disk upgrade completes. Coordinate with Roy's team using SMB security documentation.</span></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Technical Context -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>🔧 Technical Context</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-top:0.75rem;">
+        <div>
+          <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px;">Cloud Clusters</div>
+          <div style="font-size:0.82rem;color:var(--text);line-height:1.6;">3-node Azure deployments currently on V1 disks running code 9.4.3. Require Premium V2 migration for performance and DR failover capability.</div>
+        </div>
+        <div>
+          <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px;">Physical Clusters</div>
+          <div style="font-size:0.82rem;color:var(--text);line-height:1.6;">Richardson and Houston on-prem clusters completed code upgrades with complications — drive failure and shelf removal from upgrade process.</div>
+        </div>
+        <div>
+          <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px;">Support Case Volume</div>
+          <div style="font-size:0.82rem;color:var(--text);line-height:1.6;">Multiple concurrent P1 cases forced Tim to deprioritize cloud cluster work. Tatyana blocked on upgrade for DR failover automation.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Check boxes above are for visual reference during the call. Carry forward any open items to next week's review.</div></div>`
+}
+}; // end REPORTS
+
+// ═══════════════════════════════════════════════════════════
+// STATIC DATA (same across all weeks)
+// ═══════════════════════════════════════════════════════════
+const LICENSES_HTML = `
+<div class="section-header"><h2>License &amp; Entitlement Overview</h2><p>Current license consumption and expiration tracking</p></div>
+<div class="two-col" style="margin-bottom:1.5rem;">
+  <div class="info-card">
+    <h3>License Consumption by Product (Active)</h3>
+    <div style="margin-top:0.5rem;display:flex;flex-direction:column;gap:10px;">
+      <div class="progress-row"><span class="progress-label">Appliance (DC)</span><div class="progress-bar-wrap"><div class="progress-bar progress-red" style="width:100%"></div></div><span class="progress-val">1,742 / 1,455 TB</span></div>
+      <div class="progress-row"><span class="progress-label">Cloud (UCL)</span><div class="progress-bar-wrap"><div class="progress-bar progress-orange" style="width:44%"></div></div><span class="progress-val">73 / 165 TB · 44%</span></div>
+      <div class="progress-row"><span class="progress-label">NAS CD</span><div class="progress-bar-wrap"><div class="progress-bar progress-orange" style="width:78%"></div></div><span class="progress-val">1,142 / 1,470 TB · 78%</span></div>
+      <div class="progress-row"><span class="progress-label">Edge</span><div class="progress-bar-wrap"><div class="progress-bar progress-blue" style="width:5%"></div></div><span class="progress-val">5 TB (edge)</span></div>
+    </div>
+  </div>
+  <div class="info-card">
+    <h3>Near-Term Expirations</h3>
+    <div style="margin-top:0.5rem;display:flex;flex-direction:column;gap:8px;font-size:0.82rem;">
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f3f4f6;"><span>Identity Resilience (AD/EntraID)</span><span class="badge badge-red">Sep 11, 2026</span></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f3f4f6;"><span>NAS CD (Unstructured Enterprise)</span><span class="badge badge-orange">Sep 24, 2026</span></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f3f4f6;"><span>Cloud Vault – Archive (Oct)</span><span class="badge badge-orange">Oct 1, 2026</span></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f3f4f6;"><span>Scale Foundation (Edge/Appliance)</span><span class="badge badge-yellow">Nov 3, 2026</span></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;"><span>Scale Foundation + Cloud Vault (Dec)</span><span class="badge badge-yellow">Dec 9, 2026</span></div>
+    </div>
+  </div>
+</div>
+<div class="table-card">
+  <div class="table-card-header"><h3>Full Entitlement List</h3><span>All active licenses</span></div>
+  <div style="overflow-x:auto;">
+  <table class="data-table"><thead><tr><th>Entitlement Name</th><th>Edition</th><th>Product</th><th>Purchased</th><th>Qty (TB)</th><th>Start</th><th>End</th></tr></thead><tbody>
+    <tr><td>Cloud Data Protection</td><td>Enterprise</td><td>Cloud Data Protection</td><td>Aug 1, 2025</td><td>125 TB</td><td>Aug 1, 2025</td><td><span class="badge badge-orange">Jul 31, 2026</span></td></tr>
+    <tr><td>Identity Resilience – AD, EntraID</td><td>—</td><td>Rubrik Appliance</td><td>Sep 12, 2025</td><td>15 TB</td><td>Sep 12, 2025</td><td><span class="badge badge-red">Sep 11, 2026</span></td></tr>
+    <tr><td>Identity Resilience – AD, EntraID</td><td>—</td><td>Rubrik Cloud Vault</td><td>Sep 12, 2025</td><td>3 TB</td><td>Sep 12, 2025</td><td><span class="badge badge-red">Sep 11, 2026</span></td></tr>
+    <tr><td>Unstructured Data Protection</td><td>Enterprise</td><td>NAS Cloud Direct</td><td>Sep 25, 2024</td><td>240 TB</td><td>Sep 25, 2024</td><td><span class="badge badge-orange">Sep 24, 2026</span></td></tr>
+    <tr><td>Rubrik Cloud Vault – Archive Tier</td><td>—</td><td>Rubrik Cloud Vault</td><td>May 30, 2025</td><td>3,072 TB</td><td>May 30, 2025</td><td><span class="badge badge-orange">Oct 1, 2026</span></td></tr>
+    <tr><td>Unstructured Data Protection</td><td>Enterprise</td><td>NAS Cloud Direct</td><td>Oct 2, 2023</td><td>1,230 TB</td><td>Oct 2, 2023</td><td><span class="badge badge-orange">Oct 1, 2026</span></td></tr>
+    <tr><td>Scale – Foundation Edition</td><td>Foundation</td><td>Rubrik Appliance</td><td>Nov 4, 2025</td><td>750 TB</td><td>Nov 4, 2025</td><td><span class="badge badge-yellow">Nov 3, 2026</span></td></tr>
+    <tr><td>Scale – Foundation Edition</td><td>Foundation</td><td>Rubrik Appliance</td><td>Dec 10, 2024</td><td>360 TB</td><td>Dec 10, 2024</td><td><span class="badge badge-yellow">Dec 9, 2026</span></td></tr>
+    <tr><td>Enterprise Data Protection</td><td>Enterprise</td><td>Rubrik Appliance</td><td>May 1, 2024</td><td>720 TB</td><td>May 1, 2024</td><td><span class="badge badge-green">Apr 30, 2027</span></td></tr>
+    <tr><td>Enterprise Data Protection</td><td>Enterprise</td><td>Security Apps</td><td>May 1, 2026</td><td>480 TB</td><td>May 1, 2026</td><td><span class="badge badge-green">Apr 30, 2027</span></td></tr>
+    <tr><td>Cloud Data Protection</td><td>Foundation</td><td>Cloud Data Protection</td><td>May 1, 2026</td><td>40 TB</td><td>May 1, 2026</td><td><span class="badge badge-green">Apr 30, 2027</span></td></tr>
+    <tr><td>Enterprise Data Protection</td><td>Enterprise</td><td>Rubrik Appliance</td><td>May 1, 2026</td><td>240 TB</td><td>May 1, 2026</td><td><span class="badge badge-green">Apr 30, 2027</span></td></tr>
+    <tr><td>Rubrik Cloud Vault SZ – Backup Tier</td><td>—</td><td>Rubrik Cloud Vault</td><td>May 30, 2025</td><td>200 TB</td><td>May 30, 2025</td><td><span class="badge badge-green">May 29, 2028</span></td></tr>
+    <tr><td>Rubrik Cloud Vault – Archive Tier</td><td>—</td><td>RCV Archive Tier</td><td>May 30, 2025</td><td>3,072 TB</td><td>May 30, 2025</td><td><span class="badge badge-green">May 29, 2028</span></td></tr>
+    <tr><td>Rubrik Cloud Vault SZ – Backup Tier</td><td>—</td><td>RCV Backup SZ</td><td>May 30, 2025</td><td>200 TB</td><td>May 30, 2025</td><td><span class="badge badge-green">May 29, 2028</span></td></tr>
+  </tbody></table></div>
+</div>
+<div class="alert-box alert-red">🚨 <div><strong>Appliance License Overrun:</strong> Consumed 1,742 TB against 1,455 TB licensed for Data Center appliance. This is 120% of licensed capacity. Review with your Rubrik account team immediately.</div></div>
+<div class="alert-box alert-orange">⚠️ <div><strong>6 licenses expiring within 12 months.</strong> Earliest is Cloud Data Protection (Jul 31, 2026) and Identity Resilience (Sep 11, 2026). Begin renewal discussions with your Rubrik account team.</div></div>`;
+
+const FEATURES_HTML = `
+<div class="section-header"><h2>Feature Adoption</h2><p>Active and inactive feature entitlements</p></div>
+<div class="stat-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:1.5rem;">
+  <div class="stat-card green"><div class="stat-label">Active Features</div><div class="stat-value">38</div></div>
+  <div class="stat-card orange"><div class="stat-label">Inactive Features</div><div class="stat-value">5</div></div>
+  <div class="stat-card blue"><div class="stat-label">Fully Adopted</div><div class="stat-value">3</div><div class="stat-sub">≥ 90% adoption</div></div>
+  <div class="stat-card red"><div class="stat-label">Low Adoption</div><div class="stat-value">14</div><div class="stat-sub">≤ 10% adoption</div></div>
+</div>
+<div class="two-col">
+  <div class="info-card">
+    <h3>Active Features – Adoption Rates</h3>
+    <div style="margin-top:0.5rem;">
+      ${[["CDM Exchange Database","100%","progress-green","color:var(--success)"],["Threat Monitoring","100%","progress-green","color:var(--success)"],["CDM MSSQL","92%","progress-green","color:var(--success)"],["CNP Azure VM Instance","79%","progress-green","color:var(--success)"],["CLOUD","79%","progress-green","color:var(--success)"],["NAS CD","78%","progress-orange","color:var(--warning)"],["Sonar (DSPM)","50%","progress-orange","color:var(--warning)"],["Radar (Ransomware)","50%","progress-orange","color:var(--warning)"],["Active Directory w/CDM","51%","progress-orange","color:var(--warning)"],["Cloud - UCL","44%","progress-orange","color:var(--warning)"],["CDM (Core)","38%","progress-orange","color:var(--warning)"],["CDM VMware","37%","progress-orange","color:var(--warning)"],["CDM Windows Filesets","33%","progress-blue",""],["Identity Recovery","26%","progress-blue",""],["CDM NAS Filesets","3%","progress-red","color:var(--danger)"],["CDM NAS DA","2%","progress-red","color:var(--danger)"],["Entra ID / MS Entra ID","1%","progress-red","color:var(--danger)"],["RCV / RSC / Cloud Cluster","1%","progress-red","color:var(--danger)"],["Disaster Recovery","1%","progress-red","color:var(--danger)"],["Cyber Recovery","1%","progress-red","color:var(--danger)"]]
+      .map(([n,p,c,s])=>`<div class="adoption-item"><span class="adoption-name">${n}</span><div class="progress-bar-wrap"><div class="progress-bar ${c}" style="width:${p}"></div></div><span class="adoption-pct" style="${s}">${p}</span></div>`).join("")}
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:1.2rem;">
+    <div class="info-card">
+      <h3>🔴 Inactive Features (Entitled but Unused)</h3>
+      <div style="margin-top:0.5rem;display:flex;flex-direction:column;gap:6px;">
+        ${["Cyber Recovery Cloud","Cloud Unstructured","IaaS SAP HANA","Cyber Recovery Cloud – Azure","Inplace Recovery"].map(n=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f3f4f6;font-size:0.82rem;"><span>${n}</span><span class="badge badge-red">Inactive</span></div>`).join("")}
+      </div>
+    </div>
+    <div class="info-card">
+      <h3>📋 Adoption Summary</h3>
+      <div style="margin-top:0.5rem;display:flex;flex-direction:column;gap:8px;font-size:0.82rem;">
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f3f4f6;"><span>Full Adoption (≥90%)</span><span class="badge badge-green">3 features</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f3f4f6;"><span>Good Adoption (50–89%)</span><span class="badge badge-green">9 features</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f3f4f6;"><span>Partial Adoption (11–49%)</span><span class="badge badge-orange">7 features</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f3f4f6;"><span>Low Adoption (1–10%)</span><span class="badge badge-red">10 features</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;"><span>Inactive (0% / disabled)</span><span class="badge badge-gray">5 features</span></div>
+      </div>
+    </div>
+    <div class="info-card">
+      <h3>💡 Adoption Recommendations</h3>
+      <div style="font-size:0.82rem;color:var(--muted);line-height:1.6;margin-top:0.4rem;">
+        <p style="margin-bottom:8px;"><strong style="color:var(--dark);">Cyber Recovery Cloud &amp; Azure:</strong> Licensed but inactive. Review with team to enable for ransomware resilience.</p>
+        <p style="margin-bottom:8px;"><strong style="color:var(--dark);">Disaster Recovery (1%):</strong> Near-zero adoption despite entitlement. Schedule an enablement session.</p>
+        <p><strong style="color:var(--dark);">Inplace Recovery:</strong> Not activated. Evaluate use case for rapid VM recovery without full restore workflow.</p>
+      </div>
+    </div>
+  </div>
+</div>`;
+
+// ═══════════════════════════════════════════════════════════
+// RENDER FUNCTIONS
+// ═══════════════════════════════════════════════════════════
+function badge(cls, text) { return `<span class="badge ${cls}">${text}</span>`; }
+function pbar(color, pct) { return `<div class="progress-bar-wrap"><div class="progress-bar ${color}" style="width:${pct}%"></div></div>`; }
+function alerts(arr) { return arr.map(a=>`<div class="alert-box ${a.type}">${a.type.includes("red")?"🚨":a.type.includes("orange")?"⚠️":"ℹ️"} <div>${a.text}</div></div>`).join(""); }
+
+function renderSummary(d, date) {
+  return `
+  <div class="section-header"><h2>Executive Account Summary</h2><p>Weekly overview of support health, environment status, and open items · ${date}</p></div>
+  <div style="margin-bottom:0.6rem;"><strong style="font-size:0.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);">I · Operational Insights</strong></div>
+  <div class="stat-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr))">
+    <div class="stat-card red"><div class="stat-label">Open Cases</div><div class="stat-value">${d.openCases}</div><div class="stat-sub">Support tickets active</div></div>
+    <div class="stat-card blue"><div class="stat-label">Jiras In Progress</div><div class="stat-value">${d.jiras}</div><div class="stat-sub">Engineering escalations</div></div>
+    <div class="stat-card orange"><div class="stat-label">P1 Cases</div><div class="stat-value">${d.p1}</div><div class="stat-sub">Critical priority</div></div>
+    <div class="stat-card green"><div class="stat-label">P2 Cases</div><div class="stat-value">${d.p2}</div><div class="stat-sub">High priority</div></div>
+  </div>
+  <div class="two-col">
+    <div class="info-card"><h3>Case Status Breakdown</h3><div style="display:flex;flex-direction:column;gap:10px;margin-top:0.5rem;">${d.caseBreakdown.map(r=>`<div class="progress-row"><span class="progress-label">${r.label}</span>${pbar(r.color,r.pct)}<span class="progress-val">${r.val}</span></div>`).join("")}</div></div>
+    <div class="info-card"><h3>Jira Status Breakdown</h3><div style="display:flex;flex-direction:column;gap:10px;margin-top:0.5rem;">${d.jiraBreakdown.map(r=>`<div class="progress-row"><span class="progress-label">${r.label}</span>${pbar(r.color,r.pct)}<span class="progress-val">${r.val}</span></div>`).join("")}</div></div>
+  </div>
+  <hr class="divider">
+  <div style="margin-bottom:0.6rem;"><strong style="font-size:0.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);">II · Environment Insights</strong></div>
+  <div class="stat-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));margin-bottom:1.5rem;">
+    <div class="stat-card green"><div class="stat-label">Capacity Upgrade Needed</div><div class="stat-value" style="color:var(--success)">${d.capacityUpgrade}</div><div class="stat-sub">Clusters &gt;75% capacity</div></div>
+    <div class="stat-card orange"><div class="stat-label">Version Upgrade Needed</div><div class="stat-value" style="color:var(--warning)">${d.versionUpgrade}</div><div class="stat-sub">Clusters 2+ versions behind</div></div>
+    <div class="stat-card blue"><div class="stat-label">Active Clusters</div><div class="stat-value">6</div><div class="stat-sub">Appliance + Cloud</div></div>
+    <div class="stat-card blue"><div class="stat-label">Avg. Performance Score</div><div class="stat-value">${d.avgScore}</div><div class="stat-sub">Out of 100</div></div>
+  </div>
+  <div class="info-card" style="margin-bottom:2rem;"><h3>Cluster Performance Overview</h3><div style="margin-top:0.75rem;display:flex;flex-direction:column;gap:8px;">
+    ${d.clusters.map(c=>`<div class="cluster-row"><span class="cluster-name">${c.name}</span><span class="cluster-used">${c.used}</span>${pbar("progress-orange",c.pct)}<span class="progress-val">${c.pct}%</span><span class="badge ${c.scoreBadge}">Score ${c.score}</span></div>`).join("")}
+  </div></div>
+  ${alerts(d.alerts)}`;
+}
+
+function renderCases(d, date) {
+  return `
+  <div class="section-header"><h2>Open Support Cases</h2><p>All active cases for Stewart Title Company · ${date}</p></div>
+  <div class="stat-grid" style="grid-template-columns:repeat(5,1fr);margin-bottom:1.5rem;">${d.stats.map(s=>`<div class="stat-card ${s.cls}"><div class="stat-label">${s.label}</div><div class="stat-value">${s.val}</div></div>`).join("")}</div>
+  <div class="table-card"><div class="table-card-header"><h3>Active Cases</h3><span>${d.rows.length} cases · All priorities</span></div>
+  <table class="data-table"><thead><tr><th>Case #</th><th>Subject</th><th>Priority</th><th>Status</th><th>Case Owner</th><th>Jira Linked</th></tr></thead><tbody>
+    ${d.rows.map(r=>`<tr><td>${r.num.startsWith("<span") ? r.num : `<span class="mono">${r.num}</span>`}</td><td>${r.subject}</td><td>${badge(r.priCls,r.pri)}</td><td>${badge(r.stCls,r.status)}</td><td>${r.owner}</td><td>${r.jira==="—"?"—":badge("badge-blue",r.jira)}</td></tr>`).join("")}
+  </tbody></table></div>
+  ${alerts(d.alerts)}`;
+}
+
+function renderJiras(d, date) {
+  return `
+  <div class="section-header"><h2>Engineering Jiras</h2><p>Active engineering escalations · ${date}</p></div>
+  <div class="stat-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:1.5rem;">${d.stats.map(s=>`<div class="stat-card ${s.cls}"><div class="stat-label">${s.label}</div><div class="stat-value">${s.val}</div></div>`).join("")}</div>
+  <div class="table-card"><div class="table-card-header"><h3>Active Jiras</h3><span>${d.rows.length} open engineering items</span></div>
+  <table class="data-table"><thead><tr><th>Jira Ref</th><th>Subject</th><th>Case #</th><th>Case Owner</th><th>Status</th><th>Component</th><th>Public Comments</th></tr></thead><tbody>
+    ${d.rows.map(r=>`<tr><td>${badge(r.refCls+" mono",r.ref)}</td><td>${r.subject}</td><td class="mono">${r.caseNum}</td><td>${r.owner}</td><td>${badge(r.stCls,r.status)}</td><td>${r.component}</td><td>—</td></tr>`).join("")}
+  </tbody></table></div>
+  ${alerts(d.alerts)}`;
+}
+
+function renderClusters(d, date) {
+  return `
+  <div class="section-header"><h2>Cluster Health &amp; Environment</h2><p>Current version, capacity, and performance metrics · ${date}</p></div>
+  <div class="stat-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:1.5rem;">
+    <div class="stat-card blue"><div class="stat-label">Total Clusters</div><div class="stat-value">6</div></div>
+    <div class="stat-card green"><div class="stat-label">Appliance Clusters</div><div class="stat-value">${d.activeAppliance}</div></div>
+    <div class="stat-card blue"><div class="stat-label">Cloud Clusters</div><div class="stat-value">${d.activeCloud}</div><div class="stat-sub">Azure</div></div>
+    <div class="stat-card orange"><div class="stat-label">Avg Perf. Score</div><div class="stat-value">${d.avgScore}</div></div>
+  </div>
+  <div class="table-card" style="margin-bottom:1.5rem;"><div class="table-card-header"><h3>Cluster Overview</h3><span>All clusters · Current state</span></div>
+  <table class="data-table"><thead><tr><th>Cluster Name</th><th>Platform</th><th>Nodes</th><th>Version</th><th>Used</th><th>Used %</th><th>Annual Growth</th><th>Perf. Score</th></tr></thead><tbody>
+    ${d.rows.map(r=>`<tr><td><strong>${r.name}</strong></td><td>${badge("badge-gray",r.platform)}</td><td>${r.nodes}</td><td class="mono" ${r.vCls}>${r.version}</td><td>${r.used}</td><td>${badge(r.pct > "70" ? "badge-orange" : r.pct > "80" ? "badge-red" : "badge-blue", r.pct)}</td><td>${r.growth}</td><td>${badge(r.sCls,r.score)}</td></tr>`).join("")}
+  </tbody></table></div>
+  <div class="table-card"><div class="table-card-header"><h3>Capacity Projections · ricvault01 &amp; houvault01</h3><span>Near-term capacity risk — action required</span></div>
+  <table class="data-table"><thead><tr><th>Cluster</th><th>80% Est.</th><th>85% Est.</th><th>90% Est.</th><th>95% Est.</th><th>100% Est.</th><th>Risk</th></tr></thead><tbody>
+    ${d.projections.map(p=>`<tr><td><strong>${p.name}</strong></td><td>${p.p80}</td><td>${p.p85}</td><td>${p.p90}</td><td>${p.p95}</td><td style="color:var(--danger);font-weight:700;">${p.p100}</td><td>${badge(p.risk,"🚨 Critical")}</td></tr>`).join("")}
+  </tbody></table></div>
+  ${alerts(d.alerts)}`;
+}
+
+function renderActions(d, date) {
+  return `<div class="section-header"><h2>Action Items &amp; Meeting Notes</h2><p>Weekly call recap and outstanding actions · ${date}</p></div>${d}`;
+}
+
+// ═══════════════════════════════════════════════════════════
+// SWITCH REPORT
+// ═══════════════════════════════════════════════════════════
+function switchReport(date) {
+  const r = REPORTS[date];
+  if (!r) return;
+  const pages = {
+    summary:  renderSummary(r.summary, date),
+    cases:    renderCases(r.cases, date),
+    jiras:    renderJiras(r.jiras, date),
+    clusters: renderClusters(r.clusters, date),
+    licenses: LICENSES_HTML,
+    features: FEATURES_HTML,
+    actions:  renderActions(r.actions, date)
+  };
+  const main = document.getElementById("mainContent");
+  main.innerHTML = Object.entries(pages).map(([id,html])=>`<div class="page" id="page-${id}">${html}</div>`).join("");
+  document.getElementById("footerContent").textContent = `Stewart Title Company · Rubrik Security Cloud · Weekly Support Review | Confidential | Report Date: ${date}`;
+  const activeTab = document.querySelector(".nav-tab.active");
+  const activeId = activeTab ? activeTab.id.replace("tab-","") : "summary";
+  showPage(activeId);
+}
+
+// ─── Global Tooltip ───
+(function() {
+  const tip = document.getElementById('globalTooltip');
+  let currentTarget = null;
+
+  document.addEventListener('mouseover', function(e) {
+    const wrap = e.target.closest('.case-num-wrap');
+    if (!wrap || !wrap.dataset.tip) return;
+    currentTarget = wrap;
+    tip.innerHTML = '<strong>Latest Notes</strong>' + wrap.dataset.tip;
+    tip.style.display = 'block';
+    positionTip(e);
+  });
+
+  document.addEventListener('mousemove', function(e) {
+    if (!currentTarget) return;
+    positionTip(e);
+  });
+
+  document.addEventListener('mouseout', function(e) {
+    const wrap = e.target.closest('.case-num-wrap');
+    if (wrap) {
+      currentTarget = null;
+      tip.style.display = 'none';
+    }
+  });
+
+  function positionTip(e) {
+    const tipW = 640;
+    const tipH = tip.offsetHeight || 120;
+    const margin = 14;
+    let x = e.clientX + margin;
+    let y = e.clientY - tipH - margin;
+    // Keep within viewport
+    if (x + tipW > window.innerWidth - 10) x = e.clientX - tipW - margin;
+    if (y < 10) y = e.clientY + margin;
+    tip.style.left = x + 'px';
+    tip.style.top  = y + 'px';
+  }
+})();
+
+function showPage(id) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
+  const pg = document.getElementById("page-"+id);
+  const tb = document.getElementById("tab-"+id);
+  if (pg) pg.classList.add("active");
+  if (tb) tb.classList.add("active");
+}
+
+// Load latest report on startup
+switchReport("May 28, 2026");
+</script>
+</body>
+</html>
