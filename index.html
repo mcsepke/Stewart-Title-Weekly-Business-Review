@@ -1040,7 +1040,124 @@ const REPORTS = {
       {type:"alert-orange", text:"<strong>ricvault01 (72%) &amp; houvault01 (67%) Performance Scores:</strong> Improved from last week but still below target. Monitor for further post-upgrade stabilization."}
     ]
   },
-  actions: `<div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Meeting notes for the June 4, 2026 call have not yet been added. Update this section after the weekly call.</div></div>`
+  actions: `
+    <!-- Key Outcomes -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>🎯 Key Outcomes</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span>Azure cloud cluster upgrades are <strong>85% complete</strong> with disk expansion done. Awaiting support confirmation on decommissioning warnings before proceeding with code updates.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span><strong>Active Directory recovery testing</strong> completed for single domain controller in lower environment. Team planning next phase for full/partial forest recovery in isolated production environment.</span></div>
+      </div>
+    </div>
+
+    <!-- Decisions + Completed two-col -->
+    <div class="two-col" style="margin-bottom:1.5rem;">
+      <div class="info-card">
+        <h3>✅ Decisions Made</h3>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>Pure Storage integration</strong> rescheduled to <strong>July 9th</strong> to allow time for Pure account team meetings and long-term release code availability confirmation.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>Cloud cluster AD integration</strong> deferred until after code upgrade completion to avoid change control conflicts.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>Storage latency case</strong> determined cluster performed as intended; upgrade did not cause the issue despite Rubrik AI alert discrepancy.</span></div>
+        </div>
+      </div>
+      <div class="info-card">
+        <h3>🏁 Completed Items</h3>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:0.75rem;">
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;color:var(--success);">✓</span><span>East US cloud cluster disk upgrade completed ("succeeded with warnings" on node decommissioning).</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;color:var(--success);">✓</span><span>South Central cloud cluster disk upgrade 85% complete.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;color:var(--success);">✓</span><span>IP expansion completed for cloud cluster subnet to support future upgrades.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;color:var(--success);">✓</span><span>SMB signing issue resolved.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;color:var(--success);">✓</span><span>Citrix VM backup failures no longer occurring after Rubrik OS-level intervention.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Support Issues -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>🔴 Active Support Issues</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔴</span><span><strong>Node replacement – HOUBRIK cluster (Waiting on Rubrik):</strong> Replaced brick still showing red/blue disk lights. Mohsin emailed Savinder but no engineering update received despite Jira engagement.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔴</span><span><strong>Multi-alerts compliance reporting (Manish):</strong> Out-of-compliance alerts appearing in reports. Investigating for stuck tasks or configuration issues.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🟡</span><span><strong>P1 proactive case – Activity log:</strong> Old case with unclear status showing as P1. Mark to investigate for resolution or closure.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🟡</span><span><strong>Cloud cluster decommissioning warnings:</strong> Tim awaiting support confirmation before proceeding with code update.</span></div>
+      </div>
+    </div>
+
+    <!-- Pending Confirmation -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>⏳ Pending Confirmation</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span>AD forest recovery testing approach and isolated environment setup for production domain controllers.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span>RCV bucket multi-region configuration for cloud team (on Tim's to-do list).</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span>Edge deployment status (internal situations being resolved).</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>License renewals:</strong> Universal cloud license renewing end of July; identity licenses September. Ben coordinating with Leslie and Mark III next week.</span></div>
+      </div>
+    </div>
+
+    <!-- Action Items by Owner -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>📋 Action Items by Owner</h3>
+      <div style="margin-top:0.9rem;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+
+        <div style="padding:10px 12px;background:#fef2f2;border-radius:8px;border-left:3px solid var(--red);">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--red);margin-bottom:8px;">Mark Csepke</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Investigate P1 activity log case status and resolution path.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Check node replacement case engineering status and why it is showing "Waiting on Customer."</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Schedule Azure Blob protection discussion with Scott for next week.</span></div>
+          </div>
+        </div>
+
+        <div style="padding:10px 12px;background:#d1fae5;border-radius:8px;border-left:3px solid var(--success);">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--success);margin-bottom:8px;">Tim</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Confirm support approval on decommissioning warnings before pushing code update.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Work with cloud team on RCV bucket multi-region setup.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Build DR documentation and processes for Vault network isolation with DR team.</span></div>
+          </div>
+        </div>
+
+        <div style="padding:10px 12px;background:#eff6ff;border-radius:8px;border-left:3px solid var(--info);">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--info);margin-bottom:8px;">Tatyana</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Plan DR failover test after cloud cluster Active Directory integration is complete.</span></div>
+          </div>
+        </div>
+
+        <div style="padding:10px 12px;background:#f3f4f6;border-radius:8px;border-left:3px solid #6b7280;">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#6b7280;margin-bottom:8px;">Ben Kendall / Mitch</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span><strong>Ben:</strong> Follow up with Leslie next week on renewal options and co-term quotes.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span><strong>Mitch:</strong> Schedule renewal discussion with Ben for next week.</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Upcoming Initiatives + Account Health two-col -->
+    <div class="two-col" style="margin-bottom:1.5rem;">
+      <div class="info-card">
+        <h3>🚀 Upcoming Initiatives</h3>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:0.75rem;font-size:0.82rem;">
+          <div style="display:flex;gap:8px;align-items:flex-start;"><span>•</span><span><strong>AD forest recovery testing:</strong> Mark offered consultative session on isolated environment approach. Team interested in becoming referenceable for user groups.</span></div>
+          <div style="display:flex;gap:8px;align-items:flex-start;"><span>•</span><span><strong>Vault network isolation:</strong> DR documentation and processes to be built after code upgrades complete.</span></div>
+          <div style="display:flex;gap:8px;align-items:flex-start;"><span>•</span><span><strong>Live mount capability:</strong> Tatyana needs this for database restore workflow efficiency instead of full restores.</span></div>
+          <div style="display:flex;gap:8px;align-items:flex-start;"><span>•</span><span><strong>Cosmos DB beta:</strong> Scheduled for future implementation.</span></div>
+        </div>
+      </div>
+      <div class="info-card">
+        <h3>📊 Account Health</h3>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:0.75rem;font-size:0.82rem;">
+          <div style="display:flex;gap:8px;align-items:flex-start;"><span>•</span><span><strong>Capacity:</strong> Alpha at 72%, Beta at 71%. Trending estimates improving as data growth plateaus from initial bulk load.</span></div>
+          <div style="display:flex;gap:8px;align-items:flex-start;"><span>•</span><span><strong>Code upgrade progress:</strong> Physical clusters complete. Cloud clusters nearly complete pending decommissioning confirmation.</span></div>
+          <div style="display:flex;gap:8px;align-items:flex-start;"><span>•</span><span><strong>Customer satisfaction:</strong> Scott's priority is Tatyana's happiness. Tim committed to completing cloud cluster work before vacation.</span></div>
+          <div style="display:flex;gap:8px;align-items:flex-start;"><span>•</span><span><strong>Virtual Forward event:</strong> Registration available for team members not attending in person.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Check boxes above are for visual reference during the call. Carry forward any open items to next week's review.</div></div>`
 }
 }; // end REPORTS
 
