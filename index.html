@@ -216,7 +216,8 @@
     <div style="display:flex;align-items:center;gap:8px;">
       <span class="date-label">Report Date</span>
       <select class="date-select" id="reportDate" onchange="switchReport(this.value)">
-        <option value="May 28, 2026" selected>May 28, 2026</option>
+        <option value="June 4, 2026" selected>June 4, 2026</option>
+        <option value="May 28, 2026">May 28, 2026</option>
         <option value="May 20, 2026">May 20, 2026</option>
         <option value="May 14, 2026">May 14, 2026</option>
         <option value="May 7, 2026">May 7, 2026</option>
@@ -958,6 +959,89 @@ const REPORTS = {
 
     <div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Check boxes above are for visual reference during the call. Carry forward any open items to next week's review.</div></div>`
 }
+
+,
+
+"June 4, 2026": {
+  summary: {
+    openCases: 7, jiras: 2, p1: 1, p2: 4,
+    avgScore: 85.7, capacityUpgrade: 0, versionUpgrade: 0,
+    caseBreakdown: [
+      {label:"In Progress",               val:1, pct:14, color:"progress-blue"},
+      {label:"Pending Fix",               val:1, pct:14, color:"progress-orange"},
+      {label:"Waiting for Customer Input", val:3, pct:43, color:"progress-orange"},
+      {label:"Waiting for Rubrik Support", val:2, pct:29, color:"progress-blue"}
+    ],
+    jiraBreakdown: [
+      {label:"Accepted",  val:1, pct:50, color:"progress-green"},
+      {label:"To Do",     val:1, pct:50, color:"progress-blue"}
+    ],
+    clusters: [
+      {name:"HOUBRIK_01", used:"713.29 TB / 72.1%", pct:72, scoreBadge:"badge-orange", score:"91%"},
+      {name:"RICBRIK_01", used:"614.30 TB / 71.0%", pct:71, scoreBadge:"badge-green",  score:"100%"},
+      {name:"ricvault01", used:"269.35 TB / 57.8%", pct:58, scoreBadge:"badge-orange", score:"72%"},
+      {name:"houvault01", used:"153.23 TB / 49.3%", pct:49, scoreBadge:"badge-orange", score:"67%"},
+      {name:"eus2rubrik",  used:"7.04 TB / 6.7%",   pct:7,  scoreBadge:"badge-green",  score:"84%"},
+      {name:"scusrubrik",  used:"7.22 TB / 6.8%",   pct:7,  scoreBadge:"badge-green",  score:"100%"}
+    ],
+    alerts: [
+      {type:"alert-green",  text:"<strong>All Clusters Current:</strong> All clusters on 9.5.1-p2-36376 (appliance) or 9.4.3-p3-31404 (Azure cloud). No version upgrade actions required."},
+      {type:"alert-orange", text:"<strong>ricvault01 (72%) &amp; houvault01 (67%) Performance:</strong> Scores below target. Continue monitoring post-upgrade stabilization."},
+      {type:"alert-blue",   text:"<strong>Capacity Projections Improved:</strong> ricvault01 now projected at 100% by Aug 30, 2026. houvault01 projected at 100% by Aug 12, 2026. Continue monitoring."},
+      {type:"alert-orange", text:"<strong>New Case 1232492:</strong> Multi-alerts for failed SLA archival policy violations opened this week. Waiting for Rubrik Support."}
+    ]
+  },
+  cases: {
+    stats: [{label:"Total Open",val:7,cls:"red"},{label:"P1 Critical",val:1,cls:"red"},{label:"P2 High",val:4,cls:"orange"},{label:"P3 Medium",val:2,cls:"blue"},{label:"In Progress",val:1,cls:"green"}],
+    rows: [
+      {num:"1055506", subject:"[StewartTitleCompany] Proactive Case: Activity log not working properly",              pri:"P1", priCls:"badge-red",    status:"In Progress",              stCls:"badge-blue",   owner:"Orin Israely",    jira:"—"},
+      {num:"1096748", subject:"RBS stopped running suddenly in the server and has to be manually restart it",        pri:"P2", priCls:"badge-orange", status:"Pending Fix",               stCls:"badge-orange", owner:"Neeraj Yadav",    jira:"CDM-533329"},
+      {num:"1221115", subject:"AZVMCADC-0, AZVMCADC-1 and AZVMCADC backup failing",                                 pri:"P3", priCls:"badge-gray",   status:"Waiting for Customer Input", stCls:"badge-yellow", owner:"Boggarapu Nikhil",jira:"—"},
+      {num:"1225639", subject:"Rubrik Upgrade Failing",                                                              pri:"P2", priCls:"badge-orange", status:"Waiting for Rubrik Support",  stCls:"badge-blue",   owner:"Akshay Kumar",    jira:"—"},
+      {num:"1225950", subject:"Upgrade failure on HOUBRIK-01 cluster",                                               pri:"P2", priCls:"badge-orange", status:"Waiting for Customer Input", stCls:"badge-yellow", owner:"Suvradeep Chanda",jira:"CDM-549987"},
+      {num:"1226252", subject:"Storage latency observed after Rubrik code upgrade",                                  pri:"P2", priCls:"badge-orange", status:"Waiting for Customer Input", stCls:"badge-yellow", owner:"Eric Knowles",    jira:"—"},
+      {num:"1232492", subject:"Multi Alerts related to Failed: SLA archival policy violation.",                      pri:"P2", priCls:"badge-orange", status:"Waiting for Rubrik Support",  stCls:"badge-blue",   owner:"Utkarsh Sahu",    jira:"—"}
+    ],
+    alerts: [
+      {type:"alert-red",    text:"<strong>Case 1055506 – Activity Log Issue (P1):</strong> Still In Progress. Longest-running open case — ensure active escalation continues."},
+      {type:"alert-blue",   text:"<strong>Case 1225747 (ricvault01 Hardware / Pending RMA)</strong> has been closed since the May 28 report."},
+      {type:"alert-orange", text:"<strong>New Case 1232492 – SLA Archival Policy Violations:</strong> Multi-alert case opened this week. Waiting for Rubrik Support — confirm investigation is underway."},
+      {type:"alert-orange", text:"<strong>Case 1225639 – Upgrade Failing:</strong> Status changed to Waiting for Rubrik Support. Confirm support has what is needed to proceed."}
+    ]
+  },
+  jiras: {
+    stats: [{label:"Total Jiras",val:2,cls:"blue"},{label:"Accepted",val:1,cls:"green"},{label:"To Do",val:1,cls:"blue"}],
+    rows: [
+      {ref:"CDM-549987", refCls:"badge-green",  subject:"[Stewart Title Company] Node disks showing both red and blue lights after chassis replacement", caseNum:"1225950", owner:"Suvradeep Chanda", status:"Accepted", stCls:"badge-green",  component:"Forge - Hardware"},
+      {ref:"CDM-533329", refCls:"badge-blue",   subject:"[Stewart Title] RBS stopped running suddenly in the server and has to be manually restart it",  caseNum:"1096748", owner:"Neeraj Yadav",    status:"To Do",    stCls:"badge-gray",   component:"RBS"}
+    ],
+    alerts: [
+      {type:"alert-green",  text:"<strong>CDM-549987 (Node Disk Lights / Hardware):</strong> New Jira accepted this week for the HOUBRIK-01 chassis replacement issue. Engineering is now engaged."},
+      {type:"alert-orange", text:"<strong>CDM-533329 (RBS Restart):</strong> Remains in To Do status. Case 1096748 shows Pending Fix — confirm engineering is actively working this item."}
+    ]
+  },
+  clusters: {
+    avgScore: 85.7, capacityUpgrade: 0, versionUpgrade: 0, activeAppliance: 4, activeCloud: 2,
+    rows: [
+      {name:"HOUBRIK_01", platform:"RH-6416S-01",  nodes:32, version:"9.5.1-p2-36376", vCls:"", used:"713.29 TB", pct:"72.1%", growth:"23.84 TB/yr", score:"91%",    sCls:"badge-orange"},
+      {name:"RICBRIK_01", platform:"RH-6416S-01",  nodes:28, version:"9.5.1-p2-36376", vCls:"", used:"614.30 TB", pct:"71.0%", growth:"11.43 TB/yr", score:"100%",   sCls:"badge-green"},
+      {name:"ricvault01", platform:"RHA-7420-01",  nodes:12, version:"9.5.1-p2-36376", vCls:"", used:"269.35 TB", pct:"57.8%", growth:"0 TB/yr",     score:"72% ⚠",  sCls:"badge-orange"},
+      {name:"houvault01", platform:"RHA-7420-01",  nodes:8,  version:"9.5.1-p2-36376", vCls:"", used:"153.23 TB", pct:"49.3%", growth:"0 TB/yr",     score:"67% ⚠",  sCls:"badge-orange"},
+      {name:"eus2rubrik",  platform:"Azure Cloud", nodes:3,  version:"9.4.3-p3-31404", vCls:"", used:"7.04 TB",   pct:"6.7%",  growth:"7.79 TB/yr",  score:"84%",    sCls:"badge-green"},
+      {name:"scusrubrik",  platform:"Azure Cloud", nodes:3,  version:"9.4.3-p3-31404", vCls:"", used:"7.22 TB",   pct:"6.8%",  growth:"0 TB/yr",     score:"100%",   sCls:"badge-green"}
+    ],
+    projections: [
+      {name:"ricvault01", p80:"Jul 8, 2026",  p85:"Jul 21, 2026", p90:"Aug 4, 2026",  p95:"Aug 17, 2026", p100:"Aug 30, 2026", risk:"badge-orange"},
+      {name:"houvault01", p80:"Jul 7, 2026",  p85:"Jul 15, 2026", p90:"Jul 24, 2026", p95:"Aug 4, 2026",  p100:"Aug 12, 2026", risk:"badge-orange"}
+    ],
+    alerts: [
+      {type:"alert-green",  text:"<strong>All Clusters Current:</strong> All appliance clusters on 9.5.1-p2-36376. Azure cloud clusters on 9.4.3-p3-31404. No version actions required."},
+      {type:"alert-orange", text:"<strong>Capacity projections improved</strong> vs. last week: ricvault01 at Aug 30 (was Jul 17) and houvault01 at Aug 12 (was Jul 22). Continue monitoring."},
+      {type:"alert-orange", text:"<strong>ricvault01 (72%) &amp; houvault01 (67%) Performance Scores:</strong> Improved from last week but still below target. Monitor for further post-upgrade stabilization."}
+    ]
+  },
+  actions: `<div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Meeting notes for the June 4, 2026 call have not yet been added. Update this section after the weekly call.</div></div>`
+}
 }; // end REPORTS
 
 // ═══════════════════════════════════════════════════════════
@@ -1209,7 +1293,7 @@ function showPage(id) {
 }
 
 // Load latest report on startup
-switchReport("May 28, 2026");
+switchReport("June 4, 2026");
 </script>
 </body>
 </html>
