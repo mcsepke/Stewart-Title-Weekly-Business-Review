@@ -229,12 +229,12 @@
 
 <nav class="nav-tabs">
   <div class="nav-tab active" onclick="showPage('summary')" id="tab-summary"><span class="tab-icon">📊</span> Executive Summary</div>
-  <div class="nav-tab" onclick="showPage('cases')" id="tab-cases"><span class="tab-icon">🎫</span> Support Cases</div>
-  <div class="nav-tab" onclick="showPage('jiras')" id="tab-jiras"><span class="tab-icon">🔧</span> Engineering Jiras</div>
+  <div class="nav-tab" onclick="showPage('cases')" id="tab-cases"><span class="tab-icon">🎫</span> Support Cases &amp; Jiras</div>
   <div class="nav-tab" onclick="showPage('clusters')" id="tab-clusters"><span class="tab-icon">🖥️</span> Clusters &amp; RCV</div>
   <div class="nav-tab" onclick="showPage('licenses')" id="tab-licenses"><span class="tab-icon">🔑</span> Licenses</div>
   <div class="nav-tab" onclick="showPage('features')" id="tab-features"><span class="tab-icon">✨</span> Feature Adoption</div>
   <div class="nav-tab" onclick="showPage('actions')" id="tab-actions"><span class="tab-icon">✅</span> Action Items</div>
+  <div class="nav-tab" onclick="showPage('announce')" id="tab-announce"><span class="tab-icon">📣</span> Announcements</div>
 </nav>
 
 <div class="main" id="mainContent"></div>
@@ -549,6 +549,8 @@ const REPORTS = {
       </div>
       <div class="alert-box alert-blue" style="margin-bottom:0;align-self:start;">ℹ️ <div><strong>Note:</strong> Check boxes above are for visual reference during the call. Carry forward any open items to next week's review.</div></div>
     </div>`
+,
+  announce: []
 }
 
 
@@ -774,6 +776,8 @@ const REPORTS = {
     </div>
 
     <div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Check boxes above are for visual reference during the call. Carry forward any open items to next week's review.</div></div>`
+,
+  announce: []
 }
 
 ,
@@ -959,6 +963,8 @@ const REPORTS = {
     </div>
 
     <div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Check boxes above are for visual reference during the call. Carry forward any open items to next week's review.</div></div>`
+,
+  announce: []
 }
 
 ,
@@ -1159,6 +1165,8 @@ const REPORTS = {
     </div>
 
     <div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Check boxes above are for visual reference during the call. Carry forward any open items to next week's review.</div></div>`
+,
+  announce: []
 }
 
 ,
@@ -1240,7 +1248,37 @@ const REPORTS = {
       {type:"alert-orange", text:"<strong>houvault01 (77%) &amp; eus2rubrik (80%) Performance:</strong> Both below 85% target. eus2rubrik backup score notably low at 59% — investigate archival job health."}
     ]
   },
-  actions: `<div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Meeting notes for the June 11, 2026 call have not yet been added. Update this section after the weekly call.</div></div>`
+  actions: `<div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Meeting notes for the June 11, 2026 call have not yet been added. Update this section after the weekly call.</div></div>`,
+  announce: [
+    {
+      tag: "🤖 AI",
+      title: "Rubrik Becomes an Agent — Introducing Rubrik AI",
+      date: "June 9, 2026",
+      impact: "Your Rubrik platform just got dramatically smarter. Rubrik AI doesn't just assist — it reasons over your data, identities, and deployed agents, then acts autonomously to deliver cyber resilience at machine speed. No more manual recovery steps.",
+      url: "https://www.rubrik.com/blog/technology/26/6/rubrik-ai-is-here-your-platform-just-got-an-agent"
+    },
+    {
+      tag: "☁️ Cloud Recovery",
+      title: "Autonomous Business Recovery for Cloud Applications",
+      date: "June 9, 2026",
+      impact: "Recovering data isn't recovering a business. Rubrik's new ABR orchestrates the full-stack recovery of cloud applications — network, compute, data, identity, and configs — automatically, in the correct order, from a clean validated point. No scripts, no guesswork.",
+      url: "https://www.rubrik.com/company/newsroom/press-releases/26/rubrik-introduces-autonomous-business-recovery-for-cloud-applications"
+    },
+    {
+      tag: "🔐 Identity",
+      title: "Identity Roll Forward — No More Choosing Between Clean and Current",
+      date: "June 9, 2026",
+      impact: "When an identity system is compromised, organizations used to face an impossible choice: roll back and lose legitimate changes, or stay compromised. Rubrik's new Identity Roll Forward eliminates that trade-off — recover to a clean, current state without reintroducing attacker backdoors.",
+      url: "https://www.rubrik.com/company/newsroom/press-releases/26/rubrik-advances-identity-resilience-through-strata-acquisition-and-identity-roll-forward-innovation"
+    },
+    {
+      tag: "🛡️ AI Agent Security",
+      title: "Rubrik Agent Cloud for Claude — Control and Rewind AI Agents",
+      date: "June 9, 2026",
+      impact: "As you deploy more AI agents, one wrong action can cascade at machine speed. Rubrik Agent Cloud for Claude Code and Claude Cowork gives you full observability, governance, and the industry's only Agent Rewind — reversing unintended AI actions and recovering impacted data instantly.",
+      url: "https://www.rubrik.com/company/newsroom/press-releases/26/rubrik-launches-rubrik-agent-cloud-for-anthropics-claude-code"
+    }
+  ]
 }
 }; // end REPORTS
 
@@ -1373,27 +1411,30 @@ function renderSummary(d, date) {
   ${alerts(d.alerts)}`;
 }
 
-function renderCases(d, date) {
+function renderCasesAndJiras(r, date) {
+  const d = r.cases;
+  const j = r.jiras;
   return `
-  <div class="section-header"><h2>Open Support Cases</h2><p>All active cases for Stewart Title Company · ${date}</p></div>
+  <div class="section-header"><h2>Support Cases &amp; Engineering Jiras</h2><p>All active cases and engineering escalations · ${date}</p></div>
+
+  <div style="margin-bottom:0.6rem;"><strong style="font-size:0.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);">Support Cases</strong></div>
   <div class="stat-grid" style="grid-template-columns:repeat(5,1fr);margin-bottom:1.5rem;">${d.stats.map(s=>`<div class="stat-card ${s.cls}"><div class="stat-label">${s.label}</div><div class="stat-value">${s.val}</div></div>`).join("")}</div>
-  <div class="table-card"><div class="table-card-header"><h3>Active Cases</h3><span>${d.rows.length} cases · All priorities</span></div>
+  <div class="table-card" style="margin-bottom:1rem;"><div class="table-card-header"><h3>Active Cases</h3><span>${d.rows.length} cases · All priorities</span></div>
   <table class="data-table"><thead><tr><th>Case #</th><th>Subject</th><th>Priority</th><th>Status</th><th>Case Owner</th><th>Jira Linked</th></tr></thead><tbody>
     ${d.rows.map(r=>`<tr><td>${r.num.startsWith("<span") ? r.num : `<span class="mono">${r.num}</span>`}</td><td>${r.subject}</td><td>${badge(r.priCls,r.pri)}</td><td>${badge(r.stCls,r.status)}</td><td>${r.owner}</td><td>${r.jira==="—"?"—":badge("badge-blue",r.jira)}</td></tr>`).join("")}
   </tbody></table></div>
-  ${alerts(d.alerts)}`;
+  ${alerts(d.alerts)}
+
+  <hr style="border:none;border-top:1px solid var(--border);margin:1.5rem 0;">
+  <div style="margin-bottom:0.6rem;"><strong style="font-size:0.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);">Engineering Jiras</strong></div>
+  <div class="stat-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:1.5rem;">${j.stats.map(s=>`<div class="stat-card ${s.cls}"><div class="stat-label">${s.label}</div><div class="stat-value">${s.val}</div></div>`).join("")}</div>
+  <div class="table-card" style="margin-bottom:1rem;"><div class="table-card-header"><h3>Active Jiras</h3><span>${j.rows.length} open engineering items</span></div>
+  <table class="data-table"><thead><tr><th>Jira Ref</th><th>Subject</th><th>Case #</th><th>Case Owner</th><th>Status</th><th>Component</th><th>Public Comments</th></tr></thead><tbody>
+    ${j.rows.map(r=>`<tr><td>${badge(r.refCls+" mono",r.ref)}</td><td>${r.subject}</td><td class="mono">${r.caseNum}</td><td>${r.owner}</td><td>${badge(r.stCls,r.status)}</td><td>${r.component}</td><td>—</td></tr>`).join("")}
+  </tbody></table></div>
+  ${alerts(j.alerts)}`;
 }
 
-function renderJiras(d, date) {
-  return `
-  <div class="section-header"><h2>Engineering Jiras</h2><p>Active engineering escalations · ${date}</p></div>
-  <div class="stat-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:1.5rem;">${d.stats.map(s=>`<div class="stat-card ${s.cls}"><div class="stat-label">${s.label}</div><div class="stat-value">${s.val}</div></div>`).join("")}</div>
-  <div class="table-card"><div class="table-card-header"><h3>Active Jiras</h3><span>${d.rows.length} open engineering items</span></div>
-  <table class="data-table"><thead><tr><th>Jira Ref</th><th>Subject</th><th>Case #</th><th>Case Owner</th><th>Status</th><th>Component</th><th>Public Comments</th></tr></thead><tbody>
-    ${d.rows.map(r=>`<tr><td>${badge(r.refCls+" mono",r.ref)}</td><td>${r.subject}</td><td class="mono">${r.caseNum}</td><td>${r.owner}</td><td>${badge(r.stCls,r.status)}</td><td>${r.component}</td><td>—</td></tr>`).join("")}
-  </tbody></table></div>
-  ${alerts(d.alerts)}`;
-}
 
 function renderClusters(d, date) {
   return `
@@ -1484,17 +1525,45 @@ function renderActions(d, date) {
 // ═══════════════════════════════════════════════════════════
 // SWITCH REPORT
 // ═══════════════════════════════════════════════════════════
+
+function renderAnnouncements(posts, date) {
+  if (!posts || posts.length === 0) {
+    return `<div class="section-header"><h2>Announcements</h2><p>Latest from the Rubrik blog · ${date}</p></div>
+    <div class="alert-box alert-blue">ℹ️ <div><strong>No new blog posts</strong> were published on rubrik.com/blog in the 7 days prior to this report date. Check back next week for the latest updates.</div></div>
+    <div style="text-align:center;margin-top:2rem;padding:2rem;">
+      <a href="https://www.rubrik.com/blog" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--dark);color:#fff;padding:10px 20px;border-radius:8px;font-size:0.85rem;font-weight:600;text-decoration:none;">📖 Visit the Rubrik Blog</a>
+    </div>`;
+  }
+  const cards = posts.map(p => `
+    <a href="${p.url}" target="_blank" rel="noopener" style="display:block;text-decoration:none;color:inherit;">
+      <div style="background:#fff;border-radius:10px;border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,0.06);padding:1.4rem 1.6rem;margin-bottom:1.2rem;transition:box-shadow 0.18s,border-color 0.18s;border-left:4px solid var(--red);"
+           onmouseover="this.style.boxShadow='0 6px 20px rgba(0,0,0,0.12)';this.style.borderColor='var(--red-light)'"
+           onmouseout="this.style.boxShadow='0 1px 3px rgba(0,0,0,0.06)';this.style.borderColor='var(--border)'">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+          <span style="background:#fef2f2;color:var(--red);font-size:0.72rem;font-weight:700;padding:3px 10px;border-radius:999px;letter-spacing:0.05em;">${p.tag}</span>
+          <span style="font-size:0.75rem;color:var(--muted);">${p.date}</span>
+        </div>
+        <div style="font-size:1rem;font-weight:700;color:var(--dark);margin-bottom:8px;line-height:1.3;">${p.title}</div>
+        <div style="font-size:0.84rem;color:#374151;line-height:1.6;margin-bottom:10px;">${p.impact}</div>
+        <div style="display:inline-flex;align-items:center;gap:5px;font-size:0.78rem;font-weight:600;color:var(--red);">Read article →</div>
+      </div>
+    </a>`).join('');
+  return `<div class="section-header"><h2>Announcements</h2><p>Latest from the Rubrik blog · ${date}</p></div>
+  <div class="alert-box alert-blue" style="margin-bottom:1.5rem;">ℹ️ <div>The posts below were published on <a href="https://www.rubrik.com/blog" target="_blank" style="color:var(--info);font-weight:600;">rubrik.com/blog</a> in the 7 days prior to this report. Click any card to read the full article.</div></div>
+  ${cards}`;
+}
+
 function switchReport(date) {
   const r = REPORTS[date];
   if (!r) return;
   const pages = {
     summary:  renderSummary(r.summary, date),
-    cases:    renderCases(r.cases, date),
-    jiras:    renderJiras(r.jiras, date),
+    cases:    renderCasesAndJiras(r, date),
     clusters: renderClusters(r.clusters, date),
     licenses: LICENSES_HTML,
     features: FEATURES_HTML,
-    actions:  renderActions(r.actions, date)
+    actions:  renderActions(r.actions, date),
+    announce: renderAnnouncements(r.announce, date)
   };
   const main = document.getElementById("mainContent");
   main.innerHTML = Object.entries(pages).map(([id,html])=>`<div class="page" id="page-${id}">${html}</div>`).join("");
