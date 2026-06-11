@@ -1248,7 +1248,122 @@ const REPORTS = {
       {type:"alert-orange", text:"<strong>houvault01 (77%) &amp; eus2rubrik (80%) Performance:</strong> Both below 85% target. eus2rubrik backup score notably low at 59% — investigate archival job health."}
     ]
   },
-  actions: `<div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Meeting notes for the June 11, 2026 call have not yet been added. Update this section after the weekly call.</div></div>`,
+  actions: `
+    <!-- Key Outcomes -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>🎯 Key Outcomes</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span>All Azure cloud clusters upgraded to <strong>9.5.1</strong> — complete, including the new Edge deployment.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span><strong>Multi-region RCV migration</strong> can now be performed in-place without service disruption using the Edit function in RSC — no need to build new protection locations.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span><strong>Hardware replacement for Houston cluster</strong> remains pending — a second node is now experiencing issues.</span></div>
+      </div>
+    </div>
+    <div class="two-col" style="margin-bottom:1.5rem;">
+      <div class="info-card">
+        <h3>✅ Decisions Made</h3>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>Network isolation discussion</strong> for Vault clusters postponed until Tim returns (out 2 weeks).</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>Non-immutable NCD archive data</strong> to continue rolling off naturally over 12 months — no forced migration.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>Multi-node SQL backup/restore</strong> requires feature flag in 9.5 (default in 9.6). Mark to provide flag syntax to Tatyana.</span></div>
+        </div>
+      </div>
+      <div class="info-card">
+        <h3>🏁 Completed</h3>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:0.75rem;">
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;color:var(--success);">✓</span><span>Edge deployment configured Monday with replication to Richardson Vault successful.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;color:var(--success);">✓</span><span>V2 disk upgrades completed on all cloud clusters.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;color:var(--success);">✓</span><span>All code upgrades to 9.5.1 across Azure cloud clusters.</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="two-col" style="margin-bottom:1.5rem;">
+      <div class="info-card">
+        <h3>🚧 Blockers</h3>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔴</span><span><strong>Edge → Houston Vault replication failing:</strong> Suspected port 7785 firewall issue. Replication to Richardson works fine.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔴</span><span><strong>Sensitive data discovery not working</strong> for SQL Server databases on Azure VMs in cloud clusters. Works for Azure SQL and on-prem.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔴</span><span><strong>Houston cluster hardware replacement delayed:</strong> Second node now showing errors in addition to the original failure.</span></div>
+        </div>
+      </div>
+      <div class="info-card">
+        <h3>⏳ Pending Confirmation</h3>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span>AD integration for cloud clusters still incomplete.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span>P1 case under Orin's name needs closure verification after Forward conference.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span>Feature flag name for multi-node SQL performance to be provided by Mark.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span>Renewal discussion scheduled with Ben for early next week.</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>📋 Action Items by Owner</h3>
+      <div style="margin-top:0.9rem;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="padding:10px 12px;background:#fef2f2;border-radius:8px;border-left:3px solid var(--red);">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--red);margin-bottom:8px;">Mark</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Follow up with Orin on P1 case closure after Forward.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Provide feature flag syntax for multi-node SQL performance to Tatyana.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Send escalation support if needed for Houston hardware issues.</span></div>
+          </div>
+        </div>
+        <div style="padding:10px 12px;background:#eff6ff;border-radius:8px;border-left:3px solid var(--info);">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--info);margin-bottom:8px;">Tatyana</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Open support case for sensitive data discovery on SQL Server VMs in cloud clusters.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Test multi-node backup/restore on databases &gt;1TB after feature flag is enabled.</span></div>
+          </div>
+        </div>
+        <div style="padding:10px 12px;background:#d1fae5;border-radius:8px;border-left:3px solid var(--success);grid-column:1/-1;">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--success);margin-bottom:8px;">Frank</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Verify port 7785 is open for Edge-to-Houston Vault replication.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Follow up on hardware replacement for Houston cluster nodes.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="two-col" style="margin-bottom:1.5rem;">
+      <div class="info-card">
+        <h3>🔄 RCV Multi-Region Migration Process</h3>
+        <div style="font-size:0.82rem;color:var(--text);line-height:1.7;margin-top:0.75rem;">
+          <p style="margin-bottom:8px;">In-place conversion now available — no need to build new protection locations.</p>
+          <p style="margin-bottom:6px;font-weight:600;color:var(--dark);">Steps:</p>
+          <ol style="margin-left:1.2rem;margin-bottom:10px;"><li>Infrastructure → Rubrik Cloud Vault</li><li>Select single-zone RCV → Edit</li><li>Change to multi-zone → apply to all existing backups</li></ol>
+          <div style="background:#f9fafb;border-radius:6px;padding:8px 10px;font-size:0.79rem;color:var(--muted);"><strong style="color:var(--dark);">Capacity note:</strong> Backup tier at 82.5% full (shows 67% in portal due to combined view with empty archive tier). 150TB multi-region archive available. Growth trending toward plateau in September/October.</div>
+        </div>
+      </div>
+      <div class="info-card">
+        <h3>⚡ SQL Performance Optimization</h3>
+        <div style="font-size:0.82rem;color:var(--text);line-height:1.7;margin-top:0.75rem;">
+          <p style="margin-bottom:8px;">Multi-node backup/restore requires three components in 9.5:</p>
+          <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;">
+            <div style="display:flex;gap:8px;align-items:center;"><span style="color:var(--success);font-weight:700;">✓</span><span>V2 disks — <strong>complete</strong></span></div>
+            <div style="display:flex;gap:8px;align-items:center;"><span style="color:var(--success);font-weight:700;">✓</span><span>Code 9.5+ — <strong>complete</strong></span></div>
+            <div style="display:flex;gap:8px;align-items:center;"><span style="color:var(--warning);font-weight:700;">⬜</span><span>Feature flag via support case — <strong>pending</strong></span></div>
+          </div>
+          <div style="background:#f9fafb;border-radius:6px;padding:8px 10px;font-size:0.79rem;color:var(--muted);">Activates automatically for databases &gt;1TB. East US 2 expected to improve after flag enabled. Default in 9.6.</div>
+        </div>
+      </div>
+    </div>
+    <div class="two-col" style="margin-bottom:1.5rem;">
+      <div class="info-card">
+        <h3>🚀 Rubrik Forward Highlights</h3>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:0.75rem;font-size:0.82rem;">
+          <div style="display:flex;gap:8px;align-items:flex-start;"><span>•</span><span><strong>Autonomous Business Recovery (ABR):</strong> Announced for AWS first, Azure following. Enables minimal viable business recovery with automated application dependency mapping.</span></div>
+          <div style="display:flex;gap:8px;align-items:flex-start;"><span>•</span><span><strong>Identity continuity &amp; roll-forward</strong> (private preview): Wizard-driven GUI excludes malicious AD changes while rolling forward 7,000+ sanctioned changes between backup snapshots.</span></div>
+          <div style="display:flex;gap:8px;align-items:flex-start;"><span>•</span><span><strong>Rubrik AI</strong> (formerly Ruby): Agentic actions for RSC administration with authorization logging; expanded governance for Claude prompts to prevent sensitive data exposure.</span></div>
+        </div>
+      </div>
+      <div class="info-card">
+        <h3>📦 NCD Archive Migration</h3>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:0.75rem;font-size:0.82rem;">
+          <div style="display:flex;gap:8px;align-items:flex-start;"><span>•</span><span>Migration from Seagate (now Wasabi) to Rubrik Cloud immutable buckets is ongoing. Data moving slowly to avoid overwhelming the location.</span></div>
+          <div style="display:flex;gap:8px;align-items:flex-start;"><span>•</span><span>Non-immutable data rolling off naturally. Wasabi retained at $6/TB for potential quick cloud access use cases.</span></div>
+        </div>
+        <div style="margin-top:0.8rem;font-size:0.75rem;color:var(--muted);font-style:italic;">📅 Next meeting: In two weeks when Tim returns from vacation.</div>
+      </div>
+    </div>
+    <div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Check boxes above are for visual reference during the call. Carry forward any open items to next week's review.</div></div>`,
   announce: [
     {
       tag: "🤖 AI",
