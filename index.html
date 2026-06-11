@@ -216,7 +216,8 @@
     <div style="display:flex;align-items:center;gap:8px;">
       <span class="date-label">Report Date</span>
       <select class="date-select" id="reportDate" onchange="switchReport(this.value)">
-        <option value="June 4, 2026" selected>June 4, 2026</option>
+        <option value="June 11, 2026" selected>June 11, 2026</option>
+        <option value="June 4, 2026">June 4, 2026</option>
         <option value="May 28, 2026">May 28, 2026</option>
         <option value="May 20, 2026">May 20, 2026</option>
         <option value="May 14, 2026">May 14, 2026</option>
@@ -230,7 +231,7 @@
   <div class="nav-tab active" onclick="showPage('summary')" id="tab-summary"><span class="tab-icon">📊</span> Executive Summary</div>
   <div class="nav-tab" onclick="showPage('cases')" id="tab-cases"><span class="tab-icon">🎫</span> Support Cases</div>
   <div class="nav-tab" onclick="showPage('jiras')" id="tab-jiras"><span class="tab-icon">🔧</span> Engineering Jiras</div>
-  <div class="nav-tab" onclick="showPage('clusters')" id="tab-clusters"><span class="tab-icon">🖥️</span> Clusters</div>
+  <div class="nav-tab" onclick="showPage('clusters')" id="tab-clusters"><span class="tab-icon">🖥️</span> Clusters &amp; RCV</div>
   <div class="nav-tab" onclick="showPage('licenses')" id="tab-licenses"><span class="tab-icon">🔑</span> Licenses</div>
   <div class="nav-tab" onclick="showPage('features')" id="tab-features"><span class="tab-icon">✨</span> Feature Adoption</div>
   <div class="nav-tab" onclick="showPage('actions')" id="tab-actions"><span class="tab-icon">✅</span> Action Items</div>
@@ -1159,6 +1160,88 @@ const REPORTS = {
 
     <div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Check boxes above are for visual reference during the call. Carry forward any open items to next week's review.</div></div>`
 }
+
+,
+
+"June 11, 2026": {
+  summary: {
+    openCases: 5, jiras: 2, p1: 1, p2: 3,
+    avgScore: 91.4, capacityUpgrade: 0, versionUpgrade: 0,
+    caseBreakdown: [
+      {label:"In Progress",               val:1, pct:20, color:"progress-blue"},
+      {label:"Pending Fix",               val:1, pct:20, color:"progress-orange"},
+      {label:"Resolved",                  val:1, pct:20, color:"progress-green"},
+      {label:"Waiting for Customer Input", val:1, pct:20, color:"progress-orange"},
+      {label:"Waiting for Rubrik Support", val:1, pct:20, color:"progress-blue"}
+    ],
+    jiraBreakdown: [
+      {label:"Investigating", val:1, pct:50, color:"progress-blue"},
+      {label:"To Do",         val:1, pct:50, color:"progress-orange"}
+    ],
+    clusters: [
+      {name:"HOUBRIK_01", used:"702.90 TB / 71.1%", pct:71, scoreBadge:"badge-green",  score:"98%"},
+      {name:"RICBRIK_01", used:"614.32 TB / 71.0%", pct:71, scoreBadge:"badge-green",  score:"100%"},
+      {name:"ricvault01", used:"270.46 TB / 58.0%", pct:58, scoreBadge:"badge-green",  score:"94%"},
+      {name:"houvault01", used:"151.58 TB / 48.8%", pct:49, scoreBadge:"badge-orange", score:"77%"},
+      {name:"eus2rubrik",  used:"8.49 TB / 8.0%",   pct:8,  scoreBadge:"badge-orange", score:"80%"},
+      {name:"scusrubrik",  used:"8.52 TB / 8.1%",   pct:8,  scoreBadge:"badge-green",  score:"100%"}
+    ],
+    alerts: [
+      {type:"alert-green",  text:"<strong>All Clusters Upgraded:</strong> All clusters now running 9.5.1-p2-36376 including both Azure cloud clusters. Code upgrade cycle complete."},
+      {type:"alert-green",  text:"<strong>Average Performance Score Improved to 91.4%</strong> — highest recorded to date. ricvault01 recovered to 94% and RICBRIK_01 at 100%."},
+      {type:"alert-orange", text:"<strong>houvault01 (77%) &amp; eus2rubrik (80%):</strong> Scores below target. Continue monitoring for further post-upgrade stabilization."},
+      {type:"alert-blue",   text:"<strong>Capacity Projections:</strong> ricvault01 projected at 100% by Oct 4, 2026. houvault01 projected at 100% by Sep 1, 2026. Projections improved significantly from prior weeks."}
+    ]
+  },
+  cases: {
+    stats: [{label:"Total Open",val:5,cls:"red"},{label:"P1 Critical",val:1,cls:"red"},{label:"P2 High",val:3,cls:"orange"},{label:"P3 Medium",val:0,cls:"blue"},{label:"In Progress",val:1,cls:"green"}],
+    rows: [
+      {num:"<span class=\"case-num-wrap\" data-tip=\"We are continuing to investigate the activity log behavior in your Stewart environment and will share our findings and recommended actions as soon as analysis is complete.\"><span class=\"mono\">1055506</span></span>", subject:"[StewartTitleCompany] Proactive Case: Activity log not working properly", pri:"P1", priCls:"badge-red", status:"In Progress", stCls:"badge-blue", owner:"Orin Israely", jira:"—"},
+      {num:"<span class=\"case-num-wrap\" data-tip=\"We have restored RBS operations by correcting Active Directory configuration (removing decommissioned domain controller settings, updating the service logon account, and allowing previously blocked NTLM authentication) and are monitoring backup jobs to ensure they remain healthy.\"><span class=\"mono\">1096748</span></span>", subject:"RBS stopped running suddenly in the server and has to be manually restart it", pri:"P2", priCls:"badge-orange", status:"Pending Fix", stCls:"badge-orange", owner:"Neeraj Yadav", jira:"CDM-533329"},
+      {num:"<span class=\"case-num-wrap\" data-tip=\"The proactive disk health alert on cluster ricvault01 has been remediated by replacing the affected disk; the cluster is now healthy and the case has been resolved with no customer impact.\"><span class=\"mono\">1225747</span></span>", subject:"[StewartTitleCompany] Proactive Case: (Cluster: ricvault01) Hardware Health Check Failure", pri:"P2", priCls:"badge-orange", status:"Resolved", stCls:"badge-green", owner:"Alishan Khan", jira:"—"},
+      {num:"<span class=\"case-num-wrap\" data-tip=\"We are working with engineering on the HOUBRIK-01 upgrade issue and are currently awaiting your confirmation of the physical red/blue LED status on node RVMHM259S008519 so we can determine whether further troubleshooting or hardware replacement is required.\"><span class=\"mono\">1225950</span></span>", subject:"Upgrade failure on HOUBRIK-01 cluster", pri:"P2", priCls:"badge-orange", status:"Waiting for Customer Input", stCls:"badge-yellow", owner:"Suvradeep Chanda", jira:"CDM-549987"},
+      {num:"<span class=\"case-num-wrap\" data-tip=\"We are reviewing the recent SLA archival policy-violation alerts — driven by backups running beyond a shortened SLA snapshot window — and will recommend schedule adjustments, in coordination with your Rubrik team, to reduce missed snapshot alerts while maintaining your protection objectives.\"><span class=\"mono\">1232492</span></span>", subject:"Multi Alerts related to Failed: SLA archival policy violation.", pri:"P2", priCls:"badge-orange", status:"Waiting for Rubrik Support", stCls:"badge-blue", owner:"Utkarsh Sahu", jira:"—"}
+    ],
+    alerts: [
+      {type:"alert-green",  text:"<strong>Cases 1221115, 1225639, and 1226252 closed</strong> since the June 4 report — 3 cases resolved this week."},
+      {type:"alert-green",  text:"<strong>Case 1225747 (ricvault01 Hardware)</strong> now showing Resolved status."},
+      {type:"alert-red",    text:"<strong>Case 1055506 – Activity Log Issue (P1):</strong> Still In Progress. Longest-running open case — confirm active escalation path with Orin Israely."},
+      {type:"alert-orange", text:"<strong>Case 1232492 – SLA Archival Policy Violations:</strong> Still Waiting for Rubrik Support. Confirm investigation status and provide timeline to customer."}
+    ]
+  },
+  jiras: {
+    stats: [{label:"Total Jiras",val:2,cls:"blue"},{label:"Investigating",val:1,cls:"blue"},{label:"To Do",val:1,cls:"orange"}],
+    rows: [
+      {ref:"CDM-549987", refCls:"badge-blue",   subject:"[Stewart Title Company] Node disks showing both red and blue lights after chassis replacement", caseNum:"1225950", owner:"Suvradeep Chanda", status:"Investigating", stCls:"badge-blue",  component:"Forge - Hardware"},
+      {ref:"CDM-533329", refCls:"badge-orange", subject:"[Stewart Title] RBS stopped running suddenly in the server and has to be manually restart it",  caseNum:"1096748", owner:"Neeraj Yadav",    status:"To Do",        stCls:"badge-gray",  component:"RBS"}
+    ],
+    alerts: [
+      {type:"alert-blue",   text:"<strong>CDM-549987 (Node Disk Lights):</strong> Status moved to Investigating — engineering is actively working the HOUBRIK-01 chassis replacement issue."},
+      {type:"alert-orange", text:"<strong>CDM-533329 (RBS Restart):</strong> Still in To Do. Case 1096748 shows Pending Fix — confirm engineering has this in queue and provide timeline."}
+    ]
+  },
+  clusters: {
+    avgScore: 91.4, capacityUpgrade: 0, versionUpgrade: 0, activeAppliance: 4, activeCloud: 2,
+    rows: [
+      {name:"HOUBRIK_01", platform:"RH-6416S-01",  nodes:32, version:"9.5.1-p2-36376", vCls:"", used:"702.90 TB", pct:"71.1%", growth:"23.84 TB/yr", score:"98%",    sCls:"badge-green"},
+      {name:"RICBRIK_01", platform:"RH-6416S-01",  nodes:28, version:"9.5.1-p2-36376", vCls:"", used:"614.32 TB", pct:"71.0%", growth:"11.43 TB/yr", score:"100%",   sCls:"badge-green"},
+      {name:"ricvault01", platform:"RHA-7420-01",  nodes:12, version:"9.5.1-p2-36376", vCls:"", used:"270.46 TB", pct:"58.0%", growth:"0 TB/yr",     score:"94%",    sCls:"badge-green"},
+      {name:"houvault01", platform:"RHA-7420-01",  nodes:8,  version:"9.5.1-p2-36376", vCls:"", used:"151.58 TB", pct:"48.8%", growth:"0 TB/yr",     score:"77% ⚠",  sCls:"badge-orange"},
+      {name:"eus2rubrik",  platform:"Azure Cloud", nodes:3,  version:"9.5.1-p2-36376", vCls:"", used:"8.49 TB",   pct:"8.0%",  growth:"7.79 TB/yr",  score:"80% ⚠",  sCls:"badge-orange"},
+      {name:"scusrubrik",  platform:"Azure Cloud", nodes:3,  version:"9.5.1-p2-36376", vCls:"", used:"8.52 TB",   pct:"8.1%",  growth:"0 TB/yr",     score:"100%",   sCls:"badge-green"}
+    ],
+    projections: [
+      {name:"ricvault01", p80:"Jul 29, 2026", p85:"Aug 16, 2026", p90:"Sep 1, 2026",  p95:"Sep 16, 2026", p100:"Oct 4, 2026",  risk:"badge-orange"},
+      {name:"houvault01", p80:"Jul 21, 2026", p85:"Jul 29, 2026", p90:"Aug 11, 2026", p95:"Aug 19, 2026", p100:"Sep 1, 2026",  risk:"badge-orange"}
+    ],
+    alerts: [
+      {type:"alert-green",  text:"<strong>All Clusters on 9.5.1-p2-36376:</strong> Code upgrade cycle fully complete — all 6 clusters including both Azure cloud clusters now current."},
+      {type:"alert-green",  text:"<strong>Capacity projections improved significantly:</strong> ricvault01 now Oct 4 (was Aug 30) and houvault01 now Sep 1 (was Aug 12). Continue monitoring."},
+      {type:"alert-orange", text:"<strong>houvault01 (77%) &amp; eus2rubrik (80%) Performance:</strong> Both below 85% target. eus2rubrik backup score notably low at 59% — investigate archival job health."}
+    ]
+  },
+  actions: `<div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Meeting notes for the June 11, 2026 call have not yet been added. Update this section after the weekly call.</div></div>`
+}
 }; // end REPORTS
 
 // ═══════════════════════════════════════════════════════════
@@ -1314,7 +1397,7 @@ function renderJiras(d, date) {
 
 function renderClusters(d, date) {
   return `
-  <div class="section-header"><h2>Cluster Health &amp; Environment</h2><p>Current version, capacity, and performance metrics · ${date}</p></div>
+  <div class="section-header"><h2>Cluster Health &amp; Environment</h2><p>Current version, capacity, performance metrics, and Rubrik Cloud Vault utilization · ${date}</p></div>
   <div class="stat-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:1.5rem;">
     <div class="stat-card blue"><div class="stat-label">Total Clusters</div><div class="stat-value">6</div></div>
     <div class="stat-card green"><div class="stat-label">Appliance Clusters</div><div class="stat-value">${d.activeAppliance}</div></div>
@@ -1329,7 +1412,69 @@ function renderClusters(d, date) {
   <table class="data-table"><thead><tr><th>Cluster</th><th>80% Est.</th><th>85% Est.</th><th>90% Est.</th><th>95% Est.</th><th>100% Est.</th><th>Risk</th></tr></thead><tbody>
     ${d.projections.map(p=>`<tr><td><strong>${p.name}</strong></td><td>${p.p80}</td><td>${p.p85}</td><td>${p.p90}</td><td>${p.p95}</td><td style="color:var(--danger);font-weight:700;">${p.p100}</td><td>${badge(p.risk,"🚨 Critical")}</td></tr>`).join("")}
   </tbody></table></div>
-  ${alerts(d.alerts)}`;
+  ${alerts(d.alerts)}
+  <hr style="border:none;border-top:1px solid var(--border);margin:1.5rem 0;">
+  <div class="section-header" style="margin-bottom:1rem;">
+    <h2>Rubrik Cloud Vault Capacity</h2>
+    <p>Current RCV tier utilization across all entitlements</p>
+  </div>
+  <div class="table-card" style="margin-bottom:1.5rem;">
+    <div class="table-card-header">
+      <h3>RCV Tier Utilization</h3>
+      <span>Latest snapshot · June 11, 2026</span>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Tier</th>
+          <th>Entitled Capacity</th>
+          <th>Consumed Capacity</th>
+          <th>Utilization</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>RCV Archive Tier</strong></td>
+          <td>9.73 PB</td>
+          <td>7.89 PB</td>
+          <td>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div class="progress-bar-wrap" style="min-width:100px;"><div class="progress-bar progress-orange" style="width:81%"></div></div>
+              <span class="badge badge-orange">81.1%</span>
+            </div>
+          </td>
+          <td><span class="badge badge-orange">Monitor</span></td>
+        </tr>
+        <tr>
+          <td><strong>RCV Backup – Single Zone</strong></td>
+          <td>773 TB</td>
+          <td>637.5 TB</td>
+          <td>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div class="progress-bar-wrap" style="min-width:100px;"><div class="progress-bar progress-orange" style="width:83%"></div></div>
+              <span class="badge badge-orange">82.5%</span>
+            </div>
+          </td>
+          <td><span class="badge badge-orange">Monitor</span></td>
+        </tr>
+        <tr>
+          <td><strong>RCV Backup – Multi Region</strong></td>
+          <td>150 TB</td>
+          <td>0 TB</td>
+          <td>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div class="progress-bar-wrap" style="min-width:100px;"><div class="progress-bar progress-green" style="width:1%"></div></div>
+              <span class="badge badge-green">0.0%</span>
+            </div>
+          </td>
+          <td><span class="badge badge-blue">Not Active</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="alert-box alert-orange">⚠️ <div><strong>RCV Archive Tier (81.1%) &amp; Backup Single Zone (82.5%):</strong> Both tiers above 80% utilization. Review archival growth trends and discuss capacity planning with your Rubrik account team.</div></div>
+  <div class="alert-box alert-blue">ℹ️ <div><strong>RCV Backup – Multi Region (0%):</strong> Entitled but unused. This tier was recently activated as part of your multi-region RCV configuration. Confirm workloads are being directed to this tier as planned.</div></div>`;
 }
 
 function renderActions(d, date) {
@@ -1410,7 +1555,7 @@ function showPage(id) {
 }
 
 // Load latest report on startup
-switchReport("June 4, 2026");
+switchReport("June 11, 2026");
 </script>
 </body>
 </html>
