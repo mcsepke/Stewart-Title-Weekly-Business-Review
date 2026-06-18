@@ -1478,7 +1478,94 @@ const REPORTS = {
       {type:"alert-orange", text:"<strong>eus2rubrik (82%) Performance:</strong> Slightly below target. Continue monitoring alongside other Azure cloud cluster metrics."}
     ]
   },
-  actions: `<div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Meeting notes for the June 18, 2026 call have not yet been added. Update this section after the weekly call.</div></div>`,
+  actions: `
+    <!-- Key Outcomes -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>🎯 Key Outcomes</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span>Multiple open support cases and a <strong>hardware node failure in the Houston cluster</strong> are in progress but require follow-up prioritization.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span>A <strong>threat/anomaly notification</strong> was flagged in the customer's Rubrik environment and needs security team review.</span></div>
+      </div>
+    </div>
+
+    <!-- Resolutions + Risks two-col -->
+    <div class="two-col" style="margin-bottom:1.5rem;">
+      <div class="info-card">
+        <h3>✅ Resolutions</h3>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;color:var(--success);">✓</span><span><strong>Azure cluster upgrade</strong> completed successfully.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;color:var(--success);">✓</span><span><strong>Multi-node feature flag</strong> enabled; support case for this is now closed.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;color:var(--success);">✓</span><span><strong>Edge replication</strong> to beta environment confirmed working.</span></div>
+        </div>
+      </div>
+      <div class="info-card">
+        <h3>🚨 Risks / Escalations</h3>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔴</span><span><strong>Threat notification detected:</strong> Anomaly flagged on TWP data with malicious file signature confirmed across multiple virus/threat intelligence providers. Files appear to reside on NAS (possibly copied from a C drive).</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔴</span><span><strong>Node hardware instability:</strong> CPU error migrated from one node to another within the same brick over ~3 weeks. Repeated reboots required for BMC updates are disrupting live mounts.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pending Confirmation -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>⏳ Pending Confirmation</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>Houston cluster node failure:</strong> Node showing "must be replaced" status. BMC update and NIC reset planned before physical replacement — no on-site staff available this week.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>RBS service auto-restart issue:</strong> Server fails to restart automatically after monthly reboot. Tunnel open, support investigating; one international domain held in current state for troubleshooting.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>Activity log / identity case:</strong> Reassigned to new case owner. Frank awaiting response on which domains to apply log retention changes; Cisco domain confirmed affected, other domains may also be impacted.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>Edge replication to Houston vault:</strong> Firewall ports not yet opened; still pending.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>Live mount AD integration</strong> on cloud clusters: Still pending.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>Multi-region RCV configuration:</strong> Waiting for Tim's return (Monday) to proceed.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>SQL performance testing</strong> (Tatyana): Not yet run; over 1 TB workload. Plan to test on existing server.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>Peer integration / Fleet dependency:</strong> Mark to share checklist documentation to identify missing configuration.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>Network isolation vault conversation:</strong> Deferred until Tim returns.</span></div>
+      </div>
+    </div>
+
+    <!-- Action Items by Owner -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>📋 Action Items by Owner</h3>
+      <div style="margin-top:0.9rem;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+
+        <div style="padding:10px 12px;background:#fef2f2;border-radius:8px;border-left:3px solid var(--red);">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--red);margin-bottom:8px;">Mark</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Follow up on activity log identity case (case ~1240080) to get current status and sync with Frank.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Investigate and escalate Houston node hardware case to prioritize resolution with support.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Share peer integration checklist/documentation with Frank.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Email Frank the object capacity report showing excluded Splunk systems driving UCL utilization changes.</span></div>
+          </div>
+        </div>
+
+        <div style="padding:10px 12px;background:#eff6ff;border-radius:8px;border-left:3px solid var(--info);">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--info);margin-bottom:8px;">Tatyana</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Run SQL backup/restore performance test when available; consider cloning existing host to isolate host bottleneck.</span></div>
+          </div>
+        </div>
+
+        <div style="padding:10px 12px;background:#f0fdf4;border-radius:8px;border-left:3px solid var(--success);grid-column:1/-1;">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--success);margin-bottom:8px;">Frank / Security Team</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Investigate threat notification on TWP data and confirm false positive or escalate to security team.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Open firewall ports for Edge replication to Houston vault.</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Account Health -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>📊 Account Health</h3>
+      <div style="margin-top:0.75rem;display:flex;align-items:flex-start;gap:12px;">
+        <span class="badge badge-orange" style="font-size:0.78rem;padding:5px 12px;flex-shrink:0;">Moderate Risk</span>
+        <span style="font-size:0.83rem;color:var(--text);line-height:1.6;">Active hardware failure on Houston cluster, unresolved RBS auto-restart issue, and a potential security threat requiring investigation. License utilization is healthy overall, with UCL and NCD within normal ranges.</span>
+      </div>
+    </div>
+
+    <div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Check boxes above are for visual reference during the call. Carry forward any open items to next week's review.</div></div>`,
   announce: []
 }
 }; // end REPORTS
