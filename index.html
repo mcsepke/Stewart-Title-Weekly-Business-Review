@@ -216,7 +216,8 @@
     <div style="display:flex;align-items:center;gap:8px;">
       <span class="date-label">Report Date</span>
       <select class="date-select" id="reportDate" onchange="switchReport(this.value)">
-        <option value="June 11, 2026" selected>June 11, 2026</option>
+        <option value="June 18, 2026" selected>June 18, 2026</option>
+        <option value="June 11, 2026">June 11, 2026</option>
         <option value="June 4, 2026">June 4, 2026</option>
         <option value="May 28, 2026">May 28, 2026</option>
         <option value="May 20, 2026">May 20, 2026</option>
@@ -1395,57 +1396,217 @@ const REPORTS = {
     }
   ]
 }
+
+,
+
+"June 18, 2026": {
+  summary: {
+    openCases: 6, jiras: 3, p1: 1, p2: 5,
+    avgScore: 84.5, capacityUpgrade: 0, versionUpgrade: 0,
+    caseBreakdown: [
+      {label:"Waiting for Customer Input", val:4, pct:67, color:"progress-orange"},
+      {label:"Waiting for Rubrik Support", val:2, pct:33, color:"progress-blue"}
+    ],
+    jiraBreakdown: [
+      {label:"Investigating (Info Requested)", val:2, pct:67, color:"progress-blue"},
+      {label:"To Do",                          val:1, pct:33, color:"progress-orange"}
+    ],
+    clusters: [
+      {name:"RICBRIK_01", used:"618.44 TB / 71.5%", pct:71, scoreBadge:"badge-green",  score:"97%"},
+      {name:"HOUBRIK_01", used:"702.99 TB / 71.1%", pct:71, scoreBadge:"badge-green",  score:"96%"},
+      {name:"ricvault01", used:"273.24 TB / 58.6%", pct:59, scoreBadge:"badge-orange", score:"81%"},
+      {name:"houvault01", used:"156.13 TB / 50.3%", pct:50, scoreBadge:"badge-orange", score:"50%"},
+      {name:"eus2rubrik",  used:"10.48 TB / 9.9%",  pct:10, scoreBadge:"badge-orange", score:"82%"},
+      {name:"scusrubrik",  used:"11.24 TB / 10.7%", pct:11, scoreBadge:"badge-green",  score:"100%"}
+    ],
+    alerts: [
+      {type:"alert-green",  text:"<strong>All Clusters Current:</strong> All clusters running 9.5.1-p2-36376, including new Edge cluster (houbrik02). No version upgrade actions required."},
+      {type:"alert-red",    text:"<strong>houvault01 Performance Dropped to 50%</strong> (was 67%). Investigate replication and archival job health on this cluster."},
+      {type:"alert-orange", text:"<strong>3 New Cases Opened:</strong> 1240080 (Actor Identification), 1240819 (HOUBRIK_01 Hardware Health Check), plus continued cases. Case volume increased to 6."},
+      {type:"alert-blue",   text:"<strong>New Edge Cluster Detected:</strong> houbrik02 (Edge/VMware) now appearing in cluster inventory at 0.0005% utilization."}
+    ]
+  },
+  cases: {
+    stats: [{label:"Total Open",val:6,cls:"red"},{label:"P1 Critical",val:1,cls:"red"},{label:"P2 High",val:5,cls:"orange"},{label:"P3 Medium",val:0,cls:"blue"},{label:"In Progress",val:0,cls:"green"}],
+    rows: [
+      {num:"<span class=\"case-num-wrap\" data-tip=\"Following your upgrade to 9.4.3, the primary activity log ingestion failures have been resolved; we are now validating a few remaining notification and tracking behaviors and have paused the case while we wait for your feedback on the latest changes.\"><span class=\"mono\">1055506</span></span>", subject:"[StewartTitleCompany] Proactive Case: Activity log not working properly", pri:"P1", priCls:"badge-red", status:"Waiting for Customer Input", stCls:"badge-yellow", owner:"Lee Merrill", jira:"—"},
+      {num:"<span class=\"case-num-wrap\" data-tip=\"RBS is currently running normally after we replaced the impacted disk; we are monitoring the service and continuing our review, and will provide additional updates or involve engineering if any further instability appears.\"><span class=\"mono\">1096748</span></span>", subject:"RBS stopped running suddenly in the server and has to be manually restart it", pri:"P2", priCls:"badge-orange", status:"Waiting for Rubrik Support", stCls:"badge-blue", owner:"Neeraj Yadav", jira:"CDM-533329"},
+      {num:"<span class=\"case-num-wrap\" data-tip=\"We are working with engineering to address the node in HOUBRIK_01 that is showing persistent blue/red LEDs after the recent upgrade; we have paused further changes and are coordinating the remediation plan and timing with your team.\"><span class=\"mono\">1225950</span></span>", subject:"Upgrade failure on HOUBRIK-01 cluster", pri:"P2", priCls:"badge-orange", status:"Waiting for Customer Input", stCls:"badge-yellow", owner:"Suvradeep Chanda", jira:"CDM-549987"},
+      {num:"<span class=\"case-num-wrap\" data-tip=\"We have reviewed the SLA archival policy-violation alerts and shared recommendations to adjust backup and archival windows to avoid overlap; we are now waiting for your confirmation on the proposed schedule changes before we proceed.\"><span class=\"mono\">1232492</span></span>", subject:"Multi Alerts related to Failed: SLA archival policy violation.", pri:"P2", priCls:"badge-orange", status:"Waiting for Customer Input", stCls:"badge-yellow", owner:"Utkarsh Sahu", jira:"—"},
+      {num:"<span class=\"case-num-wrap\" data-tip=\"We have confirmed the Actor Identification behavior you reported and provided guidance to run the identity script from one domain controller per domain; our team is reviewing results and will follow up with any additional tuning or fixes that are needed.\"><span class=\"mono\">1240080</span></span>", subject:"Stewart - Actor Identification not working as expected", pri:"P2", priCls:"badge-orange", status:"Waiting for Rubrik Support", stCls:"badge-blue", owner:"Abijith Dinesh", jira:"CDM-549719"},
+      {num:"<span class=\"case-num-wrap\" data-tip=\"We have confirmed recurring CPU health alerts on node RVMHM243S001023 in HOUBRIK_01 and recommended a proactive node replacement; we are awaiting your confirmed shipping details and your preference on whether to manage the replacement under this case or the related upgrade case 1225950.\"><span class=\"mono\">1240819</span></span>", subject:"[StewartTitleCompany] Proactive Case: (Cluster name: HOUBRIK_01) Hardware Health Check Failure", pri:"P2", priCls:"badge-orange", status:"Waiting for Customer Input", stCls:"badge-yellow", owner:"Shivaling Menasi", jira:"—"}
+    ],
+    alerts: [
+      {type:"alert-blue",   text:"<strong>Case 1225747 (ricvault01 Hardware) and 1226252 (Storage Latency)</strong> have been closed since the June 11 report."},
+      {type:"alert-orange", text:"<strong>New Case 1240080 – Actor Identification:</strong> Identity Resilience / Active Directory issue. Waiting for Rubrik Support, linked to new Jira CDM-549719."},
+      {type:"alert-orange", text:"<strong>New Case 1240819 – HOUBRIK_01 Hardware Health Check Failure:</strong> Second proactive hardware case for this cluster this quarter. Confirm whether related to the prior chassis replacement issue."},
+      {type:"alert-red",    text:"<strong>Case 1055506 – Activity Log Issue (P1):</strong> Status moved to Waiting for Customer Input after weeks In Progress. Confirm what information has been requested and follow up with Lee Merrill."}
+    ]
+  },
+  jiras: {
+    stats: [{label:"Total Jiras",val:3,cls:"blue"},{label:"Investigating",val:2,cls:"blue"},{label:"To Do",val:1,cls:"orange"}],
+    rows: [
+      {ref:"CDM-549987", refCls:"badge-blue", subject:"[Stewart Title Company] Node disks showing both red and blue lights after chassis replacement", caseNum:"1225950", owner:"Suvradeep Chanda", status:"Investigating (Info Requested)", stCls:"badge-blue", component:"Forge - Hardware"},
+      {ref:"CDM-549719", refCls:"badge-blue", subject:"Stewart - Actor Identification not working as expected",                                          caseNum:"1240080", owner:"Abijith Dinesh",   status:"Investigating (Info Requested)", stCls:"badge-blue", component:"Identity Resilience - Active Directory"},
+      {ref:"CDM-533329", refCls:"badge-orange", subject:"[Stewart Title] RBS stopped running suddenly in the server and has to be manually restart it", caseNum:"1096748", owner:"Neeraj Yadav",     status:"To Do",                          stCls:"badge-gray", component:"RBS"}
+    ],
+    alerts: [
+      {type:"alert-blue",   text:"<strong>New Jira CDM-549719 (Actor Identification):</strong> Linked to case 1240080. Identity Resilience / Active Directory component — engineering investigating, info requested from customer."},
+      {type:"alert-blue",   text:"<strong>CDM-549987 (Node Disk Lights):</strong> Remains Investigating with info requested. Confirm what additional details are needed from Stewart Title."},
+      {type:"alert-orange", text:"<strong>CDM-533329 (RBS Restart):</strong> Still in To Do. Case 1096748 shows Waiting for Rubrik Support — confirm engineering has picked this up."}
+    ]
+  },
+  clusters: {
+    avgScore: 84.5, capacityUpgrade: 0, versionUpgrade: 0, activeAppliance: 5, activeCloud: 2,
+    rows: [
+      {name:"RICBRIK_01", platform:"RH-6416S-01",  nodes:28, version:"9.5.1-p2-36376", vCls:"", used:"618.44 TB", pct:"71.5%", growth:"11.43 TB/yr", score:"97%",    sCls:"badge-green"},
+      {name:"HOUBRIK_01", platform:"RH-6416S-01",  nodes:32, version:"9.5.1-p2-36376", vCls:"", used:"702.99 TB", pct:"71.1%", growth:"23.84 TB/yr", score:"96%",    sCls:"badge-green"},
+      {name:"ricvault01", platform:"RHA-7420-01",  nodes:12, version:"9.5.1-p2-36376", vCls:"", used:"273.24 TB", pct:"58.6%", growth:"0 TB/yr",     score:"81% ⚠",  sCls:"badge-orange"},
+      {name:"houvault01", platform:"RHA-7420-01",  nodes:8,  version:"9.5.1-p2-36376", vCls:"", used:"156.13 TB", pct:"50.3%", growth:"0 TB/yr",     score:"50% ⚠",  sCls:"badge-orange"},
+      {name:"eus2rubrik",  platform:"Azure Cloud", nodes:3,  version:"9.5.1-p2-36376", vCls:"", used:"10.48 TB",  pct:"9.9%",  growth:"7.79 TB/yr",  score:"82% ⚠",  sCls:"badge-orange"},
+      {name:"scusrubrik",  platform:"Azure Cloud", nodes:3,  version:"9.5.1-p2-36376", vCls:"", used:"11.24 TB",  pct:"10.7%", growth:"0 TB/yr",     score:"100%",   sCls:"badge-green"},
+      {name:"houbrik02",   platform:"Edge/VMware",  nodes:1,  version:"9.5.1-p2-36376", vCls:"", used:"5.37 GB",  pct:"0.05%", growth:"0 TB/yr",     score:"—",      sCls:"badge-gray"}
+    ],
+    projections: [
+      {name:"ricvault01", p80:"Aug 16, 2026", p85:"Sep 2, 2026",  p90:"Sep 22, 2026", p95:"Oct 12, 2026", p100:"Oct 28, 2026", risk:"badge-orange"},
+      {name:"houvault01", p80:"Aug 13, 2026", p85:"Aug 27, 2026", p90:"Sep 10, 2026", p95:"Sep 24, 2026", p100:"Oct 8, 2026",  risk:"badge-orange"}
+    ],
+    alerts: [
+      {type:"alert-green",  text:"<strong>All Clusters on 9.5.1-p2-36376:</strong> Including the newly visible houbrik02 Edge cluster. Code upgrade cycle remains fully complete."},
+      {type:"alert-blue",   text:"<strong>New Edge Cluster – houbrik02:</strong> Now reporting in cluster inventory at minimal utilization (5.37 GB). Confirm this is the expected Edge deployment from recent action items."},
+      {type:"alert-red",    text:"<strong>houvault01 Performance Dropped to 50%</strong> (from 77% last week). Investigate replication job health — likely related to open Jira CDM-549987 node hardware issue on HOUBRIK_01."},
+      {type:"alert-orange", text:"<strong>eus2rubrik (82%) Performance:</strong> Slightly below target. Continue monitoring alongside other Azure cloud cluster metrics."}
+    ]
+  },
+  actions: `<div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Meeting notes for the June 18, 2026 call have not yet been added. Update this section after the weekly call.</div></div>`,
+  announce: []
+}
 }; // end REPORTS
 
 // ═══════════════════════════════════════════════════════════
 // STATIC DATA (same across all weeks)
 // ═══════════════════════════════════════════════════════════
 const LICENSES_HTML = `
-<div class="section-header"><h2>License &amp; Entitlement Overview</h2><p>Current license consumption and expiration tracking</p></div>
-<div class="two-col" style="margin-bottom:1.5rem;">
-  <div class="info-card">
-    <h3>License Consumption by Product (Active)</h3>
-    <div style="margin-top:0.5rem;display:flex;flex-direction:column;gap:10px;">
-      <div class="progress-row"><span class="progress-label">Appliance (DC)</span><div class="progress-bar-wrap"><div class="progress-bar progress-red" style="width:100%"></div></div><span class="progress-val">1,742 / 1,455 TB</span></div>
-      <div class="progress-row"><span class="progress-label">Cloud (UCL)</span><div class="progress-bar-wrap"><div class="progress-bar progress-orange" style="width:44%"></div></div><span class="progress-val">73 / 165 TB · 44%</span></div>
-      <div class="progress-row"><span class="progress-label">NAS CD</span><div class="progress-bar-wrap"><div class="progress-bar progress-orange" style="width:78%"></div></div><span class="progress-val">1,142 / 1,470 TB · 78%</span></div>
-      <div class="progress-row"><span class="progress-label">Edge</span><div class="progress-bar-wrap"><div class="progress-bar progress-blue" style="width:5%"></div></div><span class="progress-val">5 TB (edge)</span></div>
-    </div>
-  </div>
-  <div class="info-card">
-    <h3>Near-Term Expirations</h3>
-    <div style="margin-top:0.5rem;display:flex;flex-direction:column;gap:8px;font-size:0.82rem;">
-      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f3f4f6;"><span>Identity Resilience (AD/EntraID)</span><span class="badge badge-red">Sep 11, 2026</span></div>
-      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f3f4f6;"><span>NAS CD (Unstructured Enterprise)</span><span class="badge badge-orange">Sep 24, 2026</span></div>
-      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f3f4f6;"><span>Cloud Vault – Archive (Oct)</span><span class="badge badge-orange">Oct 1, 2026</span></div>
-      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f3f4f6;"><span>Scale Foundation (Edge/Appliance)</span><span class="badge badge-yellow">Nov 3, 2026</span></div>
-      <div style="display:flex;justify-content:space-between;padding:8px 0;"><span>Scale Foundation + Cloud Vault (Dec)</span><span class="badge badge-yellow">Dec 9, 2026</span></div>
-    </div>
-  </div>
+
+<div class="section-header"><h2>License &amp; Entitlement Overview</h2>
+<p>Consolidated product families · Source: Salesforce Entitlements &amp; RSC Usage · June 11, 2026</p></div>
+
+<!-- ── KPI ROW ── -->
+<div class="stat-grid" style="grid-template-columns:repeat(5,1fr);margin-bottom:2rem;">
+  <div class="stat-card blue"><div class="stat-label">Appliance Usable</div><div class="stat-value" style="font-size:1.5rem">66.5%</div><div class="stat-sub">1,751 / 2,631 TB</div></div>
+  <div class="stat-card orange"><div class="stat-label">RCV Archive</div><div class="stat-value" style="font-size:1.5rem">83.5%</div><div class="stat-sub">8.12 / 9.73 PB</div></div>
+  <div class="stat-card orange"><div class="stat-label">RCV Backup SZ</div><div class="stat-value" style="font-size:1.5rem">84.4%</div><div class="stat-sub">652.5 / 773 TB</div></div>
+  <div class="stat-card orange"><div class="stat-label">NAS Cloud Direct</div><div class="stat-value" style="font-size:1.5rem">78.7%</div><div class="stat-sub">1.16 / 1.47 PB</div></div>
+  <div class="stat-card blue"><div class="stat-label">Cloud (UCL)</div><div class="stat-value" style="font-size:1.5rem">36.7%</div><div class="stat-sub">78.8 / 215 TB</div></div>
 </div>
-<div class="table-card">
-  <div class="table-card-header"><h3>Full Entitlement List</h3><span>All active licenses</span></div>
+
+<!-- ── USAGE CHART CARDS ── -->
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-bottom:2rem;">
+
+  <!-- Appliance -->
+  <div class="info-card">
+    <h3 style="display:flex;justify-content:space-between;align-items:center;">Rubrik Appliance <span class="badge badge-blue">66.5% — Healthy</span></h3>
+    <div style="margin-top:1rem;">
+      <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:4px;"><span>HOUBRIK_01</span><span style="font-weight:600">703 TB</span></div>
+      <div class="progress-bar-wrap" style="margin-bottom:8px;"><div class="progress-bar" style="width:27%;background:var(--info)"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:4px;"><span>RICBRIK_01</span><span style="font-weight:600">618 TB</span></div>
+      <div class="progress-bar-wrap" style="margin-bottom:8px;"><div class="progress-bar" style="width:23%;background:var(--info)"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:4px;"><span>houvault01</span><span style="font-weight:600">156 TB</span></div>
+      <div class="progress-bar-wrap" style="margin-bottom:8px;"><div class="progress-bar" style="width:6%;background:var(--info)"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:4px;"><span>ricvault01</span><span style="font-weight:600">273 TB</span></div>
+      <div class="progress-bar-wrap" style="margin-bottom:12px;"><div class="progress-bar" style="width:10%;background:var(--info)"></div></div>
+      <div style="border-top:1px solid var(--border);padding-top:10px;">
+        <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:4px;"><span style="font-weight:600">Total Consumed</span><span style="font-weight:700;color:var(--info)">1,751 TB</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:6px;"><span style="color:var(--muted)">Total Usable Capacity</span><span>2,631 TB</span></div>
+        <div class="progress-bar-wrap"><div class="progress-bar" style="width:66.5%;background:var(--info)"></div></div>
+        <div style="font-size:0.72rem;color:var(--success);font-weight:600;margin-top:4px;">✓ 66.5% utilized — 880 TB headroom remaining</div>
+        <div style="font-size:0.7rem;color:var(--muted);margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);">Licensed via Enterprise Edition (1,440 TB) + Foundation Edition (360 + 750 TB) = 2,550 TB entitled against 2,631 TB usable backend capacity.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RCV -->
+  <div class="info-card">
+    <h3>Rubrik Cloud Vault</h3>
+    <div style="margin-top:1rem;">
+      <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px;">Archive Tier</div>
+      <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:4px;"><span>Consumed</span><span style="font-weight:600">8.12 PB</span></div>
+      <div class="progress-bar-wrap" style="margin-bottom:4px;"><div class="progress-bar" style="width:84%;background:var(--warning)"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--muted);margin-bottom:14px;"><span>Entitled: 9.73 PB</span><span style="font-weight:600;color:var(--warning)">83.5%</span></div>
+
+      <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px;">Backup – Single Zone</div>
+      <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:4px;"><span>Consumed</span><span style="font-weight:600">652.5 TB</span></div>
+      <div class="progress-bar-wrap" style="margin-bottom:4px;"><div class="progress-bar" style="width:84%;background:var(--warning)"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--muted);margin-bottom:14px;"><span>Entitled: 773 TB</span><span style="font-weight:600;color:var(--warning)">84.4%</span></div>
+
+      <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px;">Backup – Multi Region</div>
+      <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:4px;"><span>Consumed</span><span style="font-weight:600">0 TB</span></div>
+      <div class="progress-bar-wrap" style="margin-bottom:4px;"><div class="progress-bar" style="width:1%;background:var(--success)"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--muted);"><span>Entitled: 150 TB</span><span class="badge badge-blue" style="font-size:0.68rem">Not Yet Active</span></div>
+    </div>
+  </div>
+
+  <!-- NAS + Cloud + Identity -->
+  <div class="info-card">
+    <h3>Additional Products</h3>
+    <div style="margin-top:1rem;">
+      <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px;">NAS Cloud Direct</div>
+      <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:4px;"><span>Consumed</span><span style="font-weight:600">1.16 PB</span></div>
+      <div class="progress-bar-wrap" style="margin-bottom:4px;"><div class="progress-bar" style="width:79%;background:var(--warning)"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--muted);margin-bottom:14px;"><span>Entitled: 1.47 PB</span><span style="font-weight:600;color:var(--warning)">78.6%</span></div>
+
+      <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px;">Cloud Data Protection (UCL)</div>
+      <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:4px;"><span>Consumed</span><span style="font-weight:600">78.9 TB</span></div>
+      <div class="progress-bar-wrap" style="margin-bottom:4px;"><div class="progress-bar" style="width:37%;background:var(--info)"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--muted);margin-bottom:14px;"><span>Entitled: 215 TB</span><span style="font-weight:600;color:var(--info)">36.7%</span></div>
+
+      <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px;">Edge</div>
+      <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:4px;"><span>Consumed</span><span style="font-weight:600">5.17 GB</span></div>
+      <div class="progress-bar-wrap" style="margin-bottom:4px;"><div class="progress-bar" style="width:1%;background:var(--success)"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--muted);"><span>Entitled: 15 TB</span><span style="font-weight:600;color:var(--success)">&lt;1%</span></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── CONSOLIDATED ENTITLEMENT TABLE ── -->
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:0.75rem;">
+  <span style="font-size:0.8rem;color:var(--muted);font-weight:600;">Sort by:</span>
+  <button onclick="sortLicTable('exp')" id="lic-sort-exp" style="padding:5px 12px;border-radius:6px;border:1px solid var(--border);background:var(--dark);color:#fff;font-size:0.76rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;">📅 Expiration</button>
+  <button onclick="sortLicTable('alpha')" id="lic-sort-alpha" style="padding:5px 12px;border-radius:6px;border:1px solid var(--border);background:#fff;color:var(--muted);font-size:0.76rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;">🔤 Product Name</button>
+</div>
+
+<div class="table-card" style="margin-bottom:1.5rem;">
+  <div class="table-card-header"><h3>Consolidated Entitlements by Product Family</h3><span>PA &amp; PP SKUs merged · click row to expand components · June 2026</span></div>
   <div style="overflow-x:auto;">
-  <table class="data-table"><thead><tr><th>Entitlement Name</th><th>Edition</th><th>Product</th><th>Purchased</th><th>Qty (TB)</th><th>Start</th><th>End</th></tr></thead><tbody>
-    <tr><td>Cloud Data Protection</td><td>Enterprise</td><td>Cloud Data Protection</td><td>Aug 1, 2025</td><td>125 TB</td><td>Aug 1, 2025</td><td><span class="badge badge-orange">Jul 31, 2026</span></td></tr>
-    <tr><td>Identity Resilience – AD, EntraID</td><td>—</td><td>Rubrik Appliance</td><td>Sep 12, 2025</td><td>15 TB</td><td>Sep 12, 2025</td><td><span class="badge badge-red">Sep 11, 2026</span></td></tr>
-    <tr><td>Identity Resilience – AD, EntraID</td><td>—</td><td>Rubrik Cloud Vault</td><td>Sep 12, 2025</td><td>3 TB</td><td>Sep 12, 2025</td><td><span class="badge badge-red">Sep 11, 2026</span></td></tr>
-    <tr><td>Unstructured Data Protection</td><td>Enterprise</td><td>NAS Cloud Direct</td><td>Sep 25, 2024</td><td>240 TB</td><td>Sep 25, 2024</td><td><span class="badge badge-orange">Sep 24, 2026</span></td></tr>
-    <tr><td>Rubrik Cloud Vault – Archive Tier</td><td>—</td><td>Rubrik Cloud Vault</td><td>May 30, 2025</td><td>3,072 TB</td><td>May 30, 2025</td><td><span class="badge badge-orange">Oct 1, 2026</span></td></tr>
-    <tr><td>Unstructured Data Protection</td><td>Enterprise</td><td>NAS Cloud Direct</td><td>Oct 2, 2023</td><td>1,230 TB</td><td>Oct 2, 2023</td><td><span class="badge badge-orange">Oct 1, 2026</span></td></tr>
-    <tr><td>Scale – Foundation Edition</td><td>Foundation</td><td>Rubrik Appliance</td><td>Nov 4, 2025</td><td>750 TB</td><td>Nov 4, 2025</td><td><span class="badge badge-yellow">Nov 3, 2026</span></td></tr>
-    <tr><td>Scale – Foundation Edition</td><td>Foundation</td><td>Rubrik Appliance</td><td>Dec 10, 2024</td><td>360 TB</td><td>Dec 10, 2024</td><td><span class="badge badge-yellow">Dec 9, 2026</span></td></tr>
-    <tr><td>Enterprise Data Protection</td><td>Enterprise</td><td>Rubrik Appliance</td><td>May 1, 2024</td><td>720 TB</td><td>May 1, 2024</td><td><span class="badge badge-green">Apr 30, 2027</span></td></tr>
-    <tr><td>Enterprise Data Protection</td><td>Enterprise</td><td>Security Apps</td><td>May 1, 2026</td><td>480 TB</td><td>May 1, 2026</td><td><span class="badge badge-green">Apr 30, 2027</span></td></tr>
-    <tr><td>Cloud Data Protection</td><td>Foundation</td><td>Cloud Data Protection</td><td>May 1, 2026</td><td>40 TB</td><td>May 1, 2026</td><td><span class="badge badge-green">Apr 30, 2027</span></td></tr>
-    <tr><td>Enterprise Data Protection</td><td>Enterprise</td><td>Rubrik Appliance</td><td>May 1, 2026</td><td>240 TB</td><td>May 1, 2026</td><td><span class="badge badge-green">Apr 30, 2027</span></td></tr>
-    <tr><td>Rubrik Cloud Vault SZ – Backup Tier</td><td>—</td><td>Rubrik Cloud Vault</td><td>May 30, 2025</td><td>200 TB</td><td>May 30, 2025</td><td><span class="badge badge-green">May 29, 2028</span></td></tr>
-    <tr><td>Rubrik Cloud Vault – Archive Tier</td><td>—</td><td>RCV Archive Tier</td><td>May 30, 2025</td><td>3,072 TB</td><td>May 30, 2025</td><td><span class="badge badge-green">May 29, 2028</span></td></tr>
-    <tr><td>Rubrik Cloud Vault SZ – Backup Tier</td><td>—</td><td>RCV Backup SZ</td><td>May 30, 2025</td><td>200 TB</td><td>May 30, 2025</td><td><span class="badge badge-green">May 29, 2028</span></td></tr>
-  </tbody></table></div>
+  <table class="data-table" id="lic-table">
+    <thead><tr>
+      <th style="width:24px"></th>
+      <th>Product</th>
+      <th>Total Entitled</th>
+      <th>Consumed</th>
+      <th>Utilization</th>
+      <th>Lines</th>
+      <th>Earliest Expiry</th>
+      <th>Latest Expiry</th>
+    </tr></thead>
+    <tbody id="lic-tbody"></tbody>
+  </table>
+  </div>
 </div>
-<div class="alert-box alert-red">🚨 <div><strong>Appliance License Overrun:</strong> Consumed 1,742 TB against 1,455 TB licensed for Data Center appliance. This is 120% of licensed capacity. Review with your Rubrik account team immediately.</div></div>
-<div class="alert-box alert-orange">⚠️ <div><strong>6 licenses expiring within 12 months.</strong> Earliest is Cloud Data Protection (Jul 31, 2026) and Identity Resilience (Sep 11, 2026). Begin renewal discussions with your Rubrik account team.</div></div>`;
+
+<div class="alert-box alert-green">✅ <div><strong>Appliance Properly Licensed:</strong> 1,751 TB consumed against 2,631 TB usable backend capacity (66.5%) — licensed via Enterprise Edition (1,440 TB) plus Foundation Edition (360 + 750 TB). Healthy headroom of ~880 TB remains.</div></div>
+<div class="alert-box alert-orange">⚠️ <div><strong>3 products above 80%:</strong> RCV Archive (83.5%), RCV Backup Single Zone (84.4%), and NAS Cloud Direct (78.7%) are approaching capacity thresholds. Monitor growth trends.</div></div>
+<div class="alert-box alert-red">🚨 <div><strong>Renewals due within 6 months:</strong> Cloud UCL (Jul 31), Identity Resilience (Sep 11), NAS products and RCV Archive (Oct 1). Begin renewal discussions now.</div></div>
+
+<style>
+.lic-parent { cursor:pointer; }
+.lic-parent:hover td { background:#f0f4ff !important; }
+.lic-child { display:none; background:#fafafa; }
+.lic-child td { padding:8px 13px 8px 42px; font-size:0.77rem; color:var(--muted); border-bottom:1px solid #f0f0f0; }
+.lic-child.vis { display:table-row; }
+</style>
+`
 
 const FEATURES_HTML = `
 <div class="section-header"><h2>Feature Adoption</h2><p>Active and inactive feature entitlements</p></div>
@@ -1668,6 +1829,174 @@ function renderAnnouncements(posts, date) {
   ${cards}`;
 }
 
+// ─── Licenses tab data & functions ───
+const LIC_SKUS = [
+  { fam:"RS-FT-EE-UCL", product:"Cloud Data Protection (UCL)", qty:"215 TB", consumed:"78.9 TB", pct:37, pctBar:37, barColor:"var(--info)", lines:2,
+    earliestEnd:"2026-07-31", latestEnd:"2027-04-30", earlyBadge:"badge-red", lateBadge:"badge-blue",
+    children:[
+      {id:"550VI00000gCFJk", desc:"Enterprise Edition UCL", qty:"125 FETB", start:"Aug 1, 2025",  end:"Jul 31, 2026",  badge:"badge-red",  asset:"—"},
+      {id:"550VN00000pL7hK", desc:"Universal Cloud License", qty:"40 FETB",  start:"May 1, 2026",  end:"Apr 30, 2027", badge:"badge-blue", asset:"—"},
+      {id:"550VN00000pL7hI", desc:"Foundation→Enterprise Add-On", qty:"40 FETB", start:"May 1, 2026", end:"Apr 30, 2027", badge:"badge-blue", asset:"—"},
+      {id:"550VN00000qPWSC", desc:"Data Security EE for UCL-B", qty:"50 FETB", start:"May 7, 2026", end:"May 6, 2027", badge:"badge-blue", asset:"—"}
+    ]},
+  { fam:"RS-UR-ICP",     product:"Identity Resilience", qty:"8,100 Users", consumed:"—", pct:null, pctBar:0, barColor:"var(--muted)", lines:1,
+    earliestEnd:"2026-09-11", latestEnd:"2026-09-11", earlyBadge:"badge-red", lateBadge:"badge-red",
+    children:[
+      {id:"550VI00000jUAOH", desc:"Identity Resilience; per User", qty:"8,100 Users", start:"Sep 12, 2025", end:"Sep 11, 2026", badge:"badge-red", asset:"—"}
+    ]},
+  { fam:"RS-FT-EE-NDS",  product:"NAS Cloud Direct", qty:"1,470 FETB", consumed:"1.16 PB", pct:79, pctBar:79, barColor:"var(--warning)", lines:2,
+    earliestEnd:"2026-09-24", latestEnd:"2026-10-01", earlyBadge:"badge-orange", lateBadge:"badge-orange",
+    children:[
+      {id:"5508Y000008OS1n", desc:"Data Security EE for NAS (PA)", qty:"1,230 FETB", start:"Oct 2, 2023",   end:"Oct 1, 2026",  badge:"badge-orange", asset:"—"},
+      {id:"550VI00000IyAJt", desc:"Data Security EE for NAS (Add-on)", qty:"240 FETB", start:"Sep 25, 2024", end:"Sep 24, 2026", badge:"badge-orange", asset:"—"}
+    ]},
+  { fam:"RS-BT-CVA",     product:"RCV – Archive Tier", qty:"9.73 PB", consumed:"8.12 PB", pct:84, pctBar:84, barColor:"var(--warning)", lines:4,
+    earliestEnd:"2026-10-01", latestEnd:"2028-05-29", earlyBadge:"badge-orange", lateBadge:"badge-green",
+    children:[
+      {id:"5508Y000008OS1m", desc:"Cloud Vault Archive SZ+Multi (PA)", qty:"1,500 TB",  start:"Oct 2, 2023",   end:"Oct 1, 2026",  badge:"badge-orange", asset:"—"},
+      {id:"550VI00000IyAJu", desc:"Cloud Vault Archive SZ+Multi",      qty:"720 TB",    start:"Sep 25, 2024", end:"Sep 24, 2026", badge:"badge-orange", asset:"—"},
+      {id:"550VI00000OfTWU", desc:"Cloud Vault Archive SZ+Multi",      qty:"750 TB",    start:"Dec 10, 2024", end:"Dec 9, 2026",  badge:"badge-yellow", asset:"—"},
+      {id:"550VI00000bEahY", desc:"Cloud Vault Archive SZ+Multi",      qty:"3,072 TB",  start:"May 30, 2025", end:"May 29, 2028", badge:"badge-green",  asset:"—"}
+    ]},
+  { fam:"RS-BT-FE-SC",   product:"Scale Foundation Edition (Appliance — 360+750 TB combine w/ EE for 2,631 TB usable)", qty:"2,220 BETB", consumed:"—", pct:null, pctBar:0, barColor:"var(--muted)", lines:4,
+    earliestEnd:"2026-11-03", latestEnd:"2026-12-09", earlyBadge:"badge-orange", lateBadge:"badge-yellow",
+    children:[
+      {id:"550VI00000o4bAg", desc:"Scale Foundation – Mfg",     qty:"750 TB",   start:"Nov 4, 2025",  end:"Nov 3, 2026", badge:"badge-orange", asset:"—"},
+      {id:"550VN00000YoDBS", desc:"Scale Foundation Edition",    qty:"750 BETB", start:"Nov 4, 2025",  end:"Nov 3, 2026", badge:"badge-orange", asset:"—"},
+      {id:"550VI00000ON0xZ", desc:"Scale Foundation – Mfg",     qty:"360 TB",   start:"Dec 10, 2024", end:"Dec 9, 2026",  badge:"badge-yellow", asset:"—"},
+      {id:"550VI00000OfTWT", desc:"Scale Foundation Edition",    qty:"360 BETB", start:"Dec 10, 2024", end:"Dec 9, 2026",  badge:"badge-yellow", asset:"—"}
+    ]},
+  { fam:"RS-BT-CVB",     product:"RCV – Backup Tier Single Zone", qty:"773 BETB", consumed:"652.5 TB", pct:84, pctBar:84, barColor:"var(--warning)", lines:3,
+    earliestEnd:"2026-12-09", latestEnd:"2028-05-29", earlyBadge:"badge-yellow", lateBadge:"badge-green",
+    children:[
+      {id:"550VN00000be745", desc:"RCV Backup Single Zone",      qty:"450 BETB", start:"Dec 10, 2025", end:"Dec 9, 2026",  badge:"badge-yellow", asset:"—"},
+      {id:"550VN00000pL7hJ", desc:"RCV Backup Single Zone",      qty:"120 BETB", start:"May 1, 2026",  end:"Apr 30, 2027", badge:"badge-blue",   asset:"—"},
+      {id:"550VI00000bEahZ", desc:"RCV Backup Single Zone",      qty:"200 BETB", start:"May 30, 2025", end:"May 29, 2028", badge:"badge-green",  asset:"—"}
+    ]},
+  { fam:"RS-HW-SVC-R7K", product:"Hardware Support – R7000 Series", qty:"13 Units", consumed:"—", pct:null, pctBar:0, barColor:"var(--muted)", lines:5,
+    earliestEnd:"2026-11-02", latestEnd:"2026-11-02", earlyBadge:"badge-orange", lateBadge:"badge-orange",
+    children:[
+      {id:"550VN00000Yi3nA", desc:"R7000-3 Support", qty:"3", start:"Nov 3, 2025", end:"Nov 2, 2026", badge:"badge-orange", asset:"AA254574200038 · RHA-7420-01"},
+      {id:"550VN00000Yi3nB", desc:"R7000-3 Support", qty:"3", start:"Nov 3, 2025", end:"Nov 2, 2026", badge:"badge-orange", asset:"AA254574200036 · RHA-7420-01"},
+      {id:"550VN00000Yi3nC", desc:"R7000-3 Support", qty:"3", start:"Nov 3, 2025", end:"Nov 2, 2026", badge:"badge-orange", asset:"AA254574200032 · RHA-7420-01"},
+      {id:"550VN00000YiLTd", desc:"R7000-3 Support", qty:"2", start:"Nov 3, 2025", end:"Nov 2, 2026", badge:"badge-orange", asset:"AA254574200035 · RHA-7420-01"},
+      {id:"550VN00000YiLTe", desc:"R7000-3 Support", qty:"2", start:"Nov 3, 2025", end:"Nov 2, 2026", badge:"badge-orange", asset:"AA254574200033 · RHA-7420-01"}
+    ]},
+  { fam:"RS-BT-EE",      product:"Rubrik Enterprise Edition (Appliance)", qty:"1,440 BETB", consumed:"1,751 TB", pct:67, pctBar:67, barColor:"var(--info)", lines:3,
+    earliestEnd:"2027-04-30", latestEnd:"2027-04-30", earlyBadge:"badge-blue", lateBadge:"badge-blue",
+    children:[
+      {id:"550VI000009Bw8q", desc:"Enterprise Edition per BETB", qty:"720 BETB", start:"May 1, 2024", end:"Apr 30, 2027", badge:"badge-blue", asset:"—"},
+      {id:"550VN00000pL7hA", desc:"Enterprise Edition per BETB", qty:"480 BETB", start:"May 1, 2026", end:"Apr 30, 2027", badge:"badge-blue", asset:"—"},
+      {id:"550VN00000pL7hF", desc:"Enterprise Edition per BETB", qty:"240 BETB", start:"May 1, 2026", end:"Apr 30, 2027", badge:"badge-blue", asset:"—"}
+    ]},
+  { fam:"RS-HW-SVC-S3",  product:"Hardware Support – R6000 Series", qty:"61 Units", consumed:"—", pct:null, pctBar:0, barColor:"var(--muted)", lines:15,
+    earliestEnd:"2026-12-09", latestEnd:"2027-04-30", earlyBadge:"badge-yellow", lateBadge:"badge-blue",
+    children:[
+      {id:"550VI00000OfTWW", desc:"R6000S-3 Support", qty:"1",  start:"Dec 10, 2024", end:"Dec 9, 2026",  badge:"badge-yellow", asset:"BB245164160045 · RHA-6416S-01"},
+      {id:"550VI00000OfTWX", desc:"R6000S-3 Support", qty:"2",  start:"Dec 10, 2024", end:"Dec 9, 2026",  badge:"badge-yellow", asset:"BB245164160061 · RHA-6416S-01"},
+      {id:"550VI00000OfTWY", desc:"R6000S-3 Support", qty:"2",  start:"Dec 10, 2024", end:"Dec 9, 2026",  badge:"badge-yellow", asset:"BB245164160047 · RHA-6416S-01"},
+      {id:"550VI000009Bw8r", desc:"R6000S-3 Support", qty:"6",  start:"May 1, 2024",  end:"Apr 30, 2027", badge:"badge-blue",   asset:"AA241664160080 · RHA-6416S-01"},
+      {id:"550VI000009Bw8s", desc:"R6000S-3 Support", qty:"6",  start:"May 1, 2024",  end:"Apr 30, 2027", badge:"badge-blue",   asset:"AA241664160079 · RHA-6416S-01"},
+      {id:"550VI000009Bw8t", desc:"R6000S-3 Support", qty:"6",  start:"May 1, 2024",  end:"Apr 30, 2027", badge:"badge-blue",   asset:"AA241664160078 · RHA-6416S-01"},
+      {id:"550VI000009Bw8u", desc:"R6000S-3 Support", qty:"6",  start:"May 1, 2024",  end:"Apr 30, 2027", badge:"badge-blue",   asset:"AA241664160084 · RHA-6416S-01"},
+      {id:"550VI000009Bw8v", desc:"R6000S-3 Support", qty:"6",  start:"May 1, 2024",  end:"Apr 30, 2027", badge:"badge-blue",   asset:"AA241664160082 · RHA-6416S-01"},
+      {id:"550VI000009Bw8w", desc:"R6000S-3 Support", qty:"6",  start:"May 1, 2024",  end:"Apr 30, 2027", badge:"badge-blue",   asset:"AA241664160081 · RHA-6416S-01"},
+      {id:"550VN00000pL7hB", desc:"R6000S-3 Support", qty:"4",  start:"May 1, 2026",  end:"Apr 30, 2027", badge:"badge-blue",   asset:"BB221664160097 · RH-6416S-01"},
+      {id:"550VN00000pL7hC", desc:"R6000S-3 Support", qty:"4",  start:"May 1, 2026",  end:"Apr 30, 2027", badge:"badge-blue",   asset:"BB221664160029 · RH-6416S-01"},
+      {id:"550VN00000pL7hD", desc:"R6000S-3 Support", qty:"4",  start:"May 1, 2026",  end:"Apr 30, 2027", badge:"badge-blue",   asset:"BB221664160100 · RH-6416S-01"},
+      {id:"550VN00000pL7hE", desc:"R6000S-3 Support", qty:"4",  start:"May 1, 2026",  end:"Apr 30, 2027", badge:"badge-blue",   asset:"BB221664160062 · RH-6416S-01"},
+      {id:"550VN00000pL7hG", desc:"R6000S-3 Support", qty:"2",  start:"May 1, 2026",  end:"Apr 30, 2027", badge:"badge-blue",   asset:"AA221764160265 · RH-6416S-01"},
+      {id:"550VN00000pL7hH", desc:"R6000S-3 Support", qty:"2",  start:"May 1, 2026",  end:"Apr 30, 2027", badge:"badge-blue",   asset:"AA221864160009 · RH-6416S-01"}
+    ]},
+  { fam:"RS-BT-CVBGR",   product:"RCV – Backup Tier Multi Region", qty:"150 BETB", consumed:"0 TB", pct:0, pctBar:1, barColor:"var(--success)", lines:1,
+    earliestEnd:"2027-05-06", latestEnd:"2027-05-06", earlyBadge:"badge-blue", lateBadge:"badge-blue",
+    children:[
+      {id:"550VN00000qPWSD", desc:"RCV Backup Multi Region", qty:"150 BETB", start:"May 7, 2026", end:"May 6, 2027", badge:"badge-blue", asset:"—"}
+    ]},
+  { fam:"RS-BT-EDG",     product:"Edge Foundation Edition", qty:"10 BETB", consumed:"5.17 GB", pct:0, pctBar:1, barColor:"var(--success)", lines:1,
+    earliestEnd:"2027-05-06", latestEnd:"2027-05-06", earlyBadge:"badge-blue", lateBadge:"badge-blue",
+    children:[
+      {id:"550VN00000qPWSB", desc:"Edge Foundation Edition per BETB", qty:"10 BETB", start:"May 7, 2026", end:"May 6, 2027", badge:"badge-blue", asset:"—"}
+    ]}
+];
+
+let licOpenRows = new Set();
+let licSort = 'exp';
+
+function fmtLicDate(iso) {
+  const [y,m,d] = iso.split('-');
+  const mo = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return mo[parseInt(m)-1] + ' ' + parseInt(d) + ', ' + y;
+}
+
+function renderLicTable(skus) {
+  const tb = document.getElementById('lic-tbody');
+  if (!tb) return;
+  tb.innerHTML = '';
+  skus.forEach(s => {
+    const isOpen = licOpenRows.has(s.fam);
+    const hasCh = s.lines > 1;
+    const pctLabel = s.pct === null ? '—' : (s.pct + '%');
+    const pctColor = s.pct >= 100 ? 'var(--danger)' : s.pct >= 80 ? 'var(--warning)' : s.pct >= 50 ? 'var(--info)' : 'var(--success)';
+    const tr = document.createElement('tr');
+    tr.className = 'lic-parent' + (isOpen ? ' expanded' : '');
+    tr.dataset.fam = s.fam;
+    tr.onclick = () => toggleLicRow(s.fam);
+    tr.innerHTML = `<td style="text-align:center;color:var(--muted)">${hasCh ? '<span style="display:inline-block;transition:transform .18s;transform:' + (isOpen ? 'rotate(90deg)' : 'none') + '">▶</span>' : '<span style="color:#d1d5db">—</span>'}</td>
+      <td><strong style="font-size:0.83rem">${s.product}</strong><br><span class="mono" style="font-size:0.7rem;color:var(--muted)">${s.fam}</span></td>
+      <td><strong>${s.qty}</strong></td>
+      <td style="color:${pctColor};${s.pct >= 100 ? 'font-weight:700' : ''}">${s.consumed}</td>
+      <td style="min-width:140px">
+        ${s.pct !== null ? `<div style="display:flex;align-items:center;gap:8px;"><div class="progress-bar-wrap" style="min-width:80px"><div class="progress-bar" style="width:${s.pctBar}%;background:${pctColor}"></div></div><span style="font-size:0.76rem;font-weight:600;color:${pctColor}">${pctLabel}</span></div>` : '<span style="color:var(--muted);font-size:0.78rem">N/A</span>'}
+      </td>
+      <td><span class="badge badge-gray">${s.lines} line${s.lines > 1 ? 's' : ''}</span></td>
+      <td><span class="badge ${s.earlyBadge}">${fmtLicDate(s.earliestEnd)}</span></td>
+      <td><span class="badge ${s.lateBadge}">${s.earliestEnd === s.latestEnd ? '—' : fmtLicDate(s.latestEnd)}</span></td>`;
+    tb.appendChild(tr);
+    if (hasCh) {
+      s.children.forEach(c => {
+        const cr = document.createElement('tr');
+        cr.className = 'lic-child' + (isOpen ? ' vis' : '');
+        cr.dataset.parent = s.fam;
+        cr.innerHTML = `<td style="padding-left:24px;color:var(--muted);font-size:0.75rem">└</td>
+          <td colspan="2" style="padding-left:0"><span class="mono" style="font-size:0.72rem;color:var(--info)">${c.id}</span> · ${c.desc}${c.asset !== '—' ? '<br><span style="font-size:0.73rem;color:var(--muted)">📦 ' + c.asset + '</span>' : ''}</td>
+          <td style="font-size:0.8rem">${c.qty}</td>
+          <td></td>
+          <td></td>
+          <td><span class="badge ${c.badge}" style="font-size:0.68rem">${c.end}</span></td>
+          <td><span style="font-size:0.74rem;color:var(--muted)">${c.start}</span></td>`;
+        tb.appendChild(cr);
+      });
+    }
+  });
+}
+
+function toggleLicRow(fam) {
+  if (licOpenRows.has(fam)) licOpenRows.delete(fam); else licOpenRows.add(fam);
+  document.querySelectorAll('[data-fam="' + fam + '"]').forEach(tr => {
+    const icon = tr.querySelector('span[style*="transition"]');
+    if (icon) icon.style.transform = licOpenRows.has(fam) ? 'rotate(90deg)' : 'none';
+  });
+  document.querySelectorAll('[data-parent="' + fam + '"]').forEach(tr => {
+    tr.classList.toggle('vis', licOpenRows.has(fam));
+  });
+}
+
+function sortLicTable(mode) {
+  licSort = mode;
+  ['exp','alpha'].forEach(m => {
+    const btn = document.getElementById('lic-sort-' + m);
+    if (btn) { btn.style.background = m === mode ? 'var(--dark)' : '#fff'; btn.style.color = m === mode ? '#fff' : 'var(--muted)'; }
+  });
+  const sorted = [...LIC_SKUS].sort((a,b) => mode === 'alpha' ? a.product.localeCompare(b.product) : a.earliestEnd.localeCompare(b.earliestEnd));
+  renderLicTable(sorted);
+}
+
+// Auto-render on load (called after switchReport builds DOM)
+document.addEventListener('licTableReady', () => sortLicTable('exp'));
+setTimeout(() => { if(document.getElementById('lic-tbody')) sortLicTable('exp'); }, 100);
+
+
 function switchReport(date) {
   const r = REPORTS[date];
   if (!r) return;
@@ -1739,7 +2068,7 @@ function showPage(id) {
 }
 
 // Load latest report on startup
-switchReport("June 11, 2026");
+switchReport("June 18, 2026");
 </script>
 </body>
 </html>
