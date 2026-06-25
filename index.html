@@ -552,7 +552,7 @@ const REPORTS = {
       <div class="alert-box alert-blue" style="margin-bottom:0;align-self:start;">ℹ️ <div><strong>Note:</strong> Check boxes above are for visual reference during the call. Carry forward any open items to next week's review.</div></div>
     </div>`
 ,
-  announce: []
+  announce: null
 }
 
 
@@ -779,7 +779,7 @@ const REPORTS = {
 
     <div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Check boxes above are for visual reference during the call. Carry forward any open items to next week's review.</div></div>`
 ,
-  announce: []
+  announce: null
 }
 
 ,
@@ -966,7 +966,7 @@ const REPORTS = {
 
     <div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Check boxes above are for visual reference during the call. Carry forward any open items to next week's review.</div></div>`
 ,
-  announce: []
+  announce: null
 }
 
 ,
@@ -1168,7 +1168,7 @@ const REPORTS = {
 
     <div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Check boxes above are for visual reference during the call. Carry forward any open items to next week's review.</div></div>`
 ,
-  announce: []
+  announce: null
 }
 
 ,
@@ -1366,36 +1366,7 @@ const REPORTS = {
       </div>
     </div>
     <div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Check boxes above are for visual reference during the call. Carry forward any open items to next week's review.</div></div>`,
-  announce: [
-    {
-      tag: "🤖 AI",
-      title: "Rubrik Becomes an Agent — Introducing Rubrik AI",
-      date: "June 9, 2026",
-      impact: "Your Rubrik platform just got dramatically smarter. Rubrik AI doesn't just assist — it reasons over your data, identities, and deployed agents, then acts autonomously to deliver cyber resilience at machine speed. No more manual recovery steps.",
-      url: "https://www.rubrik.com/blog/technology/26/6/rubrik-ai-is-here-your-platform-just-got-an-agent"
-    },
-    {
-      tag: "☁️ Cloud Recovery",
-      title: "Autonomous Business Recovery for Cloud Applications",
-      date: "June 9, 2026",
-      impact: "Recovering data isn't recovering a business. Rubrik's new ABR orchestrates the full-stack recovery of cloud applications — network, compute, data, identity, and configs — automatically, in the correct order, from a clean validated point. No scripts, no guesswork.",
-      url: "https://www.rubrik.com/company/newsroom/press-releases/26/rubrik-introduces-autonomous-business-recovery-for-cloud-applications"
-    },
-    {
-      tag: "🔐 Identity",
-      title: "Identity Roll Forward — No More Choosing Between Clean and Current",
-      date: "June 9, 2026",
-      impact: "When an identity system is compromised, organizations used to face an impossible choice: roll back and lose legitimate changes, or stay compromised. Rubrik's new Identity Roll Forward eliminates that trade-off — recover to a clean, current state without reintroducing attacker backdoors.",
-      url: "https://www.rubrik.com/company/newsroom/press-releases/26/rubrik-advances-identity-resilience-through-strata-acquisition-and-identity-roll-forward-innovation"
-    },
-    {
-      tag: "🛡️ AI Agent Security",
-      title: "Rubrik Agent Cloud for Claude — Control and Rewind AI Agents",
-      date: "June 9, 2026",
-      impact: "As you deploy more AI agents, one wrong action can cascade at machine speed. Rubrik Agent Cloud for Claude Code and Claude Cowork gives you full observability, governance, and the industry's only Agent Rewind — reversing unintended AI actions and recovering impacted data instantly.",
-      url: "https://www.rubrik.com/company/newsroom/press-releases/26/rubrik-launches-rubrik-agent-cloud-for-anthropics-claude-code"
-    }
-  ]
+  announce: null
 }
 
 ,
@@ -1567,7 +1538,7 @@ const REPORTS = {
     </div>
 
     <div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Check boxes above are for visual reference during the call. Carry forward any open items to next week's review.</div></div>`,
-  announce: []
+  announce: null
 }
 
 ,
@@ -1662,15 +1633,7 @@ const REPORTS = {
     ]
   },
   actions: `<div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Meeting notes for the June 25, 2026 call have not yet been added. Update this section after the weekly call.</div></div>`,
-  announce: [
-    {
-      tag: "🏆 Partners",
-      title: "Congratulations to the Rubrik 2026 Global Partner Award Winners",
-      date: "June 10, 2026",
-      impact: "Rubrik's partner ecosystem just got a spotlight moment. At the inaugural in-person Partner Summit, Rubrik recognized top-performing partners across GSI, MSP, cloud, and technology alliance categories — a good signal of the breadth of expertise available to support your environment, from implementation to advanced cyber resilience use cases.",
-      url: "https://www.rubrik.com/blog/company/26/6/congratulations-to-the-rubrik-2026-global-partner-award-winners"
-    }
-  ]
+  announce: { issue: "June 2026" }
 }
 }; // end REPORTS
 
@@ -1993,31 +1956,110 @@ function renderActions(d, date) {
 // SWITCH REPORT
 // ═══════════════════════════════════════════════════════════
 
-function renderAnnouncements(posts, date) {
-  if (!posts || posts.length === 0) {
-    return `<div class="section-header"><h2>Announcements</h2><p>Latest from the Rubrik Newsroom · ${date}</p></div>
-    <div class="alert-box alert-blue">ℹ️ <div><strong>No new newsroom items</strong> were published on rubrik.com/company/newsroom in the 7 days prior to this report date. Check back next week for the latest updates.</div></div>
-    <div style="text-align:center;margin-top:2rem;padding:2rem;">
-      <a href="https://www.rubrik.com/company/newsroom" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--dark);color:#fff;padding:10px 20px;border-radius:8px;font-size:0.85rem;font-weight:600;text-decoration:none;">📰 Visit the Rubrik Newsroom</a>
-    </div>`;
+function renderAnnouncements(newsletter, date) {
+  if (!newsletter) {
+    return `<div class="section-header"><h2>Announcements</h2><p>Rubrik Support Newsletter · ${date}</p></div>
+    <div class="alert-box alert-blue">ℹ️ <div><strong>No newsletter issue</strong> is associated with this report date. The Rubrik Support Newsletter is published monthly — check back when the next issue is released.</div></div>`;
   }
-  const cards = posts.map(p => `
-    <a href="${p.url}" target="_blank" rel="noopener" style="display:block;text-decoration:none;color:inherit;">
-      <div style="background:#fff;border-radius:10px;border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,0.06);padding:1.4rem 1.6rem;margin-bottom:1.2rem;transition:box-shadow 0.18s,border-color 0.18s;border-left:4px solid var(--red);"
-           onmouseover="this.style.boxShadow='0 6px 20px rgba(0,0,0,0.12)';this.style.borderColor='var(--red-light)'"
-           onmouseout="this.style.boxShadow='0 1px 3px rgba(0,0,0,0.06)';this.style.borderColor='var(--border)'">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-          <span style="background:#fef2f2;color:var(--red);font-size:0.72rem;font-weight:700;padding:3px 10px;border-radius:999px;letter-spacing:0.05em;">${p.tag}</span>
-          <span style="font-size:0.75rem;color:var(--muted);">${p.date}</span>
-        </div>
-        <div style="font-size:1rem;font-weight:700;color:var(--dark);margin-bottom:8px;line-height:1.3;">${p.title}</div>
-        <div style="font-size:0.84rem;color:#374151;line-height:1.6;margin-bottom:10px;">${p.impact}</div>
-        <div style="display:inline-flex;align-items:center;gap:5px;font-size:0.78rem;font-weight:600;color:var(--red);">Read article →</div>
-      </div>
-    </a>`).join('');
-  return `<div class="section-header"><h2>Announcements</h2><p>Latest from the Rubrik Newsroom · ${date}</p></div>
-  <div class="alert-box alert-blue" style="margin-bottom:1.5rem;">ℹ️ <div>The items below were published on <a href="https://www.rubrik.com/company/newsroom" target="_blank" style="color:var(--info);font-weight:600;">rubrik.com/company/newsroom</a> in the 14 days prior to this report (extended window since no items were available last week). Click any card to read the full article.</div></div>
-  ${cards}`;
+
+  const sectionCard = (icon, title, html) => `
+    <div class="info-card" style="margin-bottom:1.2rem;">
+      <h3 style="display:flex;align-items:center;gap:8px;">${icon} ${title}</h3>
+      <div style="margin-top:0.75rem;">${html}</div>
+    </div>`;
+
+  const item = (title, body, links) => `
+    <div style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #f3f4f6;">
+      <div style="font-size:0.86rem;font-weight:700;color:var(--dark);margin-bottom:5px;">${title}</div>
+      <div style="font-size:0.83rem;color:#374151;line-height:1.6;margin-bottom:6px;">${body}</div>
+      ${links ? `<div style="font-size:0.78rem;">${links}</div>` : ''}
+    </div>`;
+
+  const link = (text, url) => `<a href="${url}" target="_blank" rel="noopener" style="color:var(--info);font-weight:600;text-decoration:none;">${text}</a>`;
+
+  const rscItems = [
+    item("Google Cloud SQL (PostgreSQL) Protection",
+      "Native Google backup forces a choice between immutable backups and disaster recovery replicas, leaves Terraform/CLI-provisioned instances unprotected, and caps retention at 10 years. Rubrik now comprehensively protects Google Cloud SQL (PostgreSQL) with combined backup and DR, automatic coverage, and compliance-matched retention.",
+      link("Rubrik Blog", "https://www.rubrik.com/blog") + " &nbsp;|&nbsp; " + link("Google Cloud SQL Page", "https://www.rubrik.com/solutions/google-cloud-sql")),
+    item("Granular Role-Based Access Control (RBAC)",
+      "Broad \"View\"/\"Manage\" permissions previously let anyone managing users also manage SSO, MFA resets, and password policies. RSC now offers discrete controls across Users, Roles, Service Accounts, and PAM. <strong>Action:</strong> review custom role configurations to apply least-privilege access.",
+      link("RSC User Guide", "https://www.rubrik.com/")),
+    item("Quorum Authorization (QAuth) for Tenant Organizations",
+      "Tenant Organizations in multi-tenant RSC environments can now independently enable, configure, and manage QAuth instead of waiting on the Global Organization — removing a bottleneck for MSPs and large enterprises using RSC Organizations.",
+      link("RSC User Guide", "https://www.rubrik.com/")),
+    item("Passwordless Login with Passkeys",
+      "RSC now supports passwordless login via device biometrics (fingerprint, face recognition, or hardware security key) for users with a configured passkey.",
+      link("RSC User Guide", "https://www.rubrik.com/")),
+    item("Rubrik-Managed Certificates (RCCA)",
+      "CDM 9.5.1+ clusters can now use Rubrik Cluster CA (RCCA) signed certificates for RBS↔CDM communication, replacing individual self-signed certs with a centralized root of trust. Opt in by renewing the self-signed RBS certificate to an RCCA-signed one.",
+      link("RSC User Guide", "https://www.rubrik.com/"))
+  ].join('');
+
+  const secItems = `
+    <ul style="margin:0 0 10px 1.1rem;padding:0;font-size:0.83rem;line-height:1.8;">
+      <li>${link("MFA for all local users", "https://www.rubrik.com/")} — enable passkey-based MFA (highly phishing-resistant)</li>
+      <li>${link("IP Allow List", "https://www.rubrik.com/")} — limit RSC access to known source IPs</li>
+      <li>${link("User Account Lockout", "https://www.rubrik.com/")} — protect against brute force attacks</li>
+      <li>${link("Breached Password Protection", "https://www.rubrik.com/")} — flag compromised credentials on local accounts</li>
+    </ul>
+    <div style="font-size:0.82rem;color:#374151;margin-top:8px;"><strong>Status pages:</strong> ${link("status.rubrik.com", "https://status.rubrik.com")} (public) · ${link("rubrik.statuspage.io", "https://rubrik.statuspage.io")} (customers/partners, Passport login) · ${link("status.rubrikgov.com", "https://status.rubrikgov.com")} (RSC-Gov, public)</div>`;
+
+  const cdmTable = `
+    <table class="data-table" style="margin-top:6px;">
+      <thead><tr><th>Track</th><th>Latest Version</th><th>Released</th></tr></thead>
+      <tbody>
+        <tr><td><strong>CDM 9.5</strong></td><td class="mono">9.5.1-p2</td><td>May 19, 2026</td></tr>
+        <tr><td><strong>CDM 9.4</strong></td><td class="mono">9.4.3-p3</td><td>May 19, 2026</td></tr>
+        <tr><td><strong>CDM 9.3</strong></td><td class="mono">9.3.3-p10</td><td>May 20, 2026</td></tr>
+      </tbody>
+    </table>
+    <div class="alert-box alert-orange" style="margin-top:10px;margin-bottom:0;">⚠️ <div><strong>CDM 9.2 and earlier have reached End of Support (EOS).</strong> Clusters on unsupported versions must upgrade to continue receiving technical support. ${link("Software Support Lifecycle", "https://www.rubrik.com/")}</div></div>
+
+    <div style="font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:16px 0 8px;">Upcoming Releases</div>
+    <table class="data-table">
+      <thead><tr><th>Version</th><th>Scheduled</th><th>Type</th></tr></thead>
+      <tbody>
+        <tr><td><span class="case-num-wrap" data-tip="<strong style=\\'display:block;margin-bottom:6px;\\'>9.5.2 — What's Effectively New</strong>Second minor in the 9.5 line — by policy a non-feature release focused on bug, CFD, and security fixes. All net-new capabilities are already in 9.5.0/9.5.1; 9.5.2 adds cumulative hardening on top of 9.5.1-p2.<br><br><strong style=\\'display:block;margin:6px 0 4px;color:#fbbf24;font-size:0.7rem;text-transform:uppercase;\\'>Target Version</strong>For customers already on 9.5, land on 9.5.1-p2 or 9.5.2 (not 9.5.0/9.5.1-p1) to pick up important Identity Resilience, RCV, and stability fixes.<br><br><strong style=\\'display:block;margin:6px 0 4px;color:#fbbf24;font-size:0.7rem;text-transform:uppercase;\\'>Identity Resilience / AD</strong>Inherits the 9.5.1-p2 fixes addressing IR object-tracking jobs hanging and RBS disconnects on IR Windows hosts — issues that made 9.5.1-p1 unsuitable for IR workloads.<br><br><strong style=\\'display:block;margin:6px 0 4px;color:#fbbf24;font-size:0.7rem;text-transform:uppercase;\\'>Stability &amp; Performance</strong>Continues the large 9.5.1 patch set: hundreds of fixes across indexing, archival upload, RCV reader refresh, NAS/Kubernetes/Hyper-V/AHV/Nutanix workflows, CDM upgrades, Edge/RAID/disk health, and long-running DB log chains (Oracle/SQL/Postgres/Db2/Mongo).<br><br><strong style=\\'display:block;margin:6px 0 4px;color:#fbbf24;font-size:0.7rem;text-transform:uppercase;\\'>Hardware Note</strong>In the 9.5 line, upgrades earlier than 9.5.1 are not supported on R6000F hardware; 9.5.1+ (including 9.5.2) is the supported floor.<br><br><strong style=\\'display:block;margin:6px 0 4px;color:#fbbf24;font-size:0.7rem;text-transform:uppercase;\\'>Messaging</strong>Same 9.5 feature set, but with the cumulative bug/security hardening you want to run in production." style="cursor:pointer;border-bottom:1px dashed #9ca3af;"><strong class="mono">9.5.2</strong> <span style="font-size:0.72rem;color:var(--info);">ℹ hover for details</span></span></td><td>June 22, 2026</td><td><span class="badge badge-blue">Maintenance</span></td></tr>
+        <tr><td><strong class="mono">9.5.3</strong></td><td>July 22, 2026</td><td><span class="badge badge-blue">Maintenance</span></td></tr>
+        <tr><td><span class="case-num-wrap" data-tip="<strong style=\\'display:block;margin-bottom:6px;\\'>9.6.0 — What's Coming (Summer 2026)</strong>GA currently targeted for July 21, 2026 (feature complete June 2, GA branch cut mid-June). Four betas have already run. Payload is still moving, but the main themes are clear.<br><br><strong style=\\'display:block;margin:6px 0 4px;color:#fbbf24;font-size:0.7rem;text-transform:uppercase;\\'>1. Kubernetes &amp; Container Protection</strong>K8s Native Protection &amp; Application Protection Sets — deeper, application-aware protection sets and offline-recovery integration, plus K8s resource transforms for more portable restores across clusters. Continued UX/reliability work on K8s exports, storage-class mappings, and offline recovery (Luna).<br><br><strong style=\\'display:block;margin:6px 0 4px;color:#fbbf24;font-size:0.7rem;text-transform:uppercase;\\'>2. Database Resilience, Scale &amp; Immutability</strong>Oracle: RAC multi-node backup/restore and a new near-zero RPO capability (ZDLRA-style). MySQL &amp; SQL Server: log-immutability for legal hold/retention-lock scenarios. Postgres &amp; Db2: host log-retention controls, log-snapshot visibility in RSC UI, Db2 compressed-backup support, internationalization, AF2 hardening at scale. Mongo &amp; Informix: 30-way shard support, Mongo legal hold improvements, automated RSC UI-based Informix recovery, replicated-snapshot download flows. Kosmos framework: archival-reader + replication-pair coexistence for Postgres/MySQL at scale.<br><br><strong style=\\'display:block;margin:6px 0 4px;color:#fbbf24;font-size:0.7rem;text-transform:uppercase;\\'>3. Archival, RCV &amp; Cost Optimization</strong>RCV AWS Glacier IR tiering to cut S3 storage cost while keeping low-latency restore. Snapshot download SLA v2 — proper SLA-based retention starting from download date. Legal hold propagation following snapshots into archival locations and reader clusters. Network throttling via cgroup v2 so archival upload limits don't affect other 443-based control-plane traffic.<br><br><strong style=\\'display:block;margin:6px 0 4px;color:#fbbf24;font-size:0.7rem;text-transform:uppercase;\\'>4. Platforms, Hardware &amp; Ecosystem</strong>OLVM/oVirt: multi-VLAN support, pre/post hooks, enhanced security, label-based SLA assignment. Hypervisors: FusionCompute MVP support, Nutanix Files changelist integration, RSC AHV restore-error parity, Everpure volumes snappable integration. Edge &amp; hardware: Edge CPU optimizations and R7000 Gold CPU enablement.<br><br><strong style=\\'display:block;margin:6px 0 4px;color:#fbbf24;font-size:0.7rem;text-transform:uppercase;\\'>5. Security &amp; Identity</strong>RSA SecurID removal from CDM UI (continuing 9.5 deprecation) and broader IAM cleanup. SELinux support on key Linux DB workloads. Improved AD/Identity features: AD snapshot diffing and SMB per-domain DNS routing in multi-tenant environments." style="cursor:pointer;border-bottom:1px dashed #9ca3af;"><strong class="mono">9.6.0</strong> <span style="font-size:0.72rem;color:var(--info);">ℹ hover for details</span></span></td><td>July 21, 2026</td><td><span class="badge badge-green">Feature Release</span></td></tr>
+      </tbody>
+    </table>`;
+
+  const universityItems = [
+    item("RCSA v9.5 Certification Exam Released",
+      "The Rubrik Certified Systems Administrator (RCSA) v9.5 exam released June 1, 2026. The v9.2 exam will be <strong>deprecated August 31, 2026</strong> — complete it before then if needed.", ""),
+    item("Self-Paced Learning Path Updated to v9.5",
+      "The RSC Administration self-paced learning path upgraded to v9.5 on June 1, 2026. v9.2 content remains accessible until August 31, 2026.",
+      link("Access via Support Portal", "https://www.rubrik.com/support")),
+    item("RSC Administration Live Training Updated to v9.5",
+      "The instructor-led RSC Administration bootcamp (paid, 4-day virtual) upgraded to v9.5. Contact your Rubrik sales rep for a quote.",
+      link("Access via Support Portal", "https://www.rubrik.com/support"))
+  ].join('');
+
+  const portalItems = [
+    item("New \"Business Impact\" Field on Case Submission",
+      "A Business Impact picklist field is now available when submitting cases, giving Support Engineers immediate visibility into operational urgency for more accurate categorization and escalation.", ""),
+    item("Proactive Contact Usability Improvements",
+      "Admins can now clear proactive contact settings (business hours and non-business hours) via the Global Defaults page using a new <em>Unselect/Remove</em> option — no more Support intervention needed to remove a contact. Extended to cluster-level configs as well.", "")
+  ].join('');
+
+  return `<div class="section-header"><h2>Announcements</h2><p>Rubrik Support Newsletter · ${newsletter.issue} · ${date}</p></div>
+
+  ${sectionCard("☁️", "Rubrik Security Cloud (RSC)", rscItems)}
+  ${sectionCard("🔐", "Recommended Security Settings", secItems)}
+  ${sectionCard("🔄", "CDM Software Release Guidance", cdmTable)}
+  ${sectionCard("🎓", "Rubrik University", universityItems)}
+  ${sectionCard("🛠️", "Rubrik Support Portal", portalItems)}
+
+  <div class="info-card" style="margin-bottom:1.2rem;">
+    <h3>📞 Contact Rubrik Support</h3>
+    <div style="font-size:0.83rem;color:#374151;line-height:1.7;margin-top:0.6rem;">
+      Available 24/7/365. For Severity 1 or service-impacting issues, calling is recommended for fastest response.
+      <div style="margin-top:8px;">${link("Phone", "https://www.rubrik.com/support")} &nbsp;|&nbsp; ${link("Email support@rubrik.com", "mailto:support@rubrik.com")} &nbsp;|&nbsp; ${link("Support Portal", "https://www.rubrik.com/support")}</div>
+    </div>
+  </div>
+
+  <div class="alert-box alert-blue">ℹ️ <div>Source: Rubrik Support Newsletter (monthly). This section will refresh with each new issue going forward.</div></div>`;
 }
 
 // ─── Licenses tab data & functions ───
