@@ -1632,7 +1632,110 @@ const REPORTS = {
       {type:"alert-blue",   text:"<strong>Capacity Projections Refreshed:</strong> RICBRIK_01 and ricvault01 now show 80/85% milestone dates extending into Q3/Q4 2026 as growth continues to plateau."}
     ]
   },
-  actions: `<div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Meeting notes for the June 25, 2026 call have not yet been added. Update this section after the weekly call.</div></div>`,
+  actions: `
+    <!-- Key Outcomes -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>🎯 Key Outcomes</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span>Active hardware replacements underway in Houston (node + SSDs). A <strong>threat monitoring event was resolved</strong> by deleting flagged files after security confirmed no active threat.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span><strong>RCV archive utilization rising</strong> due to NCD data migration to immutable buckets, but ~150 TB of relic data is the primary driver of storage consumption.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span><strong>Vault cluster configuration</strong> and <strong>cloud cluster AD/DNS issues</strong> are targeted for resolution in July.</span></div>
+      </div>
+    </div>
+
+    <!-- Resolutions -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>✅ Resolutions</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;color:var(--success);">✓</span><span><strong>Houston hardware:</strong> BMC update completed; node replacement shipping. SSD drives handled under a separate case.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;color:var(--success);">✓</span><span><strong>Threat monitoring alert:</strong> Flagged files deleted after security reviewed the hash and confirmed no active threat. Rubrik only detects if the payload is activated.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;color:var(--success);">✓</span><span><strong>NCD data:</strong> Successfully migrated to immutable buckets — accounts for the recent RCV archive utilization increase.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;color:var(--success);">✓</span><span><strong>Edge appliance:</strong> Brought online, backup tested and confirmed working.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;grid-column:1/-1;"><span style="flex-shrink:0;margin-top:2px;color:var(--success);">✓</span><span><strong>RCV single-zone → multi-region upgrade:</strong> Can now be reconfigured in-place without creating a new bucket or modifying the SLA — confirmed available now.</span></div>
+      </div>
+    </div>
+
+    <!-- Pending Confirmation -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>⏳ Pending Confirmation</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>RBS issue (Bryan's team):</strong> Support collected logs on Sunday call but found no root cause. Next step is to reproduce the behavior on a future call with Prasanna present.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>Domain controller / event warden issue:</strong> Service account required instead of local system admin for RPA service on dual-datacenter domains. David Fernandez investigating; lower environments to be tested first.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>Cloud cluster AD/DNS:</strong> Clusters likely pointing to stewart.net instead of stewart.com. Roy and Zach may need to be involved; Roy returns July 2nd.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>Vault cluster network isolation:</strong> Firewall port 7 needs bidirectional access during pairing; once vaulted, replication becomes outbound-only (pull model) from vault.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>Multi-node backup/restore feature flag (Tatyana):</strong> Case opened with support; performance testing not yet confirmed. Follow up next week.</span></div>
+      </div>
+    </div>
+
+    <!-- Open Questions + Key Updates two-col -->
+    <div class="two-col" style="margin-bottom:1.5rem;">
+      <div class="info-card">
+        <h3>❓ Open Questions</h3>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">?</span><span><strong>SQL VM backups:</strong> Cannot use Pure array integration for file-level backups; VM snapshot approach blocked by the virtualization team's drive configuration. Chance (virtualization) is the contact for any changes.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">?</span><span><strong>Passkey/passwordless login:</strong> Now supported in RSC under security settings. Tim to evaluate as part of login overhaul.</span></div>
+        </div>
+      </div>
+      <div class="info-card">
+        <h3>🔑 Key Updates &amp; Decisions</h3>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>Code 9.5.2:</strong> No significant fixes over 9.5.1-p2; no urgent reason to upgrade.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>Code 9.5.3:</strong> Will include expanded AD granular recovery capabilities.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>Code 9.6 (July):</strong> SQL Server enhancements, log immutability/legal hold improvements, Kubernetes enhancements; Postgres, Db2, Mongo, Informix, and MySQL support also coming.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>SLA backup window "terminate" option:</strong> New checkbox added to stop backups at window end. Team noted this is risky but still uses windows due to SQL team constraints.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capacity Notes -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>📊 Capacity Notes</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🗄️</span><span><strong>Relic data driving RCV usage:</strong> ~150 TB of relic Azure VM data (mostly Splunk) still consuming RCV archive under active SLA retention. Not counted toward licensing but inflating storage.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📈</span><span><strong>Cluster fill projections:</strong> Only one cluster projected at 85% in November; others pushed well beyond the planning horizon due to flattened data growth.</span></div>
+      </div>
+    </div>
+
+    <!-- Action Items by Owner -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>📋 Action Items by Owner</h3>
+      <div style="margin-top:0.9rem;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+
+        <div style="padding:10px 12px;background:#fef2f2;border-radius:8px;border-left:3px solid var(--red);">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--red);margin-bottom:8px;">Mark</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Build backup task monitoring visual report (avg run times, success/failure counts) for next week's call.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Send vault configuration prerequisites and step documentation to Tim.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Follow up with Tatyana on multi-node performance testing results on next weekly call.</span></div>
+          </div>
+        </div>
+
+        <div style="padding:10px 12px;background:#d1fae5;border-radius:8px;border-left:3px solid var(--success);">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--success);margin-bottom:8px;">Tim</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Schedule vault/network isolation configuration for July, incorporating DR testing and full process documentation.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Evaluate passkey login integration during upcoming login overhaul.</span></div>
+          </div>
+        </div>
+
+        <div style="padding:10px 12px;background:#eff6ff;border-radius:8px;border-left:3px solid var(--info);grid-column:1/-1;">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--info);margin-bottom:8px;">Tim / Frank</div>
+          <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Engage Roy (returns July 2nd) and Zach on cloud cluster DNS/AD issues for stewart.com alignment.</span></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Account Health -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>📊 Account Health</h3>
+      <div style="margin-top:0.75rem;display:flex;align-items:flex-start;gap:12px;">
+        <span class="badge badge-green" style="font-size:0.78rem;padding:5px 12px;flex-shrink:0;">Low-to-Moderate Risk</span>
+        <span style="font-size:0.83rem;color:var(--text);line-height:1.6;">No critical outages; active hardware and DNS issues are tracked with clear owners. RCV utilization is elevated but understood and expected to normalize as relic data expires.</span>
+      </div>
+    </div>
+
+    <div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Check boxes above are for visual reference during the call. Carry forward any open items to next week's review.</div></div>`,
   announce: { issue: "June 2026" }
 }
 }; // end REPORTS
