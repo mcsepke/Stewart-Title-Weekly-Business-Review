@@ -216,7 +216,8 @@
     <div style="display:flex;align-items:center;gap:8px;">
       <span class="date-label">Report Date</span>
       <select class="date-select" id="reportDate" onchange="switchReport(this.value)">
-        <option value="June 18, 2026" selected>June 18, 2026</option>
+        <option value="June 25, 2026" selected>June 25, 2026</option>
+        <option value="June 18, 2026">June 18, 2026</option>
         <option value="June 11, 2026">June 11, 2026</option>
         <option value="June 4, 2026">June 4, 2026</option>
         <option value="May 28, 2026">May 28, 2026</option>
@@ -1568,6 +1569,109 @@ const REPORTS = {
     <div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Check boxes above are for visual reference during the call. Carry forward any open items to next week's review.</div></div>`,
   announce: []
 }
+
+,
+
+"June 25, 2026": {
+  summary: {
+    openCases: 8, jiras: 3, p1: 1, p2: 5,
+    avgScore: 90.5, capacityUpgrade: 0, versionUpgrade: 0,
+    caseBreakdown: [
+      {label:"Waiting for Customer Input",     val:3, pct:38, color:"progress-orange"},
+      {label:"Waiting for Rubrik Support",      val:1, pct:13, color:"progress-blue"},
+      {label:"Waiting for Engineering",         val:1, pct:13, color:"progress-blue"},
+      {label:"Resolved - Pending Customer",     val:1, pct:13, color:"progress-green"},
+      {label:"Resolved",                        val:1, pct:13, color:"progress-green"},
+      {label:"Pending RMA",                     val:1, pct:13, color:"progress-red"}
+    ],
+    jiraBreakdown: [
+      {label:"Investigating",                 val:1, pct:33, color:"progress-blue"},
+      {label:"Investigating (Info Requested)", val:1, pct:33, color:"progress-blue"},
+      {label:"To Do",                          val:1, pct:33, color:"progress-orange"}
+    ],
+    clusters: [
+      {name:"RICBRIK_01", used:"622.30 TB / 71.9%", pct:72, scoreBadge:"badge-green",  score:"100%"},
+      {name:"HOUBRIK_01", used:"695.23 TB / 70.3%", pct:70, scoreBadge:"badge-green",  score:"97%"},
+      {name:"ricvault01", used:"273.55 TB / 58.7%", pct:59, scoreBadge:"badge-green",  score:"87%"},
+      {name:"houvault01", used:"158.21 TB / 50.9%", pct:51, scoreBadge:"badge-orange", score:"73%"},
+      {name:"eus2rubrik",  used:"12.11 TB / 11.5%", pct:12, scoreBadge:"badge-orange", score:"85%"},
+      {name:"scusrubrik",  used:"12.04 TB / 11.4%", pct:11, scoreBadge:"badge-green",  score:"100%"},
+      {name:"houbrik02",   used:"5.86 GB / 0.05%",  pct:1,  scoreBadge:"badge-gray",   score:"—"}
+    ],
+    alerts: [
+      {type:"alert-green",  text:"<strong>All Clusters Current:</strong> All clusters running 9.5.1-p2-36376, including the Edge cluster (houbrik02). No version upgrade actions required."},
+      {type:"alert-green",  text:"<strong>Average Performance Score at 90.5%</strong> — strong week overall. RICBRIK_01 at 100%, HOUBRIK_01 at 97%, ricvault01 recovered to 87%."},
+      {type:"alert-red",    text:"<strong>New P1 Case 1244435:</strong> eus2rubrik node reported as Bad — proactive hardware case opened this week. Waiting for Customer Input."},
+      {type:"alert-orange", text:"<strong>Case Volume Increased to 8</strong> (from 6). New cases: 1244435 (P1, eus2rubrik node), 1246758 (HOUBRIK_01 Hardware Health Check, Pending RMA), and 1247497 (SMB Security domain error)."}
+    ]
+  },
+  cases: {
+    stats: [{label:"Total Open",val:8,cls:"red"},{label:"P1 Critical",val:1,cls:"red"},{label:"P2 High",val:5,cls:"orange"},{label:"P3 Medium",val:1,cls:"blue"},{label:"Resolved",val:2,cls:"green"}],
+    rows: [
+      {num:"<span class=\"case-num-wrap\" data-tip=\"Rubrik Backup Service (RBS) on a domain controller was stopping unexpectedly, leading to failed backups and job instability for AD-related workloads. Support removed references to decommissioned domain controllers, updated the RBS logon account, and added a rule to allow previously blocked NTLM authentication to stabilize backups. The case remains open for continued monitoring and additional troubleshooting if similar symptoms recur.\"><span class=\"mono\">1096748</span></span>", subject:"RBS stopped running suddenly in the server and has to be manually restart it", pri:"P2", priCls:"badge-orange", status:"Waiting for Rubrik Support", stCls:"badge-blue", owner:"Neeraj Yadav", jira:"CDM-533329"},
+      {num:"<span class=\"case-num-wrap\" data-tip=\"A software upgrade on HOUBRIK-01 failed, and subsequent checks identified BMC and hardware-related issues that could affect cluster reliability. Rubrik has guided Stewart through remediation steps and arranged RMA for the affected node hardware. The current plan is for Stewart to complete the remote BMC upgrade and confirm cluster health; Support will re-validate once that is done and close the case after successful verification.\"><span class=\"mono\">1225950</span></span>", subject:"Upgrade failure on HOUBRIK-01 cluster", pri:"P2", priCls:"badge-orange", status:"Waiting for Customer Input", stCls:"badge-yellow", owner:"Suvradeep Chanda", jira:"CDM-549987"},
+      {num:"<span class=\"case-num-wrap\" data-tip=\"Stewart began receiving multiple alerts for “Failed: SLA archival policy violation” after tightening SLA snapshot windows, increasing the risk of missed backup and archival compliance across some workloads. Rubrik explained how reduced windows cause queued jobs and compliance violations and recommended widening SLA windows and/or distributing objects across staggered SLA domains, in coordination with your Rubrik SE. The case is in a “Resolved – Pending Customer” state while Stewart reviews and implements the recommended SLA design.\"><span class=\"mono\">1232492</span></span>", subject:"Multi Alerts related to Failed: SLA archival policy violation.", pri:"P2", priCls:"badge-orange", status:"Resolved - Pending Customer", stCls:"badge-green", owner:"Utkarsh Sahu", jira:"—"},
+      {num:"<span class=\"case-num-wrap\" data-tip=\"Actor Identification within Data Threat Analytics is not labeling activity as expected, limiting Stewart’s ability to attribute potentially risky actions to specific identities. Engineering is engaged, and Support has recommended updates to RBS logon group memberships and Windows audit policies on the relevant systems. Stewart will apply the recommended changes, after which Rubrik will re-run analysis and refine configuration until Actor Identification is behaving as expected.\"><span class=\"mono\">1240080</span></span>", subject:"Actor Identification not working as expected", pri:"P2", priCls:"badge-orange", status:"Waiting for Engineering", stCls:"badge-blue", owner:"Abijith Dinesh", jira:"CDM-549719"},
+      {num:"<span class=\"case-num-wrap\" data-tip=\"A proactive health check on HOUBRIK-01 flagged hardware health concerns that overlap with the reactive upgrade failure case. This proactive case has been marked as a duplicate of case 1225950 to avoid duplicate effort. All investigation and remediation are being tracked under case 1225950, and this proactive ticket is closed as resolved.\"><span class=\"mono\">1240819</span></span>", subject:"[StewartTitleCompany] Proactive Case: (Cluster name: HOUBRIK_01) Hardware Health Check Failure", pri:"P2", priCls:"badge-orange", status:"Resolved", stCls:"badge-green", owner:"Shivaling Menasi", jira:"—"},
+      {num:"<span class=\"case-num-wrap\" data-tip=\"Proactive monitoring detected a node in the eus2rubrik cluster as “Bad/Down,” which can reduce resiliency and, if prolonged, impact performance or backup capacity. Rubrik has requested that Stewart enable a support tunnel on eus2rubrik so we can collect diagnostics and isolate the root cause. The case is currently waiting on Stewart to open the tunnel; once enabled, Support will complete analysis and recommend remediation.\"><span class=\"mono\">1244435</span></span>", subject:"[StewartTitleCompany] Proactive Case: (Cluster name: eus2rubrik) Node is Bad", pri:"P1", priCls:"badge-red", status:"Waiting for Customer Input", stCls:"badge-yellow", owner:"Gagandeep M", jira:"—"},
+      {num:"<span class=\"case-num-wrap\" data-tip=\"Proactive checks identified multiple SSDs on HOUBRIK-01 approaching wear limits, which could affect long-term stability if not replaced. Rubrik has raised four separate RMA shipments for the worn SSDs and will schedule a Field Engineer for each replacement. Drives will be replaced one at a time, allowing two MDS scans between replacements to confirm cluster health; the case will remain open through the full replacement cycle.\"><span class=\"mono\">1246758</span></span>", subject:"[StewartTitleCompany] Proactive Case: (Cluster name: HOUBRIK_01) Hardware Health Check Failure", pri:"P2", priCls:"badge-orange", status:"Pending RMA", stCls:"badge-red", owner:"Meghana N", jira:"—"},
+      {num:"<span class=\"case-num-wrap\" data-tip=\"SMB Security domain join attempts are failing for the stewart.com domain with errors indicating Rubrik cannot discover domain controllers for the domain. Support determined that required AD SRV records are not being returned by the DNS servers configured on the clusters, preventing Rubrik from locating domain controllers. Stewart’s AD/DNS team needs to ensure SRV records exist for _ldap._tcp.dc._msdcs.stewart.com and that Rubrik uses AD-aware DNS servers; once those changes are in place, Rubrik will re-test the SMB domain join from the affected clusters.\"><span class=\"mono\">1247497</span></span>", subject:"SMB Security Won't Add a needed domain (getting an error)", pri:"P3", priCls:"badge-gray", status:"Waiting for Customer Input", stCls:"badge-yellow", owner:"Aman Awasthi", jira:"—"}
+    ],
+    alerts: [
+      {type:"alert-blue",   text:"<strong>Case 1232492 (SLA Archival Violations)</strong> now Resolved - Pending Customer. Confirm final sign-off with Utkarsh Sahu."},
+      {type:"alert-green",  text:"<strong>Case 1240819 (HOUBRIK_01 Hardware Health Check)</strong> closed since the June 18 report — Resolved."},
+      {type:"alert-red",    text:"<strong>New Case 1244435 – eus2rubrik Node Bad (P1):</strong> Proactive hardware case opened this week. Highest priority open item — confirm escalation path and replacement timeline."},
+      {type:"alert-orange", text:"<strong>New Case 1246758 – HOUBRIK_01 Hardware Health Check Failure:</strong> Third proactive hardware case for this cluster this quarter. Pending RMA — track replacement hardware shipment."},
+      {type:"alert-orange", text:"<strong>New Case 1247497 – SMB Security Domain Error:</strong> Customer unable to add a needed domain. Waiting for Customer Input — confirm what details have been requested."},
+      {type:"alert-orange", text:"<strong>Case 1240080 – Actor Identification:</strong> Status moved to Waiting for Engineering. Confirm engineering has what they need from the identity script results."}
+    ]
+  },
+  jiras: {
+    stats: [{label:"Total Jiras",val:3,cls:"blue"},{label:"Investigating",val:1,cls:"blue"},{label:"Info Requested",val:1,cls:"orange"}],
+    rows: [
+      {ref:"CDM-549987", refCls:"badge-blue",   subject:"[Stewart Title Company] Node disks are showing both red and blue lights after chassis replacement", caseNum:"1225950", owner:"Suvradeep Chanda", status:"Investigating",                  stCls:"badge-blue",   component:"Forge - Hardware"},
+      {ref:"CDM-549719", refCls:"badge-orange", subject:"Stewart - Actor Identification not working as expected",                                              caseNum:"1240080", owner:"Abijith Dinesh",   status:"Investigating (Info Requested)", stCls:"badge-orange", component:"Identity Resilience - Active Directory"},
+      {ref:"CDM-533329", refCls:"badge-gray",   subject:"[Stewart Title Company] RBS stopped running suddenly in the server and has to be manually restart it", caseNum:"1096748", owner:"Neeraj Yadav",   status:"To Do",                          stCls:"badge-gray",   component:"RBS"}
+    ],
+    alerts: [
+      {type:"alert-blue",   text:"<strong>CDM-549987 (Node Disk Lights):</strong> Status simplified to Investigating. Confirm engineering has full context from prior info requests."},
+      {type:"alert-orange", text:"<strong>CDM-549719 (Actor Identification):</strong> Still Investigating with info requested. Case 1240080 moved to Waiting for Engineering — confirm alignment between case and Jira status."},
+      {type:"alert-orange", text:"<strong>CDM-533329 (RBS Restart):</strong> Remains in To Do. Case 1096748 still shows Waiting for Rubrik Support — confirm engineering has picked this up."}
+    ]
+  },
+  clusters: {
+    avgScore: 90.5, capacityUpgrade: 0, versionUpgrade: 0, activeAppliance: 5, activeCloud: 2,
+    rows: [
+      {name:"RICBRIK_01", platform:"RH-6416S-01",  nodes:28, version:"9.5.1-p2-36376", vCls:"", used:"622.30 TB", pct:"71.9%", growth:"11.43 TB/yr", score:"100%",   sCls:"badge-green"},
+      {name:"HOUBRIK_01", platform:"RH-6416S-01",  nodes:32, version:"9.5.1-p2-36376", vCls:"", used:"695.23 TB", pct:"70.3%", growth:"23.84 TB/yr", score:"97%",    sCls:"badge-green"},
+      {name:"ricvault01", platform:"RHA-7420-01",  nodes:12, version:"9.5.1-p2-36376", vCls:"", used:"273.55 TB", pct:"58.7%", growth:"0 TB/yr",     score:"87%",    sCls:"badge-green"},
+      {name:"houvault01", platform:"RHA-7420-01",  nodes:8,  version:"9.5.1-p2-36376", vCls:"", used:"158.21 TB", pct:"50.9%", growth:"0 TB/yr",     score:"73% ⚠",  sCls:"badge-orange"},
+      {name:"eus2rubrik",  platform:"Azure Cloud", nodes:3,  version:"9.5.1-p2-36376", vCls:"", used:"12.11 TB",  pct:"11.5%", growth:"7.79 TB/yr",  score:"85% ⚠",  sCls:"badge-orange"},
+      {name:"scusrubrik",  platform:"Azure Cloud", nodes:3,  version:"9.5.1-p2-36376", vCls:"", used:"12.04 TB",  pct:"11.4%", growth:"0 TB/yr",     score:"100%",   sCls:"badge-green"},
+      {name:"houbrik02",   platform:"Edge/VMware",  nodes:1,  version:"9.5.1-p2-36376", vCls:"", used:"5.86 GB",  pct:"0.05%", growth:"0 TB/yr",     score:"—",      sCls:"badge-gray"}
+    ],
+    projections: [
+      {name:"RICBRIK_01", p80:"Sep 19, 2026", p85:"Nov 14, 2026", p90:"—",            p95:"—",            p100:"—",            risk:"badge-blue"},
+      {name:"ricvault01", p80:"Sep 17, 2026", p85:"Oct 15, 2026", p90:"Nov 5, 2026",  p95:"Dec 3, 2026",  p100:"—",            risk:"badge-orange"}
+    ],
+    alerts: [
+      {type:"alert-green",  text:"<strong>All Clusters on 9.5.1-p2-36376:</strong> Including houbrik02 Edge cluster. Code upgrade cycle remains fully complete."},
+      {type:"alert-green",  text:"<strong>Avg Performance Score 90.5%:</strong> Strong improvement across the board. RICBRIK_01 (100%), HOUBRIK_01 (97%), ricvault01 recovered to 87% (from 81%)."},
+      {type:"alert-orange", text:"<strong>houvault01 (73%) &amp; eus2rubrik (85%):</strong> Both slightly below target. houvault01 still recovering from the prior week's drop to 50% — continue monitoring."},
+      {type:"alert-blue",   text:"<strong>Capacity Projections Refreshed:</strong> RICBRIK_01 and ricvault01 now show 80/85% milestone dates extending into Q3/Q4 2026 as growth continues to plateau."}
+    ]
+  },
+  actions: `<div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Meeting notes for the June 25, 2026 call have not yet been added. Update this section after the weekly call.</div></div>`,
+  announce: [
+    {
+      tag: "🏆 Partners",
+      title: "Congratulations to the Rubrik 2026 Global Partner Award Winners",
+      date: "June 10, 2026",
+      impact: "Rubrik's partner ecosystem just got a spotlight moment. At the inaugural in-person Partner Summit, Rubrik recognized top-performing partners across GSI, MSP, cloud, and technology alliance categories — a good signal of the breadth of expertise available to support your environment, from implementation to advanced cyber resilience use cases.",
+      url: "https://www.rubrik.com/blog/company/26/6/congratulations-to-the-rubrik-2026-global-partner-award-winners"
+    }
+  ]
+}
 }; // end REPORTS
 
 // ═══════════════════════════════════════════════════════════
@@ -1580,11 +1684,11 @@ const LICENSES_HTML = `
 
 <!-- ── KPI ROW ── -->
 <div class="stat-grid" style="grid-template-columns:repeat(5,1fr);margin-bottom:2rem;">
-  <div class="stat-card blue"><div class="stat-label">Appliance Usable</div><div class="stat-value" style="font-size:1.5rem">66.5%</div><div class="stat-sub">1,751 / 2,631 TB</div></div>
-  <div class="stat-card orange"><div class="stat-label">RCV Archive</div><div class="stat-value" style="font-size:1.5rem">83.5%</div><div class="stat-sub">8.12 / 9.73 PB</div></div>
-  <div class="stat-card orange"><div class="stat-label">RCV Backup SZ</div><div class="stat-value" style="font-size:1.5rem">84.4%</div><div class="stat-sub">652.5 / 773 TB</div></div>
-  <div class="stat-card orange"><div class="stat-label">NAS Cloud Direct</div><div class="stat-value" style="font-size:1.5rem">78.7%</div><div class="stat-sub">1.16 / 1.47 PB</div></div>
-  <div class="stat-card blue"><div class="stat-label">Cloud (UCL)</div><div class="stat-value" style="font-size:1.5rem">36.7%</div><div class="stat-sub">78.8 / 215 TB</div></div>
+  <div class="stat-card blue"><div class="stat-label">Appliance Usable</div><div class="stat-value" style="font-size:1.5rem">66.3%</div><div class="stat-sub">1,743 / 2,631 TB</div></div>
+  <div class="stat-card orange"><div class="stat-label">RCV Archive</div><div class="stat-value" style="font-size:1.5rem">85.7%</div><div class="stat-sub">8.34 / 9.73 PB</div></div>
+  <div class="stat-card orange"><div class="stat-label">RCV Backup SZ</div><div class="stat-value" style="font-size:1.5rem">87.4%</div><div class="stat-sub">675.3 / 773 TB</div></div>
+  <div class="stat-card orange"><div class="stat-label">NAS Cloud Direct</div><div class="stat-value" style="font-size:1.5rem">78.9%</div><div class="stat-sub">1.16 / 1.47 PB</div></div>
+  <div class="stat-card blue"><div class="stat-label">Cloud (UCL)</div><div class="stat-value" style="font-size:1.5rem">36.8%</div><div class="stat-sub">79.1 / 215 TB</div></div>
 </div>
 
 <!-- ── USAGE CHART CARDS ── -->
@@ -1594,19 +1698,19 @@ const LICENSES_HTML = `
   <div class="info-card">
     <h3 style="display:flex;justify-content:space-between;align-items:center;">Rubrik Appliance <span class="badge badge-blue">66.5% — Healthy</span></h3>
     <div style="margin-top:1rem;">
-      <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:4px;"><span>HOUBRIK_01</span><span style="font-weight:600">703 TB</span></div>
-      <div class="progress-bar-wrap" style="margin-bottom:8px;"><div class="progress-bar" style="width:27%;background:var(--info)"></div></div>
-      <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:4px;"><span>RICBRIK_01</span><span style="font-weight:600">618 TB</span></div>
-      <div class="progress-bar-wrap" style="margin-bottom:8px;"><div class="progress-bar" style="width:23%;background:var(--info)"></div></div>
-      <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:4px;"><span>houvault01</span><span style="font-weight:600">156 TB</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:4px;"><span>HOUBRIK_01</span><span style="font-weight:600">695 TB</span></div>
+      <div class="progress-bar-wrap" style="margin-bottom:8px;"><div class="progress-bar" style="width:26%;background:var(--info)"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:4px;"><span>RICBRIK_01</span><span style="font-weight:600">620 TB</span></div>
+      <div class="progress-bar-wrap" style="margin-bottom:8px;"><div class="progress-bar" style="width:24%;background:var(--info)"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:4px;"><span>houvault01</span><span style="font-weight:600">157 TB</span></div>
       <div class="progress-bar-wrap" style="margin-bottom:8px;"><div class="progress-bar" style="width:6%;background:var(--info)"></div></div>
       <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:4px;"><span>ricvault01</span><span style="font-weight:600">273 TB</span></div>
       <div class="progress-bar-wrap" style="margin-bottom:12px;"><div class="progress-bar" style="width:10%;background:var(--info)"></div></div>
       <div style="border-top:1px solid var(--border);padding-top:10px;">
-        <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:4px;"><span style="font-weight:600">Total Consumed</span><span style="font-weight:700;color:var(--info)">1,751 TB</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:4px;"><span style="font-weight:600">Total Consumed</span><span style="font-weight:700;color:var(--info)">1,743 TB</span></div>
         <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:6px;"><span style="color:var(--muted)">Total Usable Capacity</span><span>2,631 TB</span></div>
-        <div class="progress-bar-wrap"><div class="progress-bar" style="width:66.5%;background:var(--info)"></div></div>
-        <div style="font-size:0.72rem;color:var(--success);font-weight:600;margin-top:4px;">✓ 66.5% utilized — 880 TB headroom remaining</div>
+        <div class="progress-bar-wrap"><div class="progress-bar" style="width:66.3%;background:var(--info)"></div></div>
+        <div style="font-size:0.72rem;color:var(--success);font-weight:600;margin-top:4px;">✓ 66.3% utilized — 888 TB headroom remaining</div>
         <div style="font-size:0.7rem;color:var(--muted);margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);">Licensed via Enterprise Edition (1,440 TB) + Foundation Edition (360 + 750 TB) = 2,550 TB entitled against 2,631 TB usable backend capacity.</div>
       </div>
     </div>
@@ -1617,14 +1721,14 @@ const LICENSES_HTML = `
     <h3>Rubrik Cloud Vault</h3>
     <div style="margin-top:1rem;">
       <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px;">Archive Tier</div>
-      <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:4px;"><span>Consumed</span><span style="font-weight:600">8.12 PB</span></div>
-      <div class="progress-bar-wrap" style="margin-bottom:4px;"><div class="progress-bar" style="width:84%;background:var(--warning)"></div></div>
-      <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--muted);margin-bottom:14px;"><span>Entitled: 9.73 PB</span><span style="font-weight:600;color:var(--warning)">83.5%</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:4px;"><span>Consumed</span><span style="font-weight:600">8.34 PB</span></div>
+      <div class="progress-bar-wrap" style="margin-bottom:4px;"><div class="progress-bar" style="width:86%;background:var(--warning)"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--muted);margin-bottom:14px;"><span>Entitled: 9.73 PB</span><span style="font-weight:600;color:var(--warning)">85.7%</span></div>
 
       <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px;">Backup – Single Zone</div>
-      <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:4px;"><span>Consumed</span><span style="font-weight:600">652.5 TB</span></div>
-      <div class="progress-bar-wrap" style="margin-bottom:4px;"><div class="progress-bar" style="width:84%;background:var(--warning)"></div></div>
-      <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--muted);margin-bottom:14px;"><span>Entitled: 773 TB</span><span style="font-weight:600;color:var(--warning)">84.4%</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:4px;"><span>Consumed</span><span style="font-weight:600">675.3 TB</span></div>
+      <div class="progress-bar-wrap" style="margin-bottom:4px;"><div class="progress-bar" style="width:87%;background:var(--warning)"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--muted);margin-bottom:14px;"><span>Entitled: 773 TB</span><span style="font-weight:600;color:var(--warning)">87.4%</span></div>
 
       <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px;">Backup – Multi Region</div>
       <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:4px;"><span>Consumed</span><span style="font-weight:600">0 TB</span></div>
@@ -1682,8 +1786,8 @@ const LICENSES_HTML = `
   </div>
 </div>
 
-<div class="alert-box alert-green">✅ <div><strong>Appliance Properly Licensed:</strong> 1,751 TB consumed against 2,631 TB usable backend capacity (66.5%) — licensed via Enterprise Edition (1,440 TB) plus Foundation Edition (360 + 750 TB). Healthy headroom of ~880 TB remains.</div></div>
-<div class="alert-box alert-orange">⚠️ <div><strong>3 products above 80%:</strong> RCV Archive (83.5%), RCV Backup Single Zone (84.4%), and NAS Cloud Direct (78.7%) are approaching capacity thresholds. Monitor growth trends.</div></div>
+<div class="alert-box alert-green">✅ <div><strong>Appliance Properly Licensed:</strong> 1,743 TB consumed against 2,631 TB usable backend capacity (66.3%) — licensed via Enterprise Edition (1,440 TB) plus Foundation Edition (360 + 750 TB). Healthy headroom of ~888 TB remains.</div></div>
+<div class="alert-box alert-orange">⚠️ <div><strong>3 products above 80%:</strong> RCV Archive (85.7%), RCV Backup Single Zone (87.4%), and NAS Cloud Direct (78.9%) are approaching capacity thresholds. Monitor growth trends.</div></div>
 <div class="alert-box alert-red">🚨 <div><strong>Renewals due within 6 months:</strong> Cloud UCL (Jul 31), Identity Resilience (Sep 11), NAS products and RCV Archive (Oct 1). Begin renewal discussions now.</div></div>
 
 <style>
@@ -1891,10 +1995,10 @@ function renderActions(d, date) {
 
 function renderAnnouncements(posts, date) {
   if (!posts || posts.length === 0) {
-    return `<div class="section-header"><h2>Announcements</h2><p>Latest from the Rubrik blog · ${date}</p></div>
-    <div class="alert-box alert-blue">ℹ️ <div><strong>No new blog posts</strong> were published on rubrik.com/blog in the 7 days prior to this report date. Check back next week for the latest updates.</div></div>
+    return `<div class="section-header"><h2>Announcements</h2><p>Latest from the Rubrik Newsroom · ${date}</p></div>
+    <div class="alert-box alert-blue">ℹ️ <div><strong>No new newsroom items</strong> were published on rubrik.com/company/newsroom in the 7 days prior to this report date. Check back next week for the latest updates.</div></div>
     <div style="text-align:center;margin-top:2rem;padding:2rem;">
-      <a href="https://www.rubrik.com/blog" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--dark);color:#fff;padding:10px 20px;border-radius:8px;font-size:0.85rem;font-weight:600;text-decoration:none;">📖 Visit the Rubrik Blog</a>
+      <a href="https://www.rubrik.com/company/newsroom" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--dark);color:#fff;padding:10px 20px;border-radius:8px;font-size:0.85rem;font-weight:600;text-decoration:none;">📰 Visit the Rubrik Newsroom</a>
     </div>`;
   }
   const cards = posts.map(p => `
@@ -1911,8 +2015,8 @@ function renderAnnouncements(posts, date) {
         <div style="display:inline-flex;align-items:center;gap:5px;font-size:0.78rem;font-weight:600;color:var(--red);">Read article →</div>
       </div>
     </a>`).join('');
-  return `<div class="section-header"><h2>Announcements</h2><p>Latest from the Rubrik blog · ${date}</p></div>
-  <div class="alert-box alert-blue" style="margin-bottom:1.5rem;">ℹ️ <div>The posts below were published on <a href="https://www.rubrik.com/blog" target="_blank" style="color:var(--info);font-weight:600;">rubrik.com/blog</a> in the 7 days prior to this report. Click any card to read the full article.</div></div>
+  return `<div class="section-header"><h2>Announcements</h2><p>Latest from the Rubrik Newsroom · ${date}</p></div>
+  <div class="alert-box alert-blue" style="margin-bottom:1.5rem;">ℹ️ <div>The items below were published on <a href="https://www.rubrik.com/company/newsroom" target="_blank" style="color:var(--info);font-weight:600;">rubrik.com/company/newsroom</a> in the 14 days prior to this report (extended window since no items were available last week). Click any card to read the full article.</div></div>
   ${cards}`;
 }
 
@@ -1937,7 +2041,7 @@ const LIC_SKUS = [
       {id:"5508Y000008OS1n", desc:"Data Security EE for NAS (PA)", qty:"1,230 FETB", start:"Oct 2, 2023",   end:"Oct 1, 2026",  badge:"badge-orange", asset:"—"},
       {id:"550VI00000IyAJt", desc:"Data Security EE for NAS (Add-on)", qty:"240 FETB", start:"Sep 25, 2024", end:"Sep 24, 2026", badge:"badge-orange", asset:"—"}
     ]},
-  { fam:"RS-BT-CVA",     product:"RCV – Archive Tier", qty:"9.73 PB", consumed:"8.12 PB", pct:84, pctBar:84, barColor:"var(--warning)", lines:4,
+  { fam:"RS-BT-CVA",     product:"RCV – Archive Tier", qty:"9.73 PB", consumed:"8.34 PB", pct:86, pctBar:86, barColor:"var(--warning)", lines:4,
     earliestEnd:"2026-10-01", latestEnd:"2028-05-29", earlyBadge:"badge-orange", lateBadge:"badge-green",
     children:[
       {id:"5508Y000008OS1m", desc:"Cloud Vault Archive SZ+Multi (PA)", qty:"1,500 TB",  start:"Oct 2, 2023",   end:"Oct 1, 2026",  badge:"badge-orange", asset:"—"},
@@ -1953,7 +2057,7 @@ const LIC_SKUS = [
       {id:"550VI00000ON0xZ", desc:"Scale Foundation – Mfg",     qty:"360 TB",   start:"Dec 10, 2024", end:"Dec 9, 2026",  badge:"badge-yellow", asset:"—"},
       {id:"550VI00000OfTWT", desc:"Scale Foundation Edition",    qty:"360 BETB", start:"Dec 10, 2024", end:"Dec 9, 2026",  badge:"badge-yellow", asset:"—"}
     ]},
-  { fam:"RS-BT-CVB",     product:"RCV – Backup Tier Single Zone", qty:"773 BETB", consumed:"652.5 TB", pct:84, pctBar:84, barColor:"var(--warning)", lines:3,
+  { fam:"RS-BT-CVB",     product:"RCV – Backup Tier Single Zone", qty:"773 BETB", consumed:"675.3 TB", pct:87, pctBar:87, barColor:"var(--warning)", lines:3,
     earliestEnd:"2026-12-09", latestEnd:"2028-05-29", earlyBadge:"badge-yellow", lateBadge:"badge-green",
     children:[
       {id:"550VN00000be745", desc:"RCV Backup Single Zone",      qty:"450 BETB", start:"Dec 10, 2025", end:"Dec 9, 2026",  badge:"badge-yellow", asset:"—"},
@@ -1969,7 +2073,7 @@ const LIC_SKUS = [
       {id:"550VN00000YiLTd", desc:"R7000-3 Support", qty:"2", start:"Nov 3, 2025", end:"Nov 2, 2026", badge:"badge-orange", asset:"AA254574200035 · RHA-7420-01"},
       {id:"550VN00000YiLTe", desc:"R7000-3 Support", qty:"2", start:"Nov 3, 2025", end:"Nov 2, 2026", badge:"badge-orange", asset:"AA254574200033 · RHA-7420-01"}
     ]},
-  { fam:"RS-BT-EE",      product:"Rubrik Enterprise Edition (Appliance)", qty:"1,440 BETB", consumed:"1,751 TB", pct:67, pctBar:67, barColor:"var(--info)", lines:3,
+  { fam:"RS-BT-EE",      product:"Rubrik Enterprise Edition (Appliance)", qty:"1,440 BETB", consumed:"1,743 TB", pct:66, pctBar:66, barColor:"var(--info)", lines:3,
     earliestEnd:"2027-04-30", latestEnd:"2027-04-30", earlyBadge:"badge-blue", lateBadge:"badge-blue",
     children:[
       {id:"550VI000009Bw8q", desc:"Enterprise Edition per BETB", qty:"720 BETB", start:"May 1, 2024", end:"Apr 30, 2027", badge:"badge-blue", asset:"—"},
@@ -2155,7 +2259,7 @@ function showPage(id) {
 }
 
 // Load latest report on startup
-switchReport("June 18, 2026");
+switchReport("June 25, 2026");
 </script>
 </body>
 </html>
