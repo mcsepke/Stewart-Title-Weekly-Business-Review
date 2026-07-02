@@ -1724,10 +1724,13 @@ const REPORTS = {
     <div class="info-card" style="margin-bottom:1.5rem;">
       <h3>🎯 Key Outcomes This Week</h3>
       <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
-        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span><strong>Case count reduced to 6</strong> (from 8 last week). Cases 1247497 and 1225950 have dropped off the open list — confirm final closure with their respective owners.</span></div>
-        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span><strong>Roy and Zach return today (July 2).</strong> Cloud cluster AD/DNS work and eus2rubrik support tunnel enablement should be prioritized now that the team is back.</span></div>
-        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span><strong>New Jira CDM-555987</strong> opened for log shipping stale issue on HOUBRIK_01. Engineering is engaged — no customer action required currently.</span></div>
-        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span><strong>Performance score reached 91.5%</strong> — best result this quarter. RICBRIK_01, scusrubrik, and houbrik02 all at 100%.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span><strong>Edge appliance CPU at 100%:</strong> Support to investigate first; upgrade to a larger image size if needed — confirmed license-compliant.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span><strong>Cascaded replication not supported:</strong> Only cascaded archiving is available (target always pulls). Mark to validate roadmap status.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span><strong>Cloud call split into two:</strong> Eugene (Azure-only) kept at 4 PM today. Tatyana + Kathy Straw (broader cloud strategy) rescheduled to July 16, 8–9 AM Central.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span><strong>Unused vCenter flagged for removal</strong> to eliminate recurring certificate refresh failures (txricvvc63).</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✅</span><span><strong>Azure SQL (store.com) resolved:</strong> Servers were domain-joined to Cisco; reconfigured accordingly — backups now working.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✅</span><span><strong>SQL92 backup failures confirmed resolved</strong> week-over-week via performance dashboard.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span><strong>Pure/Rubrik integration call pushed ~1 month</strong> — pending LTR code availability from Pure.</span></div>
       </div>
     </div>
 
@@ -1737,49 +1740,64 @@ const REPORTS = {
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:0.75rem;">
 
         <div style="padding:10px 12px;background:#fef2f2;border-radius:8px;border-left:3px solid var(--danger);">
-          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--danger);margin-bottom:8px;">Tim / Roy (P1 — Urgent)</div>
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--danger);margin-bottom:8px;">Mark — Urgent</div>
           <div style="display:flex;flex-direction:column;gap:8px;">
-            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Enable support tunnel on <strong>eus2rubrik</strong> so Gagandeep M can pull diagnostics for the NodeBad condition on VRAZ1C70ADB62 (Case 1244435 — P1).</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Refresh performance dashboard <strong>Thursday morning</strong> regardless of call status.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Update calendar: move Eugene call to 4 PM today; create July 16 call (8–9 AM Central) with Tatyana and Kathy; remove Tatyana from today's 4 PM.</span></div>
           </div>
         </div>
 
         <div style="padding:10px 12px;background:#fff7ed;border-radius:8px;border-left:3px solid var(--warning);">
-          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--warning);margin-bottom:8px;">Tim / Frank</div>
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--warning);margin-bottom:8px;">Tim / Support</div>
           <div style="display:flex;flex-direction:column;gap:8px;">
-            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Track RMA shipment for HOUBRIK_01 metadata disk (/dev/sdc, node RVMHM243S001023) and schedule Field Engineer with Meghana N (Case 1246758).</span></div>
-            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Open firewall ports for Edge replication to Houston vault (carry-forward from June 25).</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Open support case for <strong>Edge appliance CPU utilization</strong>; Mark to escalate to support escalation managers if Houston hardware follow-up (10:30 AM) is unresolved.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Submit <strong>firewall port request for Toronto domain controllers</strong> (2019 DCs unable to communicate — missing firewall rules).</span></div>
           </div>
         </div>
 
         <div style="padding:10px 12px;background:#eff6ff;border-radius:8px;border-left:3px solid var(--info);">
-          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--info);margin-bottom:8px;">Roy / Zach</div>
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--info);margin-bottom:8px;">Mark</div>
           <div style="display:flex;flex-direction:column;gap:8px;">
-            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Investigate cloud cluster AD/DNS configuration — clusters may still be pointing to stewart.net instead of stewart.com. Coordinate with Rubrik to retest after DNS correction.</span></div>
-            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Confirm SRV records exist for _ldap._tcp.dc._msdcs.stewart.com on all AD-aware DNS servers referenced by Rubrik clusters.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Share performance dashboard link with Tim.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Validate cascaded replication support and roadmap status.</span></div>
           </div>
         </div>
 
         <div style="padding:10px 12px;background:#eff6ff;border-radius:8px;border-left:3px solid var(--info);">
-          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--info);margin-bottom:8px;">Tim / Jawad Abdul</div>
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--info);margin-bottom:8px;">Tim</div>
           <div style="display:flex;flex-direction:column;gap:8px;">
-            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Validate and confirm closure of Case 1252625 (new DC error — RBK92070002 / Agent.TTransportOpenFailure). Jawad believes the issue is resolved; Stewart to verify.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Check Eugene's availability for 4 PM today.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Monitor <strong>NCD weekend job failures</strong> (SureClose domain) — believed caused by Rubrik SaaS node reboots during updates.</span></div>
           </div>
         </div>
 
         <div style="padding:10px 12px;background:#fff7ed;border-radius:8px;border-left:3px solid var(--warning);">
-          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--warning);margin-bottom:8px;">Bryan's Team / Neeraj Yadav</div>
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--warning);margin-bottom:8px;">Ben</div>
           <div style="display:flex;flex-direction:column;gap:8px;">
-            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Follow up on RBS restart issue (Case 1096748) — Waiting for Rubrik Support. Cluster upgraded to 9.4.3. Confirm with Neeraj Yadav whether the upgrade has stabilized the service or if further investigation is needed.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Share renewal quotes with Tim — <strong>July UCL renewal</strong> and <strong>September cloud/identity licenses</strong> pending PO action.</span></div>
           </div>
         </div>
 
-        <div style="padding:10px 12px;background:#eff6ff;border-radius:8px;border-left:3px solid var(--info);">
-          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--info);margin-bottom:8px;">Tatyana</div>
+        <div style="padding:10px 12px;background:#f0fdf4;border-radius:8px;border-left:3px solid #22c55e;">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#16a34a;margin-bottom:8px;">Pending Confirmation</div>
           <div style="display:flex;flex-direction:column;gap:8px;">
-            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Run SQL backup/restore performance test when available — carry-forward. Confirm whether multi-node feature flag case has been progressed.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Houston hardware: drive replacements and node swap follow-up at 10:30 AM.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Scale-based license utilization reporting — not yet available in RSC; Rubrik actively developing.</span></div>
           </div>
         </div>
 
+      </div>
+    </div>
+
+    <!-- Feature Updates -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>🚀 Feature Updates Highlighted</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">⭐</span><span><strong>Performance Dashboard (new):</strong> AI-generated weekly report covering job counts, durations, failure analysis, and top issues — ~600K tasks per cycle with 0.03% failure rate.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">⭐</span><span><strong>Rubrik AI (replaced Ruby):</strong> Significantly more capable — generates scripts, interprets errors, supports troubleshooting. Team confirmed positive use cases.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">⭐</span><span><strong>Object-level pause (new):</strong> Backups can now be paused per object without creating a new SLA.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">⭐</span><span><strong>RBS throttling (new):</strong> Host-level throttle now available for Windows/SQL workloads.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">⭐</span><span><strong>RCV Recovery Tier:</strong> Required for frequent/automated full recoveries from RCV. Backup tier allows ~10% restore without issue; recovery tier eliminates egress costs.</span></div>
       </div>
     </div>
 
@@ -1787,8 +1805,8 @@ const REPORTS = {
     <div class="info-card" style="margin-bottom:1.5rem;">
       <h3>📊 Account Health</h3>
       <div style="margin-top:0.75rem;display:flex;align-items:flex-start;gap:12px;">
-        <span class="badge badge-orange" style="font-size:0.78rem;padding:5px 12px;flex-shrink:0;">Moderate Risk</span>
-        <span style="font-size:0.83rem;color:var(--text);line-height:1.6;">Active P1 hardware case on eus2rubrik (NodeBad) requiring urgent support tunnel enablement. HOUBRIK_01 metadata disk RMA in progress. Log shipping stale on HOUBRIK_01 with Engineering engaged. Otherwise, performance scores are at a quarterly high (91.5%) and case volume has reduced from 8 to 6. License renewals for NAS Cloud Direct and RCV products require attention within the next 90 days.</span>
+        <span class="badge badge-blue" style="font-size:0.78rem;padding:5px 12px;flex-shrink:0;">Strong</span>
+        <span style="font-size:0.83rem;color:var(--text);line-height:1.6;">Overall environment health is strong. No critical open risks — Houston hardware degradation is the most time-sensitive concern with drive replacements and node swap follow-up scheduled for this morning. Licensing renewals for UCL (July) and cloud/identity licenses (September) require PO action from Tim. Two Azure SQL workloads resolved this week; cascaded replication architecture clarified.</span>
       </div>
     </div>
 
