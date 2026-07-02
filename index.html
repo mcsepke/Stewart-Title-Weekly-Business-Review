@@ -1576,7 +1576,57 @@ const REPORTS = {
     </div>
 
     <div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Check boxes above are for visual reference during the call. Carry forward any open items to next week's review.</div></div>`,
-  announce: null
+  announce: {
+    type: "event",
+    html: `
+<div style="background:linear-gradient(135deg,#0f0f3a 0%,#1a1a5e 50%,#0d0d2b 100%);border-radius:10px;padding:24px;color:#fff;font-family:inherit;">
+  <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+    <img src="https://www.rubrik.com/content/dam/rubrik/images/icons/navigation/Logo.svg" alt="Rubrik" style="height:28px;filter:brightness(0) invert(1);">
+    <div>
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#8ba7ff;font-weight:600;">June 8–11, 2026 · Las Vegas &amp; Virtual</div>
+      <div style="font-size:20px;font-weight:700;letter-spacing:1px;color:#fff;">RUBRIK FORWARD 2026</div>
+    </div>
+  </div>
+  <p style="margin:0 0 16px;font-size:13px;line-height:1.6;color:#c0ccff;">
+    Rubrik's annual cyber resilience summit returned to The Venetian Resort in Las Vegas (June 8–11) with a virtual broadcast available globally. Sessions are now available on-demand.
+  </p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">
+    <div style="background:rgba(255,255,255,0.07);border-radius:8px;padding:12px;">
+      <div style="font-size:10px;color:#8ba7ff;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">🎤 Featured Keynotes</div>
+      <div style="font-size:12px;line-height:1.7;color:#dde4ff;">
+        <strong>Unbreakable: Building the Foundation for the Agentic Era</strong><br>
+        Rubrik CEO Bipul Sinha + CTO Arvind Nithrakashyap<br><br>
+        <strong>Anthropic + Rubrik: Securing the Agentic World</strong><br>
+        Jason Clinton (Founding CISO, Anthropic) + Anneka Gupta (CPO, Rubrik)<br><br>
+        <strong>Breaking the Cell: Inside a North Korean IT Operation</strong><br>
+        Nicole Perlroth + Nisos CEO Ryan LaSalle
+      </div>
+    </div>
+    <div style="background:rgba(255,255,255,0.07);border-radius:8px;padding:12px;">
+      <div style="font-size:10px;color:#8ba7ff;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">🏁 McLaren Partnership</div>
+      <div style="font-size:12px;line-height:1.5;color:#dde4ff;margin-bottom:10px;">Rubrik's F1 partnership featured on the expo floor with a McLaren showcar, driving simulators, and an AI photo booth.</div>
+      <div style="font-size:10px;color:#8ba7ff;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">🌐 On-Demand Access</div>
+      <div style="font-size:12px;line-height:1.5;color:#dde4ff;">All keynotes and select breakout sessions are available for free — no registration required.</div>
+    </div>
+  </div>
+  <div style="background:rgba(255,255,255,0.07);border-radius:8px;padding:12px;margin-bottom:16px;">
+    <div style="font-size:10px;color:#8ba7ff;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">📋 Session Tracks</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;">
+      <span style="background:rgba(139,167,255,0.2);border:1px solid rgba(139,167,255,0.4);border-radius:4px;padding:3px 8px;font-size:11px;color:#c0ccff;">Agentic Cyber Resilience</span>
+      <span style="background:rgba(139,167,255,0.2);border:1px solid rgba(139,167,255,0.4);border-radius:4px;padding:3px 8px;font-size:11px;color:#c0ccff;">Identity Security &amp; Recovery</span>
+      <span style="background:rgba(139,167,255,0.2);border:1px solid rgba(139,167,255,0.4);border-radius:4px;padding:3px 8px;font-size:11px;color:#c0ccff;">Preemptive Recovery</span>
+      <span style="background:rgba(139,167,255,0.2);border:1px solid rgba(139,167,255,0.4);border-radius:4px;padding:3px 8px;font-size:11px;color:#c0ccff;">Minimum Viable Business</span>
+      <span style="background:rgba(139,167,255,0.2);border:1px solid rgba(139,167,255,0.4);border-radius:4px;padding:3px 8px;font-size:11px;color:#c0ccff;">AI-Powered Threat Defense</span>
+      <span style="background:rgba(139,167,255,0.2);border:1px solid rgba(139,167,255,0.4);border-radius:4px;padding:3px 8px;font-size:11px;color:#c0ccff;">Hands-On Labs</span>
+    </div>
+  </div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <a href="https://www.rubrik.com/collections/forward-2026" target="_blank" style="background:#4c6ef5;color:#fff;padding:9px 18px;border-radius:6px;text-decoration:none;font-size:12px;font-weight:600;display:inline-block;">▶ Watch On-Demand</a>
+    <a href="https://forward.rubrik.com/2026/agenda-in-person" target="_blank" style="background:rgba(255,255,255,0.12);color:#fff;padding:9px 18px;border-radius:6px;text-decoration:none;font-size:12px;font-weight:600;border:1px solid rgba(255,255,255,0.25);display:inline-block;">📋 Full Agenda</a>
+    <a href="https://www.rubrik.com/company/newsroom/press-releases/26/rubrik-stages-all-star-lineup-at-forward-2026-las-vegas" target="_blank" style="background:rgba(255,255,255,0.12);color:#fff;padding:9px 18px;border-radius:6px;text-decoration:none;font-size:12px;font-weight:600;border:1px solid rgba(255,255,255,0.25);display:inline-block;">📰 Press Release</a>
+  </div>
+</div>`
+}
 }
 
 ,
@@ -2817,6 +2867,10 @@ function renderPerfFailed() {
 // ═══════════════════════════════════════════════════════════
 
 function renderAnnouncements(newsletter, date) {
+  if (newsletter && newsletter.type === 'event') {
+    return `<div class="section-header"><h2>Announcements</h2><p>Rubrik Events &amp; News · ${date}</p></div>
+    <div style="margin-top:1rem;">${newsletter.html}</div>`;
+  }
   if (!newsletter) {
     return `<div class="section-header"><h2>Announcements</h2><p>Rubrik Support Newsletter · ${date}</p></div>
     <div class="alert-box alert-blue">ℹ️ <div><strong>No newsletter issue</strong> is associated with this report date. The Rubrik Support Newsletter is published monthly — check back when the next issue is released.</div></div>`;
