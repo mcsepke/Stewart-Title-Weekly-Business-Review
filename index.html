@@ -369,14 +369,98 @@ const REPORTS = {
     ]
   },
   actions: `
+    <!-- Key Outcomes -->
     <div class="info-card" style="margin-bottom:1.5rem;">
-      <h3>📋 Meeting Recap</h3>
-      <p style="font-size:0.85rem;color:var(--muted);line-height:1.8;margin-top:0.6rem;">
-        No detailed call notes were provided for the July 9 review — this report reflects the latest support case, Jira, cluster, and performance data only. Case-level customer-facing status summaries are available on hover over each case number in the Support Cases tab. Add meeting notes here once available.
-      </p>
+      <h3>🎯 Key Outcomes</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span>The team reviewed open support cases, backup health metrics, and storage tier migration progress.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span><strong>AD/GPO backup failures are increasing</strong> and now have an active support ticket.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span><strong>Cloud data migration</strong> from legacy storage to Rubrik multi-region requires further evaluation.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;color:var(--success);">✓</span><span>Most other issues are trending positively — <strong>SQL warnings and vSphere backup times</strong> have returned to normal.</span></div>
+      </div>
+    </div>
+
+    <!-- Decisions + Completed two-col -->
+    <div class="two-col" style="margin-bottom:1.5rem;">
+      <div class="info-card">
+        <h3>✅ Decisions Made</h3>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>Cascaded replication</strong> is not supported and not on the roadmap; a feature enhancement request can be submitted if desired.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>Pure Storage array integration errors</strong> are non-critical and do not affect backup functionality — no immediate action required.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>Decommissioned domain controllers</strong> should be removed from protection once confirmed offline.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>AWS cloud cluster deployment</strong> may involve Professional Services to assist — discussion planned on next week's call.</span></div>
+        </div>
+      </div>
+      <div class="info-card">
+        <h3>🏁 Completed</h3>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:0.75rem;">
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;color:var(--success);">✓</span><span><strong>vCenter connection error</strong> fixed by Tim; failures resolved.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;color:var(--success);">✓</span><span><strong>SQL Server log backup warnings</strong> dropped to zero.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;color:var(--success);">✓</span><span><strong>vSphere 95th percentile backup time</strong> returned to normal (~24 minutes or less, down from 8 hours the prior week).</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;color:var(--success);">✓</span><span><strong>Firewall/replication path issue</strong> resolved — root cause was vault firewall configuration on Stewart's network, not the NetScaler.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;color:var(--success);">✓</span><span><strong>Rubrik multi-tier migration</strong> initiated by Tim for select cloud workloads; status shows "being prepared" and is monitorable.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Blockers + Risks two-col -->
+    <div class="two-col" style="margin-bottom:1.5rem;">
+      <div class="info-card">
+        <h3>🚧 Blockers</h3>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔴</span><span><strong>Legacy cloud data migration</strong> (7-year retention) requires Professional Services involvement — no self-service migration path confirmed.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔴</span><span><strong>AD/GPO backup failures</strong> are increasing week over week; support ticket opened, logs submitted, awaiting engineer analysis.</span></div>
+        </div>
+      </div>
+      <div class="info-card">
+        <h3>🚨 Risks / Escalations</h3>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔴</span><span><strong>RCV backup tier trending upward:</strong> Risk of hitting capacity ceiling if multi-region migration does not accelerate.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔴</span><span><strong>Hardware replacement costs</strong> currently high; decision on expand vs. replace deferred to next week's discussion.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pending Confirmation -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>⏳ Pending Confirmation</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span>Whether AD/GPO failures are linked to the existing support ticket or need a separate case.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span>Availability of cloud specialist for next week's second cloud/SQL AWS call — time may need to be adjusted.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span>Budgetary ask for hardware expansion — Mark to provide feedback next week.</span></div>
+      </div>
+    </div>
+
+    <!-- Action Items by Owner -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>📋 Action Items by Owner</h3>
+      <div style="margin-top:0.9rem;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="padding:10px 12px;background:#fef2f2;border-radius:8px;border-left:3px solid var(--red);">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--red);margin-bottom:8px;">Mark</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Engage PS team to discuss legacy cloud data migration options, cost, and level of effort — after returning from leave.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Provide feedback on hardware expansion budgetary request — next week.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Confirm or reschedule second cloud/SQL AWS call depending on cloud specialist availability.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Update action items in the weekly report.</span></div>
+          </div>
+        </div>
+        <div style="padding:10px 12px;background:#fff7ed;border-radius:8px;border-left:3px solid var(--warning);">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--warning);margin-bottom:8px;">Bryan / Support</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Continue working the AD backup failure support case; open a separate case for GPO/AD object failures if not already linked.</span></div>
+          </div>
+        </div>
+        <div style="padding:10px 12px;background:#eff6ff;border-radius:8px;border-left:3px solid var(--info);grid-column:1/-1;">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--info);margin-bottom:8px;">Tim</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Review remaining cloud workloads for multi-tier eligibility and monitor migration events.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Open support ticket for Edge CPU utilization on the VMware side when bandwidth allows.</span></div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Check boxes above are for visual reference during the call. Carry forward any open items to next week's review.</div></div>`,
-  announce: null
+announce: null
 }
 
 ,
