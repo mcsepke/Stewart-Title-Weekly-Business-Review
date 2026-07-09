@@ -2542,6 +2542,81 @@ const PERF_FINDINGS = {
     }
   ]
 }
+,
+
+"July 9, 2026": {
+  headline: "Data window: Jul 8–9, 2026. Compared to prior week (Jul 1–2). A mixed week — four issues from last week's report are resolved or improved, but Active Directory Domain Controller backup failures quadrupled and a new hardware node alert requires prompt escalation.",
+  items: [
+    {
+      sev: "red",
+      icon: "🚨",
+      title: "New hardware alert: node RVMHM188S005036 on HOUBRIK_01 flagged for replacement (37×)",
+      body: "A new <strong>Hardware</strong> event category appeared this week with 37 events, all failed — every one is <strong>RBK11400005</strong>: \"Node 'RVMHM188S005036' has problems and must be replaced.\" This is on HOUBRIK_01 and is a different node than the one already being tracked under Case 1246758 (RVMHM243S001023), suggesting either a second failing node or an updated identifier for the same hardware issue. <strong>Action:</strong> Confirm with Meghana N / Support whether this is the same RMA already in progress or a new node failure; if new, open a case immediately given the 100% failure rate on every related job this week."
+    },
+    {
+      sev: "red",
+      icon: "🚨",
+      title: "Active Directory Domain Controller backups: failures quadrupled (15 → 60, 10 → 21 hosts)",
+      body: "AD DC backup failures jumped sharply from 15 last week to <strong>60 this week</strong>, now spread across <strong>21 unique domain controllers</strong> (up from 10) — worst-hit are TXHOUDC90.intl.sisco.stewart.net (8×), TXHOUDC30N.intl.sisco.stewart.net (6×), and TXHOUDC30.intl.sisco.stewart.net (5×). Most (55 of 60) return a generic internal error with an incident ID and no error code; 5 carry <strong>RBK94920012</strong> (ActiveDirectory.WindowsServerBackupFailed). The intl.sisco.stewart.net subdomain accounts for over half of all failures. <strong>Action:</strong> Escalate to Roy/Zach as a priority item — this is trending in the wrong direction and now affects more than double the domain controllers from last week."
+    },
+    {
+      sev: "green",
+      icon: "✅",
+      title: "vCenter SSL certificate failures fully resolved: txricvvc63 (27 → 0)",
+      body: "The <strong>txricvvc63.sisco.stewart.net</strong> vCenter refresh failures that were flagged as unresolved for two consecutive weeks (28× on June 25, 27× on July 2) are <strong>completely absent</strong> this week — zero failures. The SSL certificate trust issue Frank's team was asked to resolve appears fixed. No further action needed unless it recurs."
+    },
+    {
+      sev: "green",
+      icon: "✅",
+      title: "TXHOUORNSQL92 failures remain resolved (0 for the second consecutive week)",
+      body: "No SQL Server log backup or database backup failures against <strong>TXHOUORNSQL92.sisco.stewart.net</strong> this week, confirming the agent connectivity fix from two weeks ago has held."
+    },
+    {
+      sev: "green",
+      icon: "✅",
+      title: "Archive / vSphere VM duration back to normal: P95 7.9h → 24 min",
+      body: "The Archive/vSphere VM P95 duration spike flagged last week (1.5h → 7.9h, +437%) has fully reversed — this week's P95 is <strong>1,439 seconds (~24 minutes)</strong>, in line with the June 25 baseline. The large Exchange/SQL archival jobs called out last week (TWPRICEXMB22, TXHOUEV31, etc.) do not reappear as long-running this week, confirming last week's spike was a one-time event rather than a new trend."
+    },
+    {
+      sev: "blue",
+      icon: "ℹ️",
+      title: "Azure subscription configuration duration improving but still elevated: P95 257s → 181s (−30%)",
+      body: "The Azure subscription configuration polling spike flagged last week has partially recovered — P95 duration dropped from 257s to <strong>181s</strong>. This is still well above the June 25 baseline (~65s), so the underlying cause (API throttling, permissions, or resource discovery load) may not be fully resolved. <strong>Action:</strong> Continue monitoring; no action needed yet unless duration climbs again next week."
+    },
+    {
+      sev: "orange",
+      icon: "⚠️",
+      title: "Pure Storage array refresh failures continuing, slightly worse (35 → 40)",
+      body: "Storage array refresh failures increased modestly week-over-week: <strong>houpure01</strong> (Houston) failed 24 times (up from 21) and <strong>RICPURE01</strong> (Richmond) failed 16 times (up from 14). Still no error codes captured, consistent with the persistent connectivity/credential issue flagged in prior weeks. <strong>Action:</strong> This has now continued for three straight weeks without improvement — recommend Frank escalate directly with Pure Storage support rather than continuing to monitor."
+    },
+    {
+      sev: "orange",
+      icon: "⚠️",
+      title: "GPO / AD object tracking failures unchanged in aggregate (55×), shifting toward object tracking",
+      body: "Combined GPO and AD object tracking failures held flat at <strong>55</strong> (identical to last week), but the mix shifted: RBK94920004 (GPO changes) dropped to 47× (HOUBRIK_01 25×, RICBRIK_01 22×) while two new related codes appeared — RBK94920093 (ActiveDirectory.SetTrackingForHostFailed, 4×) and RBK11500001 (ActiveDirectoryParser policy at critical level, 3×). Still no net improvement. <strong>Action:</strong> Given three consecutive weeks with no progress, recommend opening a dedicated support case rather than continuing to track via the AD/DNS workstream alone."
+    },
+    {
+      sev: "green",
+      icon: "✅",
+      title: "Log Backup / SQL server DB warnings resolved (58 → 0)",
+      body: "The 58 Log Backup warnings that appeared new in the July 2 report are completely absent this week. No action needed."
+    },
+    {
+      sev: "blue",
+      icon: "ℹ️",
+      title: "SQL server DB backup warnings trending up again (5,686 → 6,225, +9.5%)",
+      body: "After a slight improvement in the July 2 report, SQL server DB backup warnings increased again this week to <strong>6,225</strong> — the highest of the four weeks tracked so far. vSphere VM backup warnings held essentially flat (1,373 vs. 1,373). Worth a root-cause conversation with Tatyana's team rather than continuing to monitor passively, given the trend is not improving."
+    },
+    {
+      sev: "blue",
+      icon: "ℹ️",
+      title: "Expanded event telemetry this week: 9 new event types now reporting",
+      body: "This week's RSC export includes several event types not present in prior weeks — Threat Monitoring, Diagnostic, Anomaly Detection Analysis, Identity Security Violation, Hardware, Identity Alert, Resource Operations, Discover, and Threat Feed — likely tied to recently enabled platform features discussed on the July 2 call. Of note, <strong>Diagnostic/Windows Host</strong> generated 2,272 warnings this week; these appear to be a new monitoring category rather than a regression, but are worth a quick sanity check in RSC to confirm they're informational and not masking a real issue."
+    }
+  ]
+}
+
+
 
 };
 
