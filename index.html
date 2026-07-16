@@ -381,14 +381,94 @@ const REPORTS = {
     ]
   },
   actions: `
+    <!-- Key Outcomes -->
     <div class="info-card" style="margin-bottom:1.5rem;">
-      <h3>📋 Meeting Recap</h3>
-      <p style="font-size:0.85rem;color:var(--muted);line-height:1.8;margin-top:0.6rem;">
-        No detailed call notes were provided for the July 16 review — this report reflects the latest support case, Jira, cluster, and performance data only. Case-level customer-facing status summaries are available on hover over each case number in the Support Cases tab. Add meeting notes here once available.
-      </p>
+      <h3>🎯 Key Outcomes</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span>The team reviewed storage capacity trends, identified a required <strong>archive migration from Seagate Lyve (now Wasabi-owned) buckets</strong>, and discussed Azure cloud cluster realignment to paired regions.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span>Several open support cases were reviewed, with a dedicated follow-up call scheduled for <strong>SQL Availability Group issues</strong>.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;color:var(--success);">✓</span><span><strong>Hardware replacements on the Houston cluster are complete</strong> and the environment is stable.</span></div>
+      </div>
+    </div>
+
+    <!-- Decisions + Completed two-col -->
+    <div class="two-col" style="margin-bottom:1.5rem;">
+      <div class="info-card">
+        <h3>✅ Decisions Made</h3>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>Azure cloud cluster migration:</strong> Deploy a new cluster in Central US to replace South Central, enabling proper Azure paired-region support with East US 2.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>Archive ownership transfer:</strong> Change RCV bucket ownership to the new cluster; existing cluster remains as a reader to preserve long-term backup access without data loss.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>9.5.2 upgrade:</strong> Recommended for the Edge node first (dedicated to AD backups) to improve identity/AD stability before applying to production clusters.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>Wasabi/Seagate Lyve migration:</strong> Mark to engage Professional Services to scope the archive bucket migration, as Wasabi has not committed to long-term availability of legacy Seagate Lyve buckets.</span></div>
+        </div>
+      </div>
+      <div class="info-card">
+        <h3>🏁 Completed</h3>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:0.75rem;">
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;color:var(--success);">✓</span><span><strong>Houston cluster hardware:</strong> Full shelf and multiple node replacements completed; environment confirmed stable.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;color:var(--success);">✓</span><span><strong>NAS/NetApp API permissions:</strong> Rubrik service account re-added; backup jobs confirmed running despite earlier "disconnected" status.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;color:var(--success);">✓</span><span><strong>Multi-region configuration:</strong> Production workloads moved to multi-region; ~70 TB available in that tier (Rubrik dashboard lagging behind actual state).</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Blockers -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>🚧 Blockers</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔴</span><span><strong>Firewall issues blocking domain controller backups</strong> — not a Rubrik platform issue; Bryan investigating port configuration for the store.com DC.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔴</span><span><strong>Code upgrade hesitation:</strong> Team has experienced hardware failures on-prem coinciding with past code upgrades (e.g., shelf replacement after the 9.5.1-p2 rollout).</span></div>
+      </div>
+    </div>
+
+    <!-- Pending Confirmation -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>⏳ Pending Confirmation</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>SQL Availability Group support case:</strong> Host goes offline briefly during backups (virtual guests); waiting on engineer research; antivirus exclusion for RSC flagged but not yet implemented.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>Vault cluster isolation kickoff:</strong> PM requested scheduling; Tim to confirm timing once current issues are resolved.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>AWS cluster sizing:</strong> Kathy confirmed ~7 TB database size (larger than expected); single extra-dense node (64 TB) still viable; regions confirmed as US East 1A and a second West region.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>Budgetary feedback:</strong> Mark to provide Ben with hardware expansion/replacement budget estimates; delayed due to Mark's absence.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;grid-column:1/-1;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>RCV capacity:</strong> 890 TB archived, nearly full; non-prod SQL data from old Lyve Cloud backups needs cleanup — Tim to coordinate with Tatyana and Kathy.</span></div>
+      </div>
+    </div>
+
+    <!-- Action Items by Owner -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>📋 Action Items by Owner</h3>
+      <div style="margin-top:0.9rem;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="padding:10px 12px;background:#fef2f2;border-radius:8px;border-left:3px solid var(--red);">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--red);margin-bottom:8px;">Mark</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Engage PS to define archive bucket migration program from Seagate Lyve/Wasabi buckets.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Send Tim link to Rubrik Security Cloud Guide on cluster reader/ownership transfer process.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Share 9.5.2 identity/reliability release notes via email <span class="case-num-wrap" data-tip="<strong style='display:block;margin-bottom:6px;'>CDM 9.5.2 — Identity Resilience Fixes</strong>For identity resilience specifically, 9.5.2 is mostly about hardening reliability rather than adding net-new features. The most relevant fixes are:<br><br><strong style='display:block;margin:6px 0 4px;color:#fbbf24;font-size:0.7rem;text-transform:uppercase;'>Actor Identification Reliability</strong>&bull; Fixes a bug where actor identification did not work when changes were made from a domain controller without RBS installed, which directly impacts IR's ability to resolve &quot;who did what&quot; for AD events.<br><br><strong style='display:block;margin:6px 0 4px;color:#fbbf24;font-size:0.7rem;text-transform:uppercase;'>Object Tracking &amp; Activity Pipeline Stability</strong>&bull; Fixes AD object tracking jobs remaining queued and failing after upgrade, which could stall ingestion of AD change events into the Identity Resilience activity log.<br>&bull; Fixes AD delete operations failing with internal error due to stale snapshot-reference-queue entries, which affects IR's ability to remediate/restore deleted objects cleanly.<br><br><strong style='display:block;margin:6px 0 4px;color:#fbbf24;font-size:0.7rem;text-transform:uppercase;'>Forest Recovery (ADFR) Reliability</strong>&bull; Fixes AD Forest Restore failing to configure DNS for recovered domain controllers during health check, improving automated forest recovery workflows used by IR.<br>&bull; Fixes AD Forest Restore failing to restore the domain controller, another critical stability fix for identity recovery scenarios.<br><br><strong style='display:block;margin:6px 0 4px;color:#fbbf24;font-size:0.7rem;text-transform:uppercase;'>GPO &amp; AD Metadata Correctness</strong>&bull; Fixes AD replication metadata activity reports truncating attribute changes beyond the first 1,000 linked attributes, which matters in large AD/GPO environments for accurate IR reporting and forensics.<br>&bull; Fixes AD live compare showing attributes as deleted when object names contain special characters or more than 2,000 attributes, improving compare views used during investigations.<br>&bull; Fixes AD backup index jobs failing when GPO version numbers go negative, and GPO-related backup payloads missing expected XML — both affect IR's ability to track and roll back GPO changes reliably.<br><br><strong style='display:block;margin:6px 0 4px;color:#fbbf24;font-size:0.7rem;text-transform:uppercase;'>Security &amp; Event Visibility</strong>&bull; Fixes failed web logins using an invalid domain not generating an event log, which improves security/audit fidelity in environments that rely on login failure telemetry alongside IR.">📝 <span style="font-size:0.72rem;color:var(--info);">ℹ hover for details</span></span></span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Provide Ben with budgetary feedback on hardware expansion (working with Mitch).</span></div>
+          </div>
+        </div>
+        <div style="padding:10px 12px;background:#eff6ff;border-radius:8px;border-left:3px solid var(--info);">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--info);margin-bottom:8px;">Tim</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Locate Edge appliance resource increase ticket and send to relevant team.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Clean up non-prod SQL data in Wasabi/Lyve Cloud buckets with Tatyana and Kathy.</span></div>
+          </div>
+        </div>
+        <div style="padding:10px 12px;background:#eef2ff;border-radius:8px;border-left:3px solid #6366f1;">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#6366f1;margin-bottom:8px;">Tim / Scott's Team</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Deploy new Rubrik cloud cluster in Azure Central US; configure replication pairing and update SLAs.</span></div>
+          </div>
+        </div>
+        <div style="padding:10px 12px;background:#fff7ed;border-radius:8px;border-left:3px solid var(--warning);">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--warning);margin-bottom:8px;">Bryan</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Resolve firewall/port issue for store.com DC; open Rubrik ticket if failures persist post-fix.</span></div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Check boxes above are for visual reference during the call. Carry forward any open items to next week's review.</div></div>`,
-  announce: { issue: "July 2026" }
+announce: { issue: "July 2026" }
 }
 
 ,
