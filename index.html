@@ -250,7 +250,9 @@
     <div style="display:flex;align-items:center;gap:8px;">
       <span class="date-label">Report Date</span>
       <select class="date-select" id="reportDate" onchange="switchReport(this.value)">
-        <option value="July 16, 2026" selected>July 16, 2026</option>
+        <option value="7-17-2026 - SQL AG Support Call" selected>7-17-2026 - SQL AG Support Call</option>
+        <option value="7-16-2026 - AWS Cloud Cluster Call">7-16-2026 - AWS Cloud Cluster Call</option>
+        <option value="July 16, 2026">July 16, 2026</option>
         <option value="July 9, 2026">July 9, 2026</option>
         <option value="July 2, 2026">July 2, 2026</option>
         <option value="June 25, 2026">June 25, 2026</option>
@@ -2377,6 +2379,202 @@ announce: null
 
     <div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Check boxes above are for visual reference during the call. Carry forward any open items to next week's review.</div></div>`,
   announce: { issue: "June 2026" }
+},
+
+"7-16-2026 - AWS Cloud Cluster Call": {
+  actionsOnly: true,
+  actions: `<div class="section-header"><h2>Action Items &amp; Meeting Notes</h2><p>Weekly call recap and outstanding actions · 7-16-2026 - AWS Cloud Cluster Call</p></div>
+
+    <!-- Key Outcomes -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>🎯 Key Outcomes</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span>The team aligned on deploying <strong>Rubrik Cloud Cluster on AWS</strong> to protect SQL workloads, following the same RSC marketplace deployment method used for Azure.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span>Cluster sizing is pending, but a single dense node (up to 32 TB post-deduplication) is the likely starting point, with two clusters required to support replication between east and west regions.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span>Professional services will be engaged for deployment, and EC2 instance protection will be configured (but not activated) during the same implementation.</span></div>
+      </div>
+    </div>
+
+    <!-- Decisions Made -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>✅ Decisions Made</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">▸</span><span><strong>Deployment method:</strong> RSC marketplace wizard — same approach used for Azure, not manual VM bootstrapping.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">▸</span><span><strong>Cluster sizing default:</strong> Single dense node per cluster; scales to 3-node if workload demands more performance. Single nodes are supported on dense and extra dense only (not standard).</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">▸</span><span><strong>Two clusters needed:</strong> Primary (US East) + DR (US West) to match existing replication architecture.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">▸</span><span><strong>EC2 protection:</strong> Configure permissions and discovery during Cloud Cluster deployment; no SLA applied until explicitly decided — will not interfere with existing AWS backup/DR strategy.</span></div>
+      </div>
+    </div>
+
+    <!-- Client Requirements -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>📋 Client Requirements</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">•</span><span>Protect SQL workloads on AWS EC2-hosted Windows hosts using RBS agents + SLA policies.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">•</span><span><strong>S3 bucket</strong> (with versioning and object lock enabled) and instance profile must be created by the customer team prior to deployment.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">•</span><span>VPC, subnet, and IP addresses required per node (1 IP per node; 3 IPs for a 3-node cluster).</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">•</span><span>Sizing data (database count, data volume, regions) still needed — customer team has homework to confirm.</span></div>
+      </div>
+    </div>
+
+    <!-- Pending Confirmation -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>⏳ Pending Confirmation</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">▸</span><span><strong>Sizing details:</strong> Exact database sizes and AWS regions not yet known; VMs are backed up so VM sizes can serve as a worst-case proxy.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">▸</span><span><strong>EC2 protection scope:</strong> Broader DR strategy discussion needed before activating EC2 backups in Rubrik — currently handled via native AWS tools.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">▸</span><span><strong>Timeline:</strong> Tim to respond to the PS project manager with availability to schedule the deployment kickoff.</span></div>
+      </div>
+    </div>
+
+    <!-- Open Questions -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>❓ Open Questions</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">▸</span><span>Whether existing AWS-native EC2 backup/DR workflow should be replaced or coexist with Rubrik — flagged as out of scope for this group; requires Joe (customer-side) involvement.</span></div>
+      </div>
+    </div>
+
+    <!-- Action Items -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>🔲 Action Items</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:0.75rem;">
+
+        <div style="padding:10px 12px;background:#fef2f2;border-radius:8px;border-left:3px solid var(--danger);">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--danger);margin-bottom:8px;">Tim</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Respond to PS project manager with scheduling availability; confirm readiness to proceed with install.</span></div>
+          </div>
+        </div>
+
+        <div style="padding:10px 12px;background:#fff7ed;border-radius:8px;border-left:3px solid var(--warning);">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--warning);margin-bottom:8px;">Tatyana / Kathy</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Provide database sizing details and AWS region information before the deployment call.</span></div>
+          </div>
+        </div>
+
+        <div style="padding:10px 12px;background:#eff6ff;border-radius:8px;border-left:3px solid var(--info);">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--info);margin-bottom:8px;">Mark</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Send Tim two supporting prerequisite/sizing documents for review.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Verify remaining Universal Cloud License headroom (~100 TB estimated available).</span></div>
+          </div>
+        </div>
+
+        <div style="padding:10px 12px;background:#eff6ff;border-radius:8px;border-left:3px solid var(--info);">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--info);margin-bottom:8px;">PS Team (Anthony)</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Assign implementation specialist; coordinate Cloud Cluster deployment session with Tim.</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Check boxes above are for visual reference during the call. Carry forward any open items to next week's review.</div></div>`
+},
+
+"7-17-2026 - SQL AG Support Call": {
+  actionsOnly: true,
+  actions: `<div class="section-header"><h2>Action Items &amp; Meeting Notes</h2><p>Weekly call recap and outstanding actions · 7-17-2026 - SQL AG Support Call</p></div>
+
+    <!-- Key Outcomes -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>🎯 Key Outcomes</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span>The team investigated recurring cluster failovers on a two-node SQL Always-On AG <strong>(97A/97B)</strong> tied to Rubrik backup operations. VSS snapshot activity — specifically during VSS deletion after backup completion — was identified as the likely root cause.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span>The primary actionable decision was to move SQL backup preference toward secondary as the lowest-risk immediate test, with VSS writer isolation testing as a follow-up step.</span></div>
+      </div>
+    </div>
+
+    <!-- Decisions Made -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>✅ Decisions Made</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">▸</span><span><strong>Backup preference change:</strong> Switch AG backup preference from 50/50 to <strong>Prefer Secondary</strong> (not secondary-only) to avoid backup gaps during maintenance windows.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">▸</span><span><strong>VSS writer test deferred to lower environment first:</strong> Disk shadow copy testing will be done on the lower environment first, then on the A node if the issue persists.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">▸</span><span><strong>Volume group backups retained:</strong> No change to volume group backup jobs; VFT installation ruled out as unnecessary given small/fast C drive backups.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">▸</span><span><strong>Breaking batch backups not recommended:</strong> Splitting the 6–8 database batch into individual jobs risks more frequent VSS snapshots and potentially more failovers.</span></div>
+      </div>
+    </div>
+
+    <!-- Root Causes Identified -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>🔍 Root Causes Identified</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">•</span><span><strong>VSS snapshot deletion is the trigger point</strong> — failover occurs after Rubrik completes data transfer, during VSS cleanup, not during snapshot creation.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">•</span><span>Both SQL and volume group backups share VSS as the common component; failovers track with the backup window when it is moved.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">•</span><span>Issue appears isolated to the <strong>97A (primary)</strong> node; no replication or cluster failover events observed outside backup windows.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">•</span><span>Backups running on the primary node violates Rubrik best practice; secondary should be preferred.</span></div>
+      </div>
+    </div>
+
+    <!-- Pending Confirmation -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>⏳ Pending Confirmation</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">▸</span><span>Whether switching to secondary backup preference eliminates failovers — Kathy noted the issue occurs infrequently (once every several weeks), so results may take time to confirm.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">▸</span><span>VSS writer disk shadow copy test on the lower environment to validate VSS behavior independently of Rubrik.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">▸</span><span>Kathy to validate the secondary backup + log backup restore workflow in the lower environment before applying broadly.</span></div>
+      </div>
+    </div>
+
+    <!-- Open Questions -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>❓ Open Questions</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">▸</span><span>Why failover occurs during VSS deletion rather than creation is unexplained; Dorde suspects an underlying storage issue on the A host.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">▸</span><span>Whether the same secondary backup approach should be rolled out across other SQL Always-On AGs in the environment.</span></div>
+      </div>
+    </div>
+
+    <!-- Action Items -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>🔲 Action Items</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:0.75rem;">
+
+        <div style="padding:10px 12px;background:#fef2f2;border-radius:8px;border-left:3px solid var(--danger);">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--danger);margin-bottom:8px;">SGhosh</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Change AG backup preference to <strong>Prefer Secondary</strong> and monitor for several days.</span></div>
+          </div>
+        </div>
+
+        <div style="padding:10px 12px;background:#fff7ed;border-radius:8px;border-left:3px solid var(--warning);">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--warning);margin-bottom:8px;">SGhosh / Compute Team</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Run disk shadow copy (VSS) test on the lower environment (not production) to isolate VSS writer behavior.</span></div>
+          </div>
+        </div>
+
+        <div style="padding:10px 12px;background:#eff6ff;border-radius:8px;border-left:3px solid var(--info);">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--info);margin-bottom:8px;">Kathy</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Test restore from secondary backup + log backups in the lower environment to confirm no functional gaps.</span></div>
+          </div>
+        </div>
+
+        <div style="padding:10px 12px;background:#eff6ff;border-radius:8px;border-left:3px solid var(--info);">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--info);margin-bottom:8px;">Mark</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Continue weekly Thursday check-ins to track stability progress.</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Account Health -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>📊 Account Health</h3>
+      <div style="margin-top:0.75rem;display:flex;align-items:flex-start;gap:12px;">
+        <span class="badge badge-orange" style="font-size:0.78rem;padding:5px 12px;flex-shrink:0;">Moderate Risk</span>
+        <span style="font-size:0.83rem;color:var(--text);line-height:1.6;">Failovers are infrequent but unpredictable on a production-critical cluster. No data loss reported; backups completing successfully. Support case remains open.</span>
+      </div>
+    </div>
+
+    <div class="alert-box alert-blue">ℹ️ <div><strong>Note:</strong> Check boxes above are for visual reference during the call. Carry forward any open items to next week's review.</div></div>`
 }
 }; // end REPORTS
 
@@ -4121,7 +4319,11 @@ function switchReport(date) {
   if (!r) return;
   const licensesHtml = (date === "July 16, 2026") ? LICENSES_HTML_JUL16 : LICENSES_HTML_JUN11;
   activeLicSkus = (date === "July 16, 2026") ? LIC_SKUS_JUL16 : LIC_SKUS_JUN11;
-  const pages = {
+  const pages = r.actionsOnly ? {
+    summary: '', cases: '', clusters: '', performance: '', licenses: '', features: '',
+    actions:  renderActions(r.actions, date),
+    announce: ''
+  } : {
     summary:  renderSummary(r.summary, date),
     cases:    renderCasesAndJiras(r, date),
     clusters: renderClusters(r.clusters, date),
@@ -4134,10 +4336,15 @@ function switchReport(date) {
   const main = document.getElementById("mainContent");
   main.innerHTML = Object.entries(pages).map(([id,html])=>`<div class="page" id="page-${id}">${html}</div>`).join("");
   document.getElementById("footerContent").textContent = `Stewart Title Company · Rubrik Security Cloud · Weekly Support Review | Confidential | Report Date: ${date}`;
+  ["summary","cases","clusters","performance","licenses","features","announce"].forEach(id => {
+    const tb = document.getElementById("tab-"+id);
+    if (tb) tb.style.display = r.actionsOnly ? "none" : "";
+  });
   const activeTab = document.querySelector(".nav-tab.active");
-  const activeId = activeTab ? activeTab.id.replace("tab-","") : "summary";
+  let activeId = activeTab ? activeTab.id.replace("tab-","") : "summary";
+  if (r.actionsOnly) activeId = "actions";
   showPage(activeId);
-  sortLicTable(licSort);
+  if (!r.actionsOnly) sortLicTable(licSort);
 }
 
 // ─── Global Tooltip ───
@@ -4210,7 +4417,7 @@ function showPage(id) {
 }
 
 // Load latest report on startup
-switchReport("July 16, 2026");
+switchReport("7-17-2026 - SQL AG Support Call");
 </script>
 </body>
 </html>
