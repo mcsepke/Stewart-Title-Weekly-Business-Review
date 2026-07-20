@@ -159,7 +159,62 @@
   .mono { font-family: 'DM Mono', monospace; font-size: 0.78rem; }
   .divider { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
   .footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.75rem; }
-</style>
+
+  /* ─── EXECUTIVE SUMMARY VIEW · STEWART TITLE THEME ─── */
+  :root { --st-crimson:#A50D35; --st-crimson-dk:#7C0A28; --st-crimson-lt:#FDF2F5; --st-charcoal:#1C191A; --st-charcoal-2:#2B2728; --st-gray:#6D6E71; }
+  .exec-btn { display:inline-flex; align-items:center; gap:7px; background:transparent; color:#fff; border:1.5px solid rgba(255,255,255,0.35); border-radius:999px; padding:7px 16px; font-family:'DM Sans',sans-serif; font-size:0.78rem; font-weight:600; letter-spacing:0.04em; cursor:pointer; transition:all 0.18s; white-space:nowrap; }
+  .exec-btn:hover { border-color:#fff; background:rgba(255,255,255,0.08); }
+  .exec-btn.active { background:var(--st-crimson); border-color:var(--st-crimson); box-shadow:0 0 0 3px rgba(165,13,53,0.3); }
+  .exec-btn .exec-btn-dot { width:7px; height:7px; border-radius:50%; background:#fff; }
+  #execView { display:none; font-size:1.05rem; }
+  .exec-roofline-band { height:7px; border-radius:999px; margin-bottom:1.6rem; background:repeating-linear-gradient(115deg, var(--st-crimson) 0 26px, #fff 26px 34px, var(--st-charcoal) 34px 60px, #fff 60px 68px); }
+  .exec-hero { background:linear-gradient(130deg,var(--st-charcoal) 0%,var(--st-charcoal-2) 52%,var(--st-crimson-dk) 100%); color:#fff; border-radius:16px; padding:2.9rem 3rem 2.5rem; margin-bottom:2.4rem; position:relative; overflow:hidden; }
+  .exec-hero::after { content:""; position:absolute; right:-70px; top:-70px; width:340px; height:340px; border-radius:50%; background:radial-gradient(circle,rgba(165,13,53,0.45) 0%,transparent 70%); }
+  .exec-hero-roof { position:absolute; right:2.2rem; bottom:-18px; width:300px; opacity:0.16; z-index:0; }
+  .exec-hero-brand { display:flex; align-items:center; gap:14px; margin-bottom:16px; position:relative; z-index:1; }
+  .exec-hero-brand img { height:56px; width:56px; border-radius:10px; background:#fff; padding:4px; object-fit:contain; }
+  .exec-eyebrow { font-size:0.82rem; font-weight:700; text-transform:uppercase; letter-spacing:0.14em; color:#f3b8c8; }
+  .exec-hero h1 { font-size:2.6rem; font-weight:700; letter-spacing:-0.01em; line-height:1.12; margin-bottom:12px; position:relative; z-index:1; }
+  .exec-hero .exec-sub { font-size:1.12rem; color:#e4e2e3; max-width:900px; line-height:1.6; position:relative; z-index:1; }
+  .exec-hero-kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:1.1rem; margin-top:2rem; position:relative; z-index:1; }
+  .exec-kpi { background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.16); border-top:3px solid var(--st-crimson); border-radius:12px; padding:1.15rem 1.25rem; }
+  .exec-kpi .k-val { font-size:2.15rem; font-weight:700; line-height:1; }
+  .exec-kpi .k-val.green { color:#7ce8b8; }
+  .exec-kpi .k-lab { font-size:0.8rem; text-transform:uppercase; letter-spacing:0.06em; color:#c9c6c7; margin-top:8px; line-height:1.45; }
+  .exec-sec-title { display:flex; align-items:center; gap:14px; margin:2.6rem 0 1.3rem; }
+  .exec-sec-title .sec-roof { flex-shrink:0; }
+  .exec-sec-title h2 { font-size:1.55rem; font-weight:700; color:var(--st-charcoal); }
+  .exec-sec-title span { font-size:0.98rem; color:var(--st-gray); }
+  .exec-sec-title .sec-rule { flex:1; height:2px; background:linear-gradient(90deg,var(--st-crimson) 0%,var(--border) 40%); align-self:center; border-radius:2px; }
+  .exec-win-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:1.2rem; }
+  .exec-win { background:#fff; border:1px solid var(--border); border-left:5px solid var(--st-crimson); border-radius:12px; padding:1.35rem 1.5rem; box-shadow:0 1px 4px rgba(28,25,26,0.07); }
+  .exec-win .w-metric { font-size:1.9rem; font-weight:700; color:var(--st-crimson); line-height:1.1; }
+  .exec-win .w-title { font-size:1.12rem; font-weight:700; color:var(--st-charcoal); margin-top:6px; }
+  .exec-win .w-body { font-size:0.98rem; color:#4b4849; line-height:1.6; margin-top:7px; }
+  .exec-invest { background:var(--st-charcoal); color:#fff; border-radius:14px; padding:1.7rem 1.9rem; box-shadow:0 1px 4px rgba(28,25,26,0.12); position:relative; overflow:hidden; }
+  .exec-invest::after { content:""; position:absolute; right:-30px; bottom:-40px; width:220px; height:160px; background:linear-gradient(115deg,transparent 0 40%,rgba(165,13,53,0.35) 40% 55%,transparent 55% 65%,rgba(255,255,255,0.08) 65% 80%,transparent 80%); transform:skewX(-18deg); }
+  .exec-invest-row { display:flex; flex-wrap:wrap; gap:10px; margin-top:0.8rem; position:relative; z-index:1; }
+  .exec-chip { display:inline-flex; align-items:center; gap:7px; border-radius:999px; padding:9px 18px; font-size:0.95rem; font-weight:600; }
+  .exec-chip.owned { background:var(--st-crimson); border:1px solid var(--st-crimson); color:#fff; }
+  .exec-chip.cap { background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.28); color:#fff; }
+  .exec-invest .inv-label { font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:#c9c6c7; margin-top:1.3rem; position:relative; z-index:1; }
+  .exec-invest .inv-label:first-of-type { margin-top:0; }
+  .exec-maximize-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+  .exec-max { background:var(--st-crimson-lt); border:1px solid #f2c3d1; border-top:4px solid var(--st-crimson); border-radius:12px; padding:1.25rem 1.35rem; }
+  .exec-max .m-name { font-size:1.08rem; font-weight:700; color:var(--st-crimson-dk); line-height:1.3; }
+  .exec-max .m-body { font-size:0.95rem; color:#5a3340; line-height:1.55; margin-top:8px; }
+  .exec-opp-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:1.2rem; }
+  .exec-opp { background:#fff; border:1px solid var(--border); border-top:5px solid var(--st-crimson); border-radius:12px; padding:1.4rem 1.5rem; box-shadow:0 1px 4px rgba(28,25,26,0.07); display:flex; flex-direction:column; }
+  .exec-opp .o-tag { align-self:flex-start; font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; padding:4px 12px; border-radius:999px; background:var(--st-crimson-lt); color:var(--st-crimson-dk); border:1px solid #f2c3d1; margin-bottom:10px; }
+  .exec-opp .o-tag.new { background:var(--st-charcoal); color:#fff; border-color:var(--st-charcoal); }
+  .exec-opp .o-title { font-size:1.18rem; font-weight:700; color:var(--st-charcoal); line-height:1.32; }
+  .exec-opp .o-body { font-size:0.97rem; color:#4b4849; line-height:1.62; margin-top:9px; flex:1; }
+  .exec-opp .o-why { font-size:0.93rem; color:var(--st-charcoal); background:#faf8f9; border-left:4px solid var(--st-crimson); border-radius:0 8px 8px 0; padding:11px 14px; margin-top:12px; line-height:1.55; }
+  .exec-close { background:linear-gradient(120deg,var(--st-charcoal),var(--st-crimson-dk)); color:#f0eeee; border-radius:14px; padding:1.6rem 1.9rem; margin-top:2.6rem; font-size:1.05rem; line-height:1.65; display:flex; align-items:center; gap:18px; }
+  .exec-close svg { flex-shrink:0; }
+  .exec-close strong { color:#fff; }
+  @media(max-width:700px){ .exec-hero{padding:1.8rem 1.4rem;} .exec-hero h1{font-size:1.7rem;} .exec-hero-roof{display:none;} }
+  </style>
 </head>
 <body>
 
@@ -246,6 +301,7 @@
     </div>
   </div>
   <div class="header-right">
+    <button id="execBtn" class="exec-btn" onclick="toggleExecView()"><span class="exec-btn-dot"></span>Executive Summary</button>
     <span class="rubrik-badge">RSC</span>
     <div style="display:flex;align-items:center;gap:8px;">
       <span class="date-label">Report Date</span>
@@ -269,7 +325,7 @@
 </header>
 
 <nav class="nav-tabs">
-  <div class="nav-tab active" onclick="showPage('summary')" id="tab-summary"><span class="tab-icon">📊</span> Executive Summary</div>
+  <div class="nav-tab active" onclick="showPage('summary')" id="tab-summary"><span class="tab-icon">📊</span> Weekly Summary</div>
   <div class="nav-tab" onclick="showPage('cases')" id="tab-cases"><span class="tab-icon">🎫</span> Support Cases &amp; Jiras</div>
   <div class="nav-tab" onclick="showPage('clusters')" id="tab-clusters"><span class="tab-icon">🖥️</span> Clusters &amp; RCV</div>
   <div class="nav-tab" onclick="showPage('performance')" id="tab-performance"><span class="tab-icon">⚡</span> Performance</div>
@@ -280,6 +336,73 @@
 </nav>
 
 <div class="main" id="mainContent"></div>
+
+<div class="main" id="execView">
+  <div class="exec-roofline-band"></div>
+  <div class="exec-hero">
+    <svg class="exec-hero-roof" width="300" viewBox="0 0 100 58" xmlns="http://www.w3.org/2000/svg"><polygon points="2,54 13,54 36,13 25,13" fill="#A50D35"/><polygon points="19,54 30,54 53,13 42,13" fill="#A50D35"/><polygon points="36,54 47,54 70,13 59,13" fill="#1C191A"/><polygon points="59,13 70,13 93,54 82,54" fill="#1C191A"/></svg>
+    <div class="exec-hero-brand">
+      <img id="execLogo" alt="Stewart Title" src="">
+      <div class="exec-eyebrow">Stewart Title Company × Rubrik · Cyber Resilience Partnership</div>
+    </div>
+    <h1>Executive Summary</h1>
+    <div class="exec-sub">A high-level view of what your Rubrik investment is delivering today — and where we can partner next to extend cyber resilience across Stewart Title's data estate in the title insurance and real estate services industry.</div>
+    <div class="exec-hero-kpis">
+      <div class="exec-kpi"><div class="k-val green">99.96%</div><div class="k-lab">Protection job success rate<br>(latest reporting window)</div></div>
+      <div class="exec-kpi"><div class="k-val green">0</div><div class="k-lab">P1 / high-priority cases<br>active at this time</div></div>
+      <div class="exec-kpi"><div class="k-val">1.8 PB+</div><div class="k-lab">Data under protection<br>across 7 clusters</div></div>
+      <div class="exec-kpi"><div class="k-val green">7 / 7</div><div class="k-lab">Clusters current on 9.5.1<br>none above 75% capacity</div></div>
+      <div class="exec-kpi"><div class="k-val">656K+</div><div class="k-lab">Backup &amp; security jobs<br>monitored per report cycle</div></div>
+    </div>
+  </div>
+
+  <div class="exec-sec-title"><svg class="sec-roof" width="30" viewBox="0 0 100 58" xmlns="http://www.w3.org/2000/svg"><polygon points="2,54 13,54 36,13 25,13" fill="#A50D35"/><polygon points="19,54 30,54 53,13 42,13" fill="#A50D35"/><polygon points="36,54 47,54 70,13 59,13" fill="#1C191A"/><polygon points="59,13 70,13 93,54 82,54" fill="#1C191A"/></svg><h2>Measurable Success</h2><span>Where the partnership is delivering today</span><div class="sec-rule"></div></div>
+  <div class="exec-win-grid">
+    <div class="exec-win"><div class="w-metric">99.96%</div><div class="w-title">Backup Reliability at Scale</div><div class="w-body">656,000+ protection, replication, and security jobs completed in the latest reporting window with a 99.96% success rate — consistent, audit-ready protection across on-prem and Azure workloads.</div></div>
+    <div class="exec-win"><div class="w-metric">0 P1s</div><div class="w-title">Support Health Trending Up</div><div class="w-body">No P1 or high-priority cases are active at this time — all open issues are currently P2 or lower. The HOUBRIK_01 hardware health check case is resolved, and every open item has active Rubrik ownership and weekly review cadence.</div></div>
+    <div class="exec-win"><div class="w-metric">7 / 7</div><div class="w-title">Fleet Fully Current &amp; Healthy</div><div class="w-body">All seven clusters — RICBRIK_01, HOUBRIK_01, both vaults, both Azure cloud clusters, and Edge — run the same current release (9.5.1) with no version upgrades required and no cluster above 75% capacity.</div></div>
+    <div class="exec-win"><div class="w-metric">100%</div><div class="w-title">Threat Monitoring Everywhere</div><div class="w-body">Threat Monitoring and Exchange protection are at 100% adoption, CDM MSSQL at 92% — every backup is continuously scanned for ransomware indicators, with CrowdStrike intel feeds integrated.</div></div>
+    <div class="exec-win"><div class="w-metric">1.8 PB+</div><div class="w-title">Immutable, Air-Gapped Copies</div><div class="w-body">Production data is replicated to dedicated vault clusters and locked with immutable snapshots in Azure — the recovery foundation regulators and cyber insurers expect from a title insurance leader.</div></div>
+    <div class="exec-win"><div class="w-metric">Active</div><div class="w-title">Identity Resilience in Production</div><div class="w-body">Active Directory domain controllers across every Stewart domain and Microsoft Entra ID are backed up and monitored for identity security violations — protecting the control plane attackers target first.</div></div>
+  </div>
+
+  <div class="exec-sec-title"><svg class="sec-roof" width="30" viewBox="0 0 100 58" xmlns="http://www.w3.org/2000/svg"><polygon points="2,54 13,54 36,13 25,13" fill="#A50D35"/><polygon points="19,54 30,54 53,13 42,13" fill="#A50D35"/><polygon points="36,54 47,54 70,13 59,13" fill="#1C191A"/><polygon points="59,13 70,13 93,54 82,54" fill="#1C191A"/></svg><h2>Your Rubrik Investment Today</h2><span>Enterprise Edition across the estate</span><div class="sec-rule"></div></div>
+  <div class="exec-invest">
+    <div class="inv-label">Platforms Owned — Enterprise Edition</div>
+    <div class="exec-invest-row">
+      <span class="exec-chip owned">🖥️ On-Prem Structured Workloads (VMs &amp; DBs) with Rubrik Secure Vault Clusters</span>
+      <span class="exec-chip owned">🗄️ On-Prem Unstructured Workloads (NAS) with Rubrik NAS Cloud Direct</span>
+      <span class="exec-chip owned">🔐 Rubrik Cloud Vault for On-Prem &amp; Cloud</span>
+      <span class="exec-chip owned">☁️ Cloud Protection for Azure, AWS, GCP &amp; OCI</span>
+      <span class="exec-chip owned">🪪 Identity Resilience &amp; Recovery for Active Directory and Entra ID</span>
+    </div>
+    <div class="inv-label">Capabilities Included Today</div>
+    <div class="exec-invest-row">
+      <span class="exec-chip cap">🛡️ Data Threat Analytics</span>
+      <span class="exec-chip cap">🔍 Data Security Posture</span>
+      <span class="exec-chip cap">🔄 Orchestrated Recovery</span>
+    </div>
+  </div>
+
+  <div class="exec-sec-title"><svg class="sec-roof" width="30" viewBox="0 0 100 58" xmlns="http://www.w3.org/2000/svg"><polygon points="2,54 13,54 36,13 25,13" fill="#A50D35"/><polygon points="19,54 30,54 53,13 42,13" fill="#A50D35"/><polygon points="36,54 47,54 70,13 59,13" fill="#1C191A"/><polygon points="59,13 70,13 93,54 82,54" fill="#1C191A"/></svg><h2>Maximize What You Already Own</h2><span>Entitled capabilities to activate and test — no new licensing required</span><div class="sec-rule"></div></div>
+  <div class="exec-maximize-grid">
+    <div class="exec-max"><div class="m-name">Orchestrated Disaster Recovery</div><div class="m-body">Turn recovery plans into tested, one-click runbooks — proving RTOs for closing-critical systems.</div></div>
+    <div class="exec-max"><div class="m-name">Cyber Recovery</div><div class="m-body">Rehearse ransomware recovery in isolated clean rooms before an incident forces the issue.</div></div>
+    <div class="exec-max"><div class="m-name">Active Directory Orchestrated Forest Recovery</div><div class="m-body">Every Stewart domain controller is already protected — the next step is testing full forest recovery so an AD-down event never stalls a closing.</div></div>
+    <div class="exec-max"><div class="m-name">Data Security Posture (DSPM)</div><div class="m-body">Broaden sensitive-data discovery to the full estate — know where NPI and closing documents live.</div></div>
+  </div>
+
+  <div class="exec-sec-title"><svg class="sec-roof" width="30" viewBox="0 0 100 58" xmlns="http://www.w3.org/2000/svg"><polygon points="2,54 13,54 36,13 25,13" fill="#A50D35"/><polygon points="19,54 30,54 53,13 42,13" fill="#A50D35"/><polygon points="36,54 47,54 70,13 59,13" fill="#1C191A"/><polygon points="59,13 70,13 93,54 82,54" fill="#1C191A"/></svg><h2>Where We Can Partner Next</h2><span>Closing coverage gaps across Stewart Title's modern data estate</span><div class="sec-rule"></div></div>
+  <div class="exec-opp-grid">
+    <div class="exec-opp"><span class="o-tag">SaaS Coverage Gap</span><div class="o-title">M365 Protection with Autonomous Business Recovery</div><div class="o-body">Exchange Online, SharePoint, OneDrive, and Teams hold closing correspondence, escrow communications, and policy documents that Microsoft's native retention was never designed to recover at scale. Autonomous Business Recovery prioritizes and restores the most business-critical M365 data first after an attack.</div><div class="o-why"><strong>Why it matters for Stewart:</strong> Wire-fraud and BEC attacks target title companies' mailboxes specifically — rapid, prioritized M365 recovery directly protects closings in flight.</div></div>
+    <div class="exec-opp"><span class="o-tag">DevOps Coverage Gap</span><div class="o-title">Azure DevOps &amp; GitHub Protection</div><div class="o-body">Stewart's Azure DevOps agents and build pipelines are already visible in your protected estate — but the repos, work items, and pipeline definitions behind STEPS, StewartConnect, and Sitecore are not. Protect the source code and delivery pipelines your digital closing experience depends on.</div><div class="o-why"><strong>Why it matters for Stewart:</strong> A deleted or ransomed repo halts every release; code is now regulated operational data for financial services firms.</div></div>
+    <div class="exec-opp"><span class="o-tag">Cloud Storage Gap</span><div class="o-title">Azure Blob &amp; S3 Protection</div><div class="o-body">Blob storage accounts (Sitecore content, logs, application data) appear across your Azure subscriptions today with classification only — not recoverable copies. Extend the same immutable, threat-scanned protection your VMs enjoy to object storage in Azure and AWS.</div><div class="o-why"><strong>Why it matters for Stewart:</strong> Document images and unstructured closing files increasingly land in object storage — a growing blind spot in cyber recovery scope.</div></div>
+    <div class="exec-opp"><span class="o-tag new">★ Newly Announced</span><div class="o-title">Rubrik Agent Cloud — Discover, Monitor &amp; Govern, Rewind</div><div class="o-body">As Stewart adopts AI agents, Agent Cloud provides the control plane: <strong>Discover</strong> every agent operating across the enterprise, <strong>Monitor &amp; Govern</strong> their actions against policy, and <strong>Rewind</strong> — surgically undo unintended agent changes to data and systems.</div><div class="o-why"><strong>Why it matters for Stewart:</strong> Agentic AI in a regulated title/escrow environment needs auditability and an undo button before it touches production data.</div></div>
+    <div class="exec-opp"><span class="o-tag new">★ Newly Announced</span><div class="o-title">Annapurna — AI-Ready Data, Safely</div><div class="o-body">Annapurna lets AI applications securely search and retrieve from Rubrik-protected data via API — turning decades of backed-up documents into fuel for GenAI initiatives without exposing production systems or violating data governance.</div><div class="o-why"><strong>Why it matters for Stewart:</strong> Title plant records and prior policy files become searchable AI context — with sensitive-data guardrails built in.</div></div>
+  </div>
+
+  <div class="exec-close"><svg class="" width="64" viewBox="0 0 100 58" xmlns="http://www.w3.org/2000/svg"><polygon points="2,54 13,54 36,13 25,13" fill="#A50D35"/><polygon points="19,54 30,54 53,13 42,13" fill="#A50D35"/><polygon points="36,54 47,54 70,13 59,13" fill="#1C191A"/><polygon points="59,13 70,13 93,54 82,54" fill="#1C191A"/></svg><div><strong>The bottom line:</strong> Stewart Title's core estate is protected, current, and measurably healthy. The next phase of the partnership extends that same resilience to SaaS, DevOps, cloud object storage, and the emerging AI layer — so every system that touches a closing is covered by one recovery and governance platform.</div></div>
+</div>
 
 <div class="footer" id="footerContent"></div>
 
@@ -4317,6 +4440,7 @@ setTimeout(() => { if(document.getElementById('lic-tbody')) sortLicTable('exp');
 function switchReport(date) {
   const r = REPORTS[date];
   if (!r) return;
+  if (typeof execActive !== "undefined" && execActive) toggleExecView();
   const licensesHtml = (date === "July 16, 2026") ? LICENSES_HTML_JUL16 : LICENSES_HTML_JUN11;
   activeLicSkus = (date === "July 16, 2026") ? LIC_SKUS_JUL16 : LIC_SKUS_JUN11;
   const pages = r.actionsOnly ? {
@@ -4399,6 +4523,31 @@ function switchReport(date) {
     tip.style.top  = y + 'px';
   }
 })();
+
+// ─── Executive Summary View Toggle ───
+let execActive = false;
+function toggleExecView() {
+  execActive = !execActive;
+  const nav  = document.querySelector(".nav-tabs");
+  const main = document.getElementById("mainContent");
+  const exec = document.getElementById("execView");
+  const btn  = document.getElementById("execBtn");
+  if (execActive) {
+    const heroLogo = document.getElementById("execLogo");
+    const headerLogo = document.querySelector(".logo-img");
+    if (heroLogo && headerLogo && !heroLogo.src.startsWith("data:")) heroLogo.src = headerLogo.src;
+    nav.style.display = "none";
+    main.style.display = "none";
+    exec.style.display = "block";
+    btn.classList.add("active");
+    window.scrollTo({ top: 0 });
+  } else {
+    nav.style.display = "";
+    main.style.display = "";
+    exec.style.display = "none";
+    btn.classList.remove("active");
+  }
+}
 
 function showPage(id) {
   document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
