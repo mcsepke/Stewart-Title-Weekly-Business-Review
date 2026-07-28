@@ -306,7 +306,8 @@
     <div style="display:flex;align-items:center;gap:8px;">
       <span class="date-label">Report Date</span>
       <select class="date-select" id="reportDate" onchange="switchReport(this.value)">
-        <option value="July 23, 2026" selected>July 23, 2026</option>
+        <option value="July 28, 2026 - Cloud Cluster in AWS" selected>July 28, 2026 - Cloud Cluster in AWS</option>
+        <option value="July 23, 2026">July 23, 2026</option>
         <option value="July 23, 2026 - Lyve Cloud to RSC Migration">July 23, 2026 - Lyve Cloud to RSC Migration</option>
         <option value="July 17, 2026 - SQL AG Support Call">July 17, 2026 - SQL AG Support Call</option>
         <option value="July 16, 2026 - AWS Cloud Cluster Call">July 16, 2026 - AWS Cloud Cluster Call</option>
@@ -1155,6 +1156,52 @@ const PERF_REPORTS = {"July 23, 2026":{"kpi":{"total_jobs":684064,"clean_success
 // REPORT DATA — one entry per week
 // ═══════════════════════════════════════════════════════════
 const REPORTS = {
+
+"July 28, 2026 - Cloud Cluster in AWS": {
+  actionsOnly: true,
+  actions: `<!-- Key Outcomes -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>🎯 Key Outcomes</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;"><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span>The kickoff call aligned on deploying <strong>two single-node Rubrik Cloud Cluster Edge (CCES) instances in AWS</strong> — one in US East 1 (primary) and one in US West (DR).</span></div><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span>The primary use case is <strong>SQL Server DB backup on EC2 instances</strong>, with snapshot replication to the DR cluster and planned test restores from the West region.</span></div><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span><strong>EC2 VM-level backup is confirmed as a goal</strong> but scoped separately due to time constraints.</span></div></div>
+    </div>
+
+    <!-- Decisions Made -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>✅ Decisions Made</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:0.75rem;"><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>Architecture:</strong> Two single-node CCES clusters, each attached to a dedicated S3 bucket; East = source, West = DR replica.</span></div><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>Deployment VPC:</strong> The cloud cluster will be deployed in the same VPC as the SQL Server EC2 instances to minimize network configuration.</span></div><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>Deployment method:</strong> Use RSC (Rubrik Security Cloud) with a CloudFormation template to automate EC2 instance creation, bootstrapping, and cluster deployment.</span></div><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>EC2 VM backup:</strong> Confirmed in scope long-term (replacing AWS native backups for DR), but will be tackled after both cloud clusters are deployed.</span></div><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>CDM version:</strong> Latest version 9.5 will be deployed.</span></div><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>Change requests:</strong> Not required for non-prod environments; production changes will follow the formal CR process.</span></div></div>
+    </div>
+
+    <!-- Role Assignments -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>👥 Role Assignments</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:0.75rem;"><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🪪</span><span><strong>Tim</strong> → RSC administrator; will share screen and coordinate AWS login via incognito session.</span></div><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🪪</span><span><strong>Ketan + Sagar</strong> → AWS administrators; responsible for running the CloudFormation template and AWS-side prerequisites.</span></div><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🪪</span><span><strong>Tatyana</strong> → SQL DB onboarding lead (Phase 2).</span></div><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🪪</span><span><strong>Syed</strong> → Rubrik PS lead; will deploy the East cluster, guide the team to replicate for West, then enable replication.</span></div></div>
+    </div>
+
+    <!-- Identified Risks -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>⚠️ Identified Risks</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:0.75rem;"><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">⚠️</span><span><strong>SCP restrictions</strong> could cause cloud cluster deployment failure if API calls are blocked.</span></div><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">⚠️</span><span><strong>Port requirements (12801 and 445)</strong> between the cluster node and SQL EC2 instances must be opened in Security Groups.</span></div><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;grid-column:1/-1;"><span style="flex-shrink:0;margin-top:2px;">⚠️</span><span><strong>Limited PS engagement time</strong> — EC2 VM backup descoped to avoid overrun.</span></div></div>
+    </div>
+
+    <!-- Pending Confirmation -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>⏳ Pending Confirmation</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:0.75rem;"><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>Exact US West region</strong> (likely US West 1, unconfirmed).</span></div><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>Whether any SCPs (Service Control Policies)</strong> would block EC2 deployment via API calls.</span></div><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;grid-column:1/-1;"><span style="flex-shrink:0;margin-top:2px;">🔲</span><span><strong>Outbound port 443 access</strong> confirmed likely open, but the endpoint list is to be verified.</span></div></div>
+    </div>
+
+    <!-- Action Items by Owner -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>📋 Action Items by Owner</h3>
+      <div style="margin-top:0.9rem;display:grid;grid-template-columns:1fr 1fr;gap:10px;"><div style="padding:10px 12px;background:#fdf2f5;border-radius:8px;border-left:3px solid var(--red);"><div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--red);margin-bottom:8px;">Syed</div><div style="display:flex;flex-direction:column;gap:8px;"><div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Send a prerequisites summary email covering region selection, VPC/subnet, required endpoints, and S3 bucket creation guidance.</span></div><div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Send the required outbound endpoints list for the port 443 firewall review.</span></div><div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Send calendar invites for both working sessions.</span></div></div></div><div style="padding:10px 12px;background:#eff6ff;border-radius:8px;border-left:3px solid var(--info);"><div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--info);margin-bottom:8px;">Ketan / Sagar</div><div style="display:flex;flex-direction:column;gap:8px;"><div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Prepare AWS prerequisites before Session 1 (S3 bucket, VPC/subnet decision, outbound access).</span></div></div></div><div style="padding:10px 12px;background:#f0fdf4;border-radius:8px;border-left:3px solid var(--success);"><div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--success);margin-bottom:8px;">Joe / Tatyana</div><div style="display:flex;flex-direction:column;gap:8px;"><div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Confirm the exact US West region before Session 1.</span></div></div></div><div style="padding:10px 12px;background:#fffbeb;border-radius:8px;border-left:3px solid var(--warning);"><div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--warning);margin-bottom:8px;">Mark + Syed</div><div style="display:flex;flex-direction:column;gap:8px;"><div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Internal discussion on PS hours available for the EC2 VM backup scope.</span></div></div></div></div>
+    </div>
+
+    <!-- Next Steps -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>➡️ Next Steps</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;"><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📅</span><span><strong>Session 1 — Cloud Cluster Deployment (East):</strong> July 29, 1:00–4:00 PM CST.</span></div><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📅</span><span><strong>Session 2 — SQL DB Onboarding:</strong> August 4, 1:00–4:00 PM CST.</span></div></div>
+    </div>`,
+  announce: null
+},
 
 "July 23, 2026 - Lyve Cloud to RSC Migration": { customOnly: true },
 
@@ -5839,7 +5886,7 @@ function showPage(id) {
 }
 
 // Load latest report on startup
-switchReport("July 23, 2026");
+switchReport("July 28, 2026 - Cloud Cluster in AWS");
 </script>
 </body>
 </html>
