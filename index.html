@@ -307,6 +307,7 @@
       <span class="date-label">Report Date</span>
       <select class="date-select" id="reportDate" onchange="switchReport(this.value)">
         <option value="July 30, 2026" selected>July 30, 2026</option>
+        <option value="July 29, 2026 - AWS Cloud Cluster Deployment">July 29, 2026 - AWS Cloud Cluster Deployment</option>
         <option value="July 28, 2026 - Cloud Cluster in AWS">July 28, 2026 - Cloud Cluster in AWS</option>
         <option value="July 23, 2026">July 23, 2026</option>
         <option value="July 23, 2026 - Lyve Cloud to RSC Migration">July 23, 2026 - Lyve Cloud to RSC Migration</option>
@@ -335,6 +336,7 @@
   <div class="nav-tab" onclick="showPage('performance')" id="tab-performance"><span class="tab-icon">⚡</span> Performance</div>
   <div class="nav-tab" onclick="showPage('licenses')" id="tab-licenses"><span class="tab-icon">🔑</span> Licenses</div>
   <div class="nav-tab" onclick="showPage('actions')" id="tab-actions"><span class="tab-icon">✅</span> Action Items</div>
+  <div class="nav-tab" onclick="showPage('prereq')" id="tab-prereq" style="display:none"><span class="tab-icon">🧰</span> Prerequisites</div>
   <div class="nav-tab" onclick="showPage('announce')" id="tab-announce"><span class="tab-icon">📣</span> Announcements</div>
 </nav>
 
@@ -1274,6 +1276,147 @@ const REPORTS = {
       <a href="https://engage.rubrik.com/CampRubrikCloudNativeProtectionAugust2026/" target="_blank" rel="noopener" style="display:inline-block;margin-top:1.1rem;background:var(--red);color:#fff;font-weight:700;font-size:0.85rem;padding:11px 26px;border-radius:8px;text-decoration:none;">Register Now \u2192</a>
       <div style="font-size:0.72rem;color:var(--muted);margin-top:8px;">Registration &amp; session dates: engage.rubrik.com/CampRubrikCloudNativeProtectionAugust2026</div>
     </div>` }
+},
+
+"July 29, 2026 - AWS Cloud Cluster Deployment": {
+  actionsOnly: true,
+  prereq: `<!-- Objectives -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>🎯 Objectives</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span>Deploy a single-node Rubrik Cloud Cluster (CCES) in the primary AWS region (US East) to protect <strong>Microsoft SQL Server databases hosted on EC2 instances</strong> and additional EC2 instances (database and application VMs), similar to the Azure protection model.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span>Deploy a second single-node Cloud Cluster in a DR AWS region (US West) to <strong>receive replicated snapshots</strong> from the primary cluster and support test restores and DR operations in the West region.</span></div>
+      </div>
+    </div>
+
+    <!-- Architecture -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>🏗️ Architecture &amp; Workflow</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span>Single-node Cloud Cluster, one per region. The primary Cloud Cluster will ideally be deployed <strong>in the same VPC as the SQL Server EC2 instances</strong> to reduce networking complexity.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">✔</span><span><strong>Rubrik Backup Service (RBS)</strong> agents will be installed on the SQL Server EC2 instances for DB-level protection.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">1️⃣</span><span>Register the AWS account in Rubrik Security Cloud (RSC) using a CloudFormation template.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">2️⃣</span><span>Deploy the primary Cloud Cluster in US East.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">3️⃣</span><span>Onboard SQL databases and EC2 instances.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">4️⃣</span><span>Deploy the DR Cloud Cluster in US West and configure snapshot replication.</span></div>
+      </div>
+    </div>
+
+    <!-- 1 Compute -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>1️⃣ Compute Requirements for CCES</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🖥️</span><span>For each Cloud Cluster (primary and DR), confirm the AWS <strong>account, region, VPC, and subnet</strong>: primary in US East (e.g., us-east-1) where the SQL workloads reside; DR in US West (exact region to be confirmed — us-west-1 or us-west-2).</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🖥️</span><span>Ensure the chosen subnet can host a new EC2 instance of size <strong><span class="mono">m6i.4xlarge</span></strong>.</span></div>
+      </div>
+    </div>
+
+    <!-- 2 Instance Profile -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>2️⃣ Instance Profile (IAM Role)</h3>
+      <div style="font-size:0.83rem;color:#374151;line-height:1.65;margin-top:0.75rem;margin-bottom:0.75rem;">The instance profile is an AWS container object that holds one IAM role and attaches it to the EC2 instance so Rubrik cluster nodes can access AWS without storing access keys. Role policy template:</div>
+      <pre style="background:var(--dark);color:#e8e6e7;border-radius:10px;padding:14px 16px;font-size:0.72rem;line-height:1.55;overflow-x:auto;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;">{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:AbortMultipartUpload",
+        "s3:PutObject*",
+        "s3:GetObject*",
+        "s3:DeleteObject*",
+        "s3:BypassGovernanceRetention",
+        "s3:ListMultipartUploadParts"
+      ],
+      "Resource": "arn:aws:s3:::&lt;bucket-name&gt;/*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListBucket*",
+        "s3:GetBucket*",
+        "s3:PutBucketObjectLockConfiguration"
+      ],
+      "Resource": "arn:aws:s3:::&lt;bucket-name&gt;"
+    }
+  ]
+}</pre>
+    </div>
+
+    <!-- 3 S3 -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>3️⃣ S3 Bucket</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🪣</span><span>The S3 bucket will be <strong>created during the working session</strong> (one dedicated bucket per Cloud Cluster).</span></div>
+      </div>
+    </div>
+
+    <!-- 4 Network -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>4️⃣ Network Prerequisites</h3>
+      <div style="font-size:0.83rem;color:#374151;line-height:1.65;margin-top:0.75rem;margin-bottom:0.9rem;">Connectivity is required from the Cloud Clusters to RSC and to the SQL DB servers, plus standard outbound access for replication (via S3 and HTTPS).</div>
+      <div style="font-size:0.85rem;font-weight:700;color:var(--dark);margin-bottom:6px;">4.1 &nbsp;Cloud Cluster → Rubrik Security Cloud — TCP 443 outbound</div>
+      <ul style="list-style:disc;margin:0 0 1rem 1.4rem;font-size:0.8rem;color:#374151;line-height:1.6;"><li style="margin-bottom:4px;"><span class="mono" style="font-size:0.78rem;">subdomain.my.rubrik.com</span> — customer-specific Rubrik Security Cloud domain</li><li style="margin-bottom:4px;"><span class="mono" style="font-size:0.78rem;">accounts.google.com, oauth2.googleapis.com, storage.googleapis.com, www.googleapis.com</span> — authentication and SaaS services</li><li style="margin-bottom:4px;"><span class="mono" style="font-size:0.78rem;">rubrik-support-download.s3.amazonaws.com</span> — cluster upgrade package repository</li><li style="margin-bottom:4px;"><span class="mono" style="font-size:0.78rem;">apollo-ingest.s3.amazonaws.com, rubrikstats.s3.amazonaws.com</span> — metrics and support bundle uploads</li><li style="margin-bottom:4px;"><span class="mono" style="font-size:0.78rem;">s3.amazonaws.com, s3.region.amazonaws.com</span> — CloudOut to AWS and support bundles</li></ul>
+      <div style="font-size:0.8rem;color:#374151;margin-bottom:1rem;">Ensure the CCES subnet has outbound HTTPS (TCP 443) to these FQDNs and that any firewalls or egress rules allow these destinations.</div>
+      <div style="font-size:0.85rem;font-weight:700;color:var(--dark);margin-bottom:6px;">4.2 &nbsp;Cloud Cluster → SQL DB Servers (EC2)</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:1rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔌</span><span><strong>TCP 12800–12801</strong> — outbound from CCES, inbound on SQL EC2. Rubrik SQL backup communication / Rubrik Backup Service.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔌</span><span><strong>TCP 445</strong> — outbound from CCES, inbound on SQL EC2. SMB-related communication required for certain SQL backup/restore workflows.</span></div>
+      </div>
+      <div style="font-size:0.85rem;font-weight:700;color:var(--dark);margin-bottom:6px;">4.3 &nbsp;Replication Connectivity — East US ↔ West US</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔁</span><span>Snapshot replication between the East and West Cloud Clusters is orchestrated by Rubrik via the <strong>S3 regional endpoints</strong> (s3.us-east-1.amazonaws.com; s3.us-west-1 or s3.us-west-2.amazonaws.com) and control-plane calls through RSC — all over HTTPS / TCP 443.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔁</span><span><strong>No custom ports are required directly between the East and West CCES EC2 instances</strong> beyond standard outbound HTTPS. Both nodes need outbound TCP 443 to their respective S3 regional endpoints and to RSC and the related FQDNs above.</span></div>
+      </div>
+    </div>
+
+    <!-- Port table -->
+    <div class="table-card" style="margin-bottom:1.5rem;">
+      <div class="table-card-header">
+        <h3>Port Requirements</h3>
+        <span>For firewall / network teams</span>
+      </div>
+      <table class="data-table">
+        <thead><tr><th>Use Case</th><th>Port / Protocol</th><th>Source</th><th>Destination</th><th>Description / Notes</th></tr></thead>
+        <tbody><tr><td style="font-size:0.8rem;">Cloud Cluster → Rubrik Security Cloud (RSC)</td><td><span class="mono" style="font-size:0.78rem;">443 TCP (HTTPS)</span></td><td style="font-size:0.8rem;">CCES EC2 (East/West)</td><td style="font-size:0.8rem;">subdomain.my.rubrik.com, Google/Rubrik SaaS FQDNs, s3.amazonaws.com, s3.region.amazonaws.com</td><td style="font-size:0.78rem;color:var(--muted);">Management, telemetry, SaaS control-plane, upgrades, metrics, support bundles, CloudOut/CloudOn.</td></tr><tr><td style="font-size:0.8rem;">Cloud Cluster → SQL DB servers (backup)</td><td><span class="mono" style="font-size:0.78rem;">12800–12801 TCP</span></td><td style="font-size:0.8rem;">CCES EC2 (East/West)</td><td style="font-size:0.8rem;">SQL Server EC2 instances</td><td style="font-size:0.78rem;color:var(--muted);">Rubrik SQL backup communication (Rubrik Backup Service / DB-level protection).</td></tr><tr><td style="font-size:0.8rem;">Cloud Cluster → SQL DB servers (SMB)</td><td><span class="mono" style="font-size:0.78rem;">445 TCP</span></td><td style="font-size:0.8rem;">CCES EC2 (East/West)</td><td style="font-size:0.8rem;">SQL Server EC2 instances</td><td style="font-size:0.78rem;color:var(--muted);">SMB-related communication used for certain SQL backup/restore workflows.</td></tr><tr><td style="font-size:0.8rem;">Cloud Cluster → S3 (East region)</td><td><span class="mono" style="font-size:0.78rem;">443 TCP (HTTPS)</span></td><td style="font-size:0.8rem;">CCES EC2 (US East)</td><td style="font-size:0.8rem;">s3.us-east-1.amazonaws.com</td><td style="font-size:0.78rem;color:var(--muted);">Snapshot storage and replication operations in the primary region.</td></tr><tr><td style="font-size:0.8rem;">Cloud Cluster → S3 (West region / DR)</td><td><span class="mono" style="font-size:0.78rem;">443 TCP (HTTPS)</span></td><td style="font-size:0.8rem;">CCES EC2 (US West)</td><td style="font-size:0.8rem;">s3.us-west-1.amazonaws.com or s3.us-west-2.amazonaws.com</td><td style="font-size:0.78rem;color:var(--muted);">Snapshot storage and replication operations in the DR region.</td></tr></tbody>
+      </table>
+    </div>`,
+  actions: `<!-- Key Outcomes -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>🎯 Key Outcomes</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;"><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span>Working session run by <strong>Rubrik Professional Services</strong> with the AWS team (Ketan, Sagar, Tatyana) and later the AD/DNS team (Bryan, David) to deploy the first Rubrik Cloud Cluster in AWS.</span></div><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">📌</span><span>Target regions validated: production SQL workloads in <strong>US East 1 (N. Virginia)</strong>; DR workloads in <strong>US West 1 (California)</strong>.</span></div><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔴</span><span><strong>Deployment is currently blocked by unstable DNS resolution</strong> from the chosen AWS subnet — the last attempt is parked in a retryable state in RSC pending a DNS fix.</span></div></div>
+    </div>
+
+    <!-- Completed -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>🏁 Completed During the Session</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:0.75rem;"><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;"><span style="color:var(--success)">✓</span></span><span><strong>AWS account registered with RSC</strong>, with the required cross-account IAM role and user that Rubrik assumes for operations.</span></div><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;"><span style="color:var(--success)">✓</span></span><span><strong>S3 bucket and instance profile created</strong> for the Cloud Cluster, with temporary public access to allow discovery from RSC (to be restricted later to the cluster node subnet).</span></div><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;"><span style="color:var(--success)">✓</span></span><span><strong>VPC, subnets, and security groups selected</strong> based on where the SQL EC2 instances are hosted; outbound connectivity and routing validated.</span></div><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;"><span style="color:var(--success)">✓</span></span><span><strong>Naming convention agreed</strong> for the Cloud Cluster (e.g., “rubrik aws east 1”), updatable later if required.</span></div></div>
+    </div>
+
+    <!-- Deployment Attempts -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>🚧 Deployment Attempts &amp; Findings</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:0.75rem;"><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔴</span><span><strong>Attempt 1 failed:</strong> The EC2 node could not connect back to RSC. EC2 instances were retained for inspection, and an existing SQL server was used to test connectivity (NSLOOKUP and port checks to RSC), confirming <strong>intermittent DNS behavior</strong> from the AWS environment.</span></div><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">🔴</span><span><strong>Attempt 2 failed:</strong> Redeployed via a private subnet with an S3 gateway endpoint (routing over the AWS backbone to reduce egress charges). Connectivity checks passed and bootstrap started, but the attempt failed on <strong>DNS resolution timeouts</strong> using both Google DNS (8.8.8.8) and internal DNS IPs.</span></div><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;grid-column:1/-1;"><span style="flex-shrink:0;margin-top:2px;">🔴</span><span><strong>AD/DNS review (Bryan, David):</strong> stewart.my.rubrik.com is externally reachable and correctly configured, but from AWS EC2 instances DNS requests time out or resolve inconsistently for both RSC and general external domains (e.g., google.com). <strong>The issue lies in the DNS / network configuration</strong> — not with Rubrik or the external records.</span></div></div>
+    </div>
+
+    <!-- Current Status -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>⏳ Current Status</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;"><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">⏳</span><span>The Cloud Cluster deployment is failing due to <strong>unstable DNS resolution from the chosen AWS subnet</strong> to the external RSC endpoint and S3 endpoint.</span></div><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">⏳</span><span>The last deployment is in a <strong>retryable state in RSC</strong> — once DNS is resolved, click <strong>Retry</strong> on the Cloud Cluster in RSC to re-attempt.</span></div><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">⏳</span><span>The earlier failed EC2 instance for the cloud node has been identified for cleanup.</span></div></div>
+    </div>
+
+    <!-- Next Steps -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>➡️ Rubrik Next Steps</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;"><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">➡️</span><span>The scheduled <strong>August 4 session is cancelled</strong>, as discussed, to avoid holding a session before the DNS issue is resolved.</span></div><div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">➡️</span><span>Once DNS resolution from the AWS environment is confirmed stable, Rubrik will assist with re-running the deployment (via Retry or a fresh deployment), then proceed with <strong>bootstrap, server onboarding, and enabling protection for the SQL servers (prod and DR)</strong> as planned.</span></div></div>
+    </div>
+
+    <!-- Action Items by Owner -->
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>📋 Action Items by Owner</h3>
+      <div style="margin-top:0.9rem;display:grid;grid-template-columns:1fr 1fr;gap:10px;"><div style="padding:10px 12px;background:#fdf2f5;border-radius:8px;border-left:3px solid var(--red);"><div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--red);margin-bottom:8px;">Stewart AD/DNS — Bryan / David</div><div style="display:flex;flex-direction:column;gap:8px;"><div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Resolve the unstable DNS resolution from the AWS subnet (timeouts against RSC, S3, and general external domains).</span></div></div></div><div style="padding:10px 12px;background:#eff6ff;border-radius:8px;border-left:3px solid var(--info);"><div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--info);margin-bottom:8px;">Ketan</div><div style="display:flex;flex-direction:column;gap:8px;"><div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Remove the earlier failed EC2 cloud-node instance from AWS, as agreed.</span></div></div></div><div style="padding:10px 12px;background:#fffbeb;border-radius:8px;border-left:3px solid var(--warning);"><div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--warning);margin-bottom:8px;">Stewart Team</div><div style="display:flex;flex-direction:column;gap:8px;"><div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Confirm once DNS latency is addressed and the team is ready to retry the deployment or schedule the next working session.</span></div></div></div><div style="padding:10px 12px;background:#f0fdf4;border-radius:8px;border-left:3px solid var(--success);"><div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--success);margin-bottom:8px;">Rubrik PS</div><div style="display:flex;flex-direction:column;gap:8px;"><div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Cancel the August 4 session invite.</span></div><div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Assist with the redeployment (Retry or fresh) once DNS is confirmed stable, then continue bootstrap and SQL onboarding.</span></div></div></div></div>
+    </div>`,
+  announce: null
 },
 
 "July 28, 2026 - Cloud Cluster in AWS": {
@@ -6074,6 +6217,12 @@ const LIC_SKUS_JUL30 = [
     ]}
 ];
 
+function renderPrereq(content, date) {
+  return `
+  <div class="section-header"><h2>Deployment Prerequisites</h2><p>Provided by Rubrik Professional Services following the AWS Cloud Cluster kick-off · ${date}</p></div>
+  ` + content;
+}
+
 function switchReport(date) {
   const r = REPORTS[date];
   if (!r) return;
@@ -6098,6 +6247,7 @@ function switchReport(date) {
     actions:  renderActions(r.actions, date),
     announce: renderAnnouncements(r.announce, date)
   };
+  pages.prereq = r.prereq ? renderPrereq(r.prereq, date) : "";
   const main = document.getElementById("mainContent");
   main.innerHTML = Object.entries(pages).map(([id,html])=>`<div class="page" id="page-${id}">${html}</div>`).join("");
   document.getElementById("footerContent").textContent = `Stewart Title Company · Rubrik Security Cloud · Weekly Support Review | Confidential | Report Date: ${date}`;
@@ -6107,6 +6257,8 @@ function switchReport(date) {
   });
   const ta = document.getElementById("tab-actions");
   if (ta) ta.style.display = r.customOnly ? "none" : "";
+  const tp = document.getElementById("tab-prereq");
+  if (tp) tp.style.display = r.prereq ? "" : "none";
   const activeTab = document.querySelector(".nav-tab.active");
   let activeId = activeTab ? activeTab.id.replace("tab-","") : "summary";
   if (r.actionsOnly || r.customOnly) activeId = "actions";
