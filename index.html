@@ -4573,12 +4573,24 @@ function renderClusters(d, date) {
     mzBar: mzPt ? Math.max(1, Math.round(mzPt.pct)) : 1, mzBadge: tierBadge(mzPt ? mzPt.pct : 0),
     mzStatus: (mzPt && mzPt.usedTB > 0) ? "Active" : "Not Active", mzStatusCls: (mzPt && mzPt.usedTB > 0) ? "badge-green" : "badge-blue"
   };
+  const clusterRows = d.rows || [];
+  const isEdge = (p) => /edge/i.test(p || "");
+  const isCloud = (p) => !isEdge(p) && /(azure|aws|gcp|cloud)/i.test(p || "");
+  const edgeCount = clusterRows.filter(r => isEdge(r.platform)).length;
+  const cloudCount = clusterRows.filter(r => isCloud(r.platform)).length || d.activeCloud || 0;
+  const applianceCount = clusterRows.filter(r => !isEdge(r.platform) && !isCloud(r.platform)).length || d.activeAppliance || 0;
+  const totalClusters = clusterRows.length || (applianceCount + cloudCount + edgeCount);
+  const edgeTile = edgeCount
+    ? `<div class="stat-card green"><div class="stat-label">Edge Clusters</div><div class="stat-value">${edgeCount}</div><div class="stat-sub">VMware</div></div>`
+    : "";
+  const tileCols = edgeCount ? 5 : 4;
   return `
   <div class="section-header"><h2>Cluster Health &amp; Environment</h2><p>Current version, capacity, performance metrics, and Rubrik Cloud Vault utilization · ${date}</p></div>
-  <div class="stat-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:1.5rem;">
-    <div class="stat-card blue"><div class="stat-label">Total Clusters</div><div class="stat-value">6</div></div>
-    <div class="stat-card green"><div class="stat-label">Appliance Clusters</div><div class="stat-value">${d.activeAppliance}</div></div>
-    <div class="stat-card blue"><div class="stat-label">Cloud Clusters</div><div class="stat-value">${d.activeCloud}</div><div class="stat-sub">Azure</div></div>
+  <div class="stat-grid" style="grid-template-columns:repeat(${tileCols},1fr);margin-bottom:1.5rem;">
+    <div class="stat-card blue"><div class="stat-label">Total Clusters</div><div class="stat-value">${totalClusters}</div></div>
+    <div class="stat-card green"><div class="stat-label">Appliance Clusters</div><div class="stat-value">${applianceCount}</div></div>
+    <div class="stat-card blue"><div class="stat-label">Cloud Clusters</div><div class="stat-value">${cloudCount}</div><div class="stat-sub">Azure</div></div>
+    ${edgeTile}
     <div class="stat-card orange"><div class="stat-label">Avg Perf. Score</div><div class="stat-value">${d.avgScore}</div></div>
   </div>
   <div class="table-card" style="margin-bottom:1.5rem;"><div class="table-card-header"><h3>Cluster Overview</h3><span>All clusters · Current state${showTrends ? ' · hover cluster name for usage trend' : ''}</span></div>
