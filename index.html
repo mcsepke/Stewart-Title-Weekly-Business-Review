@@ -943,14 +943,17 @@
               <th data-key="cluster" onclick="sortBy('cluster')">Cluster<span class="arw">↕</span></th>
               <th data-key="region" onclick="sortBy('region')">Region<span class="arw">↕</span></th>
               <th data-key="endpoint" onclick="sortBy('endpoint')">Endpoint<span class="arw">↕</span></th>
-              <th data-key="reported" onclick="sortBy('gb')">Reported size<span class="arw">↕</span></th>
-              <th class="num" data-key="gb" onclick="sortBy('gb')">Size (GB)<span class="arw">↕</span></th>
+              <th data-key="reported" onclick="sortBy('gb')">Jul 23, 2026<span class="arw">↕</span></th>
+              <th data-key="reported2" onclick="sortBy('gb2')">Aug 13, 2026<span class="arw">↕</span></th>
+              <th class="num" data-key="delta" onclick="sortBy('delta')">Change (GB)<span class="arw">↕</span></th>
             </tr>
           </thead>
           <tbody id="inv-body"></tbody>
           <tfoot>
             <tr>
-              <td class="label" colspan="5" id="foot-label">Total</td>
+              <td class="label" colspan="4" id="foot-label">Total</td>
+              <td class="mono" id="foot-total-jul"></td>
+              <td class="mono" id="foot-total-aug"></td>
               <td class="num" id="foot-total"></td>
             </tr>
           </tfoot>
@@ -961,7 +964,7 @@
 
     <p class="foot-note">
       Type · Object Store (S3 Compatible), Access · Read and write, and Consolidation · Disabled are identical across all 22 rows, so they're omitted from the table.
-      Sizes shown in binary units (1 TB = 1024 GB). Click any column header to sort; the total updates with the active filters.
+      Sizes shown in binary units (1 TB = 1024 GB). The <b>Jul 23, 2026</b> column is the original briefing snapshot; <b>Aug 13, 2026</b> reflects the latest RSC archival locations view; locations no longer listed there are shown as <b>0 B</b>, so both columns cover all 22 rows and the Change total reconciles directly. Click any column header to sort; totals update with the active filters.
     </p>
   </div>
 
@@ -970,28 +973,28 @@
 <script>
   // ---- data (region derived from endpoint; GB computed in binary units) ----
   const DATA = [
-    {name:"Lyve Cloud Non Prod Alpha",cluster:"HOUBRIK_01",region:"us-central-2",endpoint:"s3.us-central-2.lyvecloud.seagate.com",reported:"6.02 TB",gb:6164.48},
-    {name:"Lyve Cloud Non Prod Beta",cluster:"RICBRIK_01",region:"us-central-2",endpoint:"s3.us-central-2.lyvecloud.seagate.com",reported:"1.1 TB",gb:1126.4},
-    {name:"Lyve Cloud Prod Alpha",cluster:"HOUBRIK_01",region:"us-central-2",endpoint:"s3.us-central-2.lyvecloud.seagate.com",reported:"120.34 TB",gb:123228.16},
-    {name:"Lyve Cloud Prod Beta",cluster:"RICBRIK_01",region:"us-central-2",endpoint:"s3.us-central-2.lyvecloud.seagate.com",reported:"27.83 TB",gb:28497.92},
-    {name:"Lyve Cloud Prod Phys Alpha",cluster:"HOUBRIK_01",region:"us-central-2",endpoint:"s3.us-central-2.lyvecloud.seagate.com",reported:"755.64 GB",gb:755.64},
-    {name:"Lyve Cloud Prod Phys Beta",cluster:"RICBRIK_01",region:"us-central-2",endpoint:"s3.us-central-2.lyvecloud.seagate.com",reported:"2.28 TB",gb:2334.72},
-    {name:"Lyve Cloud SQL Non Prod Alpha",cluster:"HOUBRIK_01",region:"us-central-2",endpoint:"s3.us-central-2.lyvecloud.seagate.com",reported:"80.39 GB",gb:80.39},
-    {name:"Lyve Cloud SQL Non Prod Beta",cluster:"RICBRIK_01",region:"us-central-2",endpoint:"s3.us-central-2.lyvecloud.seagate.com",reported:"435.8 MB",gb:0.4256},
-    {name:"Lyve Cloud SQL Prod Alpha",cluster:"HOUBRIK_01",region:"us-central-2",endpoint:"s3.us-central-2.lyvecloud.seagate.com",reported:"33.93 TB",gb:34744.32},
-    {name:"Lyve Cloud SQL Prod Beta",cluster:"RICBRIK_01",region:"us-central-2",endpoint:"s3.us-central-2.lyvecloud.seagate.com",reported:"29.09 TB",gb:29788.16},
-    {name:"S3Compatible:stewart-alpha-nas1",cluster:"HOUBRIK_01",region:"us-east-1",endpoint:"s3.us-east-1.lyvecloud.seagate.com",reported:"0 B",gb:0},
-    {name:"S3Compatible:stewart-alpha-openvms",cluster:"HOUBRIK_01",region:"us-central-2",endpoint:"s3.us-central-2.lyvecloud.seagate.com",reported:"0 B",gb:0},
-    {name:"S3Compatible:stewart-alpha-phys",cluster:"HOUBRIK_01",region:"us-east-1",endpoint:"s3.us-east-1.lyvecloud.seagate.com",reported:"42.47 GB",gb:42.47},
-    {name:"S3Compatible:stewart-alpha-sql1",cluster:"HOUBRIK_01",region:"us-east-1",endpoint:"s3.us-east-1.lyvecloud.seagate.com",reported:"0 B",gb:0},
-    {name:"S3Compatible:stewart-alpha-vm",cluster:"HOUBRIK_01",region:"us-east-1",endpoint:"s3.us-east-1.lyvecloud.seagate.com",reported:"14.22 TB",gb:14561.28},
-    {name:"S3Compatible:stewart-beta-nas1",cluster:"RICBRIK_01",region:"us-west-1",endpoint:"s3.us-west-1.lyvecloud.seagate.com",reported:"0 B",gb:0},
-    {name:"S3Compatible:stewart-beta-nas2",cluster:"RICBRIK_01",region:"us-west-1",endpoint:"s3.us-west-1.lyvecloud.seagate.com",reported:"0 B",gb:0},
-    {name:"S3Compatible:stewart-beta-openvms",cluster:"RICBRIK_01",region:"us-central-2",endpoint:"s3.us-central-2.lyvecloud.seagate.com",reported:"0 B",gb:0},
-    {name:"S3Compatible:stewart-beta-phys",cluster:"RICBRIK_01",region:"us-west-1",endpoint:"s3.us-west-1.lyvecloud.seagate.com",reported:"0 B",gb:0},
-    {name:"S3Compatible:stewart-beta-sql1",cluster:"RICBRIK_01",region:"us-west-1",endpoint:"s3.us-west-1.lyvecloud.seagate.com",reported:"0 B",gb:0},
-    {name:"S3Compatible:stewart-beta-vm",cluster:"RICBRIK_01",region:"us-west-1",endpoint:"s3.us-west-1.lyvecloud.seagate.com",reported:"9.84 TB",gb:10076.16},
-    {name:"S3Compatible:stewart-test-1",cluster:"HOUBRIK_01",region:"us-east-1",endpoint:"s3.us-east-1.lyvecloud.seagate.com",reported:"0 B",gb:0}
+    {name:"Lyve Cloud Non Prod Alpha",cluster:"HOUBRIK_01",region:"us-central-2",endpoint:"s3.us-central-2.lyvecloud.seagate.com",reported:"6.02 TB",gb:6164.48,reported2:"0 B",gb2:0},
+    {name:"Lyve Cloud Non Prod Beta",cluster:"RICBRIK_01",region:"us-central-2",endpoint:"s3.us-central-2.lyvecloud.seagate.com",reported:"1.1 TB",gb:1126.4,reported2:"1.06 TB",gb2:1085.44},
+    {name:"Lyve Cloud Prod Alpha",cluster:"HOUBRIK_01",region:"us-central-2",endpoint:"s3.us-central-2.lyvecloud.seagate.com",reported:"120.34 TB",gb:123228.16,reported2:"120.36 TB",gb2:123248.64},
+    {name:"Lyve Cloud Prod Beta",cluster:"RICBRIK_01",region:"us-central-2",endpoint:"s3.us-central-2.lyvecloud.seagate.com",reported:"27.83 TB",gb:28497.92,reported2:"27.77 TB",gb2:28436.48},
+    {name:"Lyve Cloud Prod Phys Alpha",cluster:"HOUBRIK_01",region:"us-central-2",endpoint:"s3.us-central-2.lyvecloud.seagate.com",reported:"755.64 GB",gb:755.64,reported2:"755.71 GB",gb2:755.71},
+    {name:"Lyve Cloud Prod Phys Beta",cluster:"RICBRIK_01",region:"us-central-2",endpoint:"s3.us-central-2.lyvecloud.seagate.com",reported:"2.28 TB",gb:2334.72,reported2:"2.28 TB",gb2:2334.72},
+    {name:"Lyve Cloud SQL Non Prod Alpha",cluster:"HOUBRIK_01",region:"us-central-2",endpoint:"s3.us-central-2.lyvecloud.seagate.com",reported:"80.39 GB",gb:80.39,reported2:"80.39 GB",gb2:80.39},
+    {name:"Lyve Cloud SQL Non Prod Beta",cluster:"RICBRIK_01",region:"us-central-2",endpoint:"s3.us-central-2.lyvecloud.seagate.com",reported:"435.8 MB",gb:0.4256,reported2:"435.8 MB",gb2:0.4256},
+    {name:"Lyve Cloud SQL Prod Alpha",cluster:"HOUBRIK_01",region:"us-central-2",endpoint:"s3.us-central-2.lyvecloud.seagate.com",reported:"33.93 TB",gb:34744.32,reported2:"33.93 TB",gb2:34744.32},
+    {name:"Lyve Cloud SQL Prod Beta",cluster:"RICBRIK_01",region:"us-central-2",endpoint:"s3.us-central-2.lyvecloud.seagate.com",reported:"29.09 TB",gb:29788.16,reported2:"26.13 TB",gb2:26757.12},
+    {name:"S3Compatible:stewart-alpha-nas1",cluster:"HOUBRIK_01",region:"us-east-1",endpoint:"s3.us-east-1.lyvecloud.seagate.com",reported:"0 B",gb:0,reported2:"0 B",gb2:0},
+    {name:"S3Compatible:stewart-alpha-openvms",cluster:"HOUBRIK_01",region:"us-central-2",endpoint:"s3.us-central-2.lyvecloud.seagate.com",reported:"0 B",gb:0,reported2:"0 B",gb2:0},
+    {name:"S3Compatible:stewart-alpha-phys",cluster:"HOUBRIK_01",region:"us-east-1",endpoint:"s3.us-east-1.lyvecloud.seagate.com",reported:"42.47 GB",gb:42.47,reported2:"0 B",gb2:0},
+    {name:"S3Compatible:stewart-alpha-sql1",cluster:"HOUBRIK_01",region:"us-east-1",endpoint:"s3.us-east-1.lyvecloud.seagate.com",reported:"0 B",gb:0,reported2:"0 B",gb2:0},
+    {name:"S3Compatible:stewart-alpha-vm",cluster:"HOUBRIK_01",region:"us-east-1",endpoint:"s3.us-east-1.lyvecloud.seagate.com",reported:"14.22 TB",gb:14561.28,reported2:"14.12 TB",gb2:14458.88},
+    {name:"S3Compatible:stewart-beta-nas1",cluster:"RICBRIK_01",region:"us-west-1",endpoint:"s3.us-west-1.lyvecloud.seagate.com",reported:"0 B",gb:0,reported2:"0 B",gb2:0},
+    {name:"S3Compatible:stewart-beta-nas2",cluster:"RICBRIK_01",region:"us-west-1",endpoint:"s3.us-west-1.lyvecloud.seagate.com",reported:"0 B",gb:0,reported2:"0 B",gb2:0},
+    {name:"S3Compatible:stewart-beta-openvms",cluster:"RICBRIK_01",region:"us-central-2",endpoint:"s3.us-central-2.lyvecloud.seagate.com",reported:"0 B",gb:0,reported2:"0 B",gb2:0},
+    {name:"S3Compatible:stewart-beta-phys",cluster:"RICBRIK_01",region:"us-west-1",endpoint:"s3.us-west-1.lyvecloud.seagate.com",reported:"0 B",gb:0,reported2:"0 B",gb2:0},
+    {name:"S3Compatible:stewart-beta-sql1",cluster:"RICBRIK_01",region:"us-west-1",endpoint:"s3.us-west-1.lyvecloud.seagate.com",reported:"0 B",gb:0,reported2:"0 B",gb2:0},
+    {name:"S3Compatible:stewart-beta-vm",cluster:"RICBRIK_01",region:"us-west-1",endpoint:"s3.us-west-1.lyvecloud.seagate.com",reported:"9.84 TB",gb:10076.16,reported2:"9.84 TB",gb2:10076.16},
+    {name:"S3Compatible:stewart-test-1",cluster:"HOUBRIK_01",region:"us-east-1",endpoint:"s3.us-east-1.lyvecloud.seagate.com",reported:"0 B",gb:0,reported2:"0 B",gb2:0}
   ];
 
   const regClass = {"us-central-2":"reg-usc","us-east-1":"reg-use","us-west-1":"reg-usw"};
@@ -1027,7 +1030,15 @@
       return true;
     });
     rows.sort((a,b)=>{
-      let x=a[sortKey], y=b[sortKey];
+      let x, y;
+      if(sortKey==="delta"){
+        x = (a.gb2===null) ? null : a.gb2-a.gb;
+        y = (b.gb2===null) ? null : b.gb2-b.gb;
+      } else { x=a[sortKey]; y=b[sortKey]; }
+      // rows without August data always sort to the bottom
+      if(x===null && y===null) return 0;
+      if(x===null) return 1;
+      if(y===null) return -1;
       if(typeof x==="string"){x=x.toLowerCase();y=y.toLowerCase();return x<y?-1*sortDir:x>y?1*sortDir:0;}
       return (x-y)*sortDir;
     });
@@ -1041,15 +1052,23 @@
     body.innerHTML="";
     rows.forEach(d=>{
       const tr=document.createElement("tr");
-      const gbCell = d.gb===0 ? '<span class="zero">0</span>' : fmtGB(d.gb);
       const repCell = d.reported==="0 B" ? '<span class="zero">0 B</span>' : d.reported;
+      const rep2Cell = d.reported2==="0 B" ? '<span class="zero">0 B</span>' : d.reported2;
+      let deltaCell;
+      {
+        const diff = d.gb2 - d.gb;
+        if(Math.abs(diff) < 0.005){ deltaCell='<span class="zero">0</span>'; }
+        else if(diff > 0){ deltaCell='<span style="color:#b45309;font-weight:600">+'+fmtGB(diff)+'</span>'; }
+        else { deltaCell='<span style="color:#047857;font-weight:600">\u2212'+fmtGB(Math.abs(diff))+'</span>'; }
+      }
       tr.innerHTML=
         '<td class="name">'+d.name+'</td>'+
         '<td><span class="pill clus">'+d.cluster+'</span></td>'+
         '<td><span class="pill '+(regClass[d.region]||"")+'">'+d.region+'</span></td>'+
         '<td class="endpoint">'+d.endpoint+'</td>'+
         '<td class="mono">'+repCell+'</td>'+
-        '<td class="num">'+gbCell+'</td>';
+        '<td class="mono">'+rep2Cell+'</td>'+
+        '<td class="num">'+deltaCell+'</td>';
       body.appendChild(tr);
     });
     nores.style.display = rows.length? "none":"block";
@@ -1057,15 +1076,23 @@
 
     const total=rows.reduce((s,d)=>s+d.gb,0);
     const tb=total/1024;
-    document.getElementById("foot-total").textContent=fmtGB(total)+" GB";
+    const totalAug=rows.reduce((s,d)=>s+d.gb2,0);
+    const tbAug=totalAug/1024;
+    const dAll=totalAug-total;
+    document.getElementById("foot-total-jul").textContent = fmtGB(total)+" GB";
+    document.getElementById("foot-total-aug").textContent = fmtGB(totalAug)+" GB";
+    const ftd=document.getElementById("foot-total");
+    if(Math.abs(dAll)<0.005){ ftd.textContent="0"; }
+    else { ftd.innerHTML=(dAll>0?'<span style="color:#b45309;font-weight:600">+':'<span style="color:#047857;font-weight:600">\u2212')+fmtGB(Math.abs(dAll))+"</span>"; }
     document.getElementById("foot-label").textContent =
-      "Total of "+rows.length+" shown  ·  "+tb.toLocaleString("en-US",{maximumFractionDigits:2})+" TB";
+      "Total of "+rows.length+" shown  ·  "+tb.toLocaleString("en-US",{maximumFractionDigits:2})+" TB on Jul 23"
+      +"  \u2192  "+tbAug.toLocaleString("en-US",{maximumFractionDigits:2})+" TB on Aug 13";
     document.getElementById("count").innerHTML="<b>"+rows.length+"</b> of "+DATA.length+" locations";
 
     // header sort indicators
     document.querySelectorAll("thead th").forEach(th=>{
       const k=th.dataset.key;
-      const active = (k===sortKey)||(k==="reported"&&sortKey==="gb");
+      const active = (k===sortKey)||(k==="reported"&&sortKey==="gb")||(k==="reported2"&&sortKey==="gb2");
       th.setAttribute("aria-sort", active ? (sortDir===1?"ascending":"descending") : "none");
       const arw=th.querySelector(".arw");
       if(arw) arw.textContent = active ? (sortDir===1?"↑":"↓") : "↕";
@@ -1074,7 +1101,7 @@
 
   function sortBy(key){
     if(sortKey===key){sortDir*=-1;}
-    else{sortKey=key;sortDir=(key==="gb")?-1:1;}
+    else{sortKey=key;sortDir=(key==="gb"||key==="gb2"||key==="delta")?-1:1;}
     render();
   }
   function applyFilters(){render();}
