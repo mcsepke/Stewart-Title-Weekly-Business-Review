@@ -5020,7 +5020,7 @@ function alerts(arr) { return arr.map(a=>`<div class="alert-box ${a.type}">${a.t
 
 function renderSummary(d, date) {
   return `
-  <div class="section-header"><h2>Executive Account Summary</h2><p>Weekly overview of support health, environment status, and open items · ${date}</p></div>
+  <div class="section-header"><h2>Weekly Account Summary</h2><p>Weekly overview of support health, environment status, and open items · ${date}</p></div>
   <div style="margin-bottom:0.6rem;"><strong style="font-size:0.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);">I · Operational Insights</strong></div>
   <div class="stat-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr))">
     <div class="stat-card red"><div class="stat-label">Open Cases</div><div class="stat-value">${d.openCases}</div><div class="stat-sub">Support tickets active</div></div>
@@ -5037,7 +5037,7 @@ function renderSummary(d, date) {
   <div class="stat-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));margin-bottom:1.5rem;">
     <div class="stat-card green"><div class="stat-label">Capacity Upgrade Needed</div><div class="stat-value" style="color:var(--success)">${d.capacityUpgrade}</div><div class="stat-sub">Clusters &gt;75% capacity</div></div>
     <div class="stat-card orange"><div class="stat-label">Version Upgrade Needed</div><div class="stat-value" style="color:var(--warning)">${d.versionUpgrade}</div><div class="stat-sub">Clusters 2+ versions behind</div></div>
-    <div class="stat-card blue"><div class="stat-label">Active Clusters</div><div class="stat-value">6</div><div class="stat-sub">Appliance + Cloud</div></div>
+    <div class="stat-card blue"><div class="stat-label">Active Clusters</div><div class="stat-value">${(d.clusters || []).length}</div><div class="stat-sub">${clusterMixLabel(d.clusters)}</div></div>
     <div class="stat-card blue"><div class="stat-label">Avg. Performance Score</div><div class="stat-value">${d.avgScore}</div><div class="stat-sub">Out of 100</div></div>
   </div>
   <div class="info-card" style="margin-bottom:2rem;"><h3>Cluster Performance Overview</h3><div style="margin-top:0.75rem;display:flex;flex-direction:column;gap:8px;">
@@ -5247,6 +5247,24 @@ function projRisk(p, reportDate) {
   if (d85 !== null && d85 <= 90) return { level: 2, cls: "badge-orange", label: "\u26a0\ufe0f Warning" };
   if (d85 !== null || d80 !== null) return { level: 1, cls: "badge-yellow", label: "Monitor" };
   return { level: 0, cls: "badge-green", label: "Stable" };
+}
+
+function clusterMixLabel(rows) {
+  if (!rows || !rows.length) return "Appliance + Cloud";
+  const isEdge = n => /houbrik02|edge/i.test(n || "");
+  const isCloud = n => !isEdge(n) && /(rubrik$|aws|azure|eus2|scus|east1)/i.test(n || "");
+  let edge = 0, cloud = 0, appliance = 0;
+  rows.forEach(r => {
+    const n = r.name || "";
+    if (isEdge(n)) edge++;
+    else if (isCloud(n)) cloud++;
+    else appliance++;
+  });
+  const parts = [];
+  if (appliance) parts.push(appliance + " appliance");
+  if (cloud) parts.push(cloud + " cloud");
+  if (edge) parts.push(edge + " edge");
+  return parts.join(" + ");
 }
 
 function rcvAlerts(rcv, showTrends) {
