@@ -1342,12 +1342,54 @@ const REPORTS = {
     ]
   },
   actions: `
-    <div class="section-header"><h2>Action Items</h2><p>Weekly Call \u00b7 September 17, 2026</p></div>
-    <div class="info-card" style="text-align:center;padding:2.5rem 1.5rem;">
-      <div style="font-size:2.2rem;line-height:1;margin-bottom:12px;">\ud83d\udcdd</div>
-      <div style="font-size:1.05rem;font-weight:700;color:var(--dark);margin-bottom:8px;">Action items pending</div>
-      <div style="font-size:0.88rem;color:#4b4849;line-height:1.7;max-width:520px;margin:0 auto;">
-        Notes and action items from the September 17 call will be added to this page once the meeting has concluded.
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>\ud83c\udfaf Key Outcomes</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">\ud83d\udccc</span><span>The team aligned on using the <strong>Identity Resilience workflow for domain controller recovery</strong>, avoiding the manual cleanup and Active Directory conflicts that come with image-level restores.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">\ud83d\udccc</span><span>Several critical support cases covering <strong>RBS service failures</strong> and <strong>data classification hangs</strong> are being tracked. The permanent fix is an uninstall and reinstall of RBS on the affected domain controllers.</span></div>
+      </div>
+    </div>
+
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>\ud83d\udd10 Recovery Decision \u2014 Domain Controller Restores</h3>
+      <div class="alert-box alert-green" style="margin-top:0.6rem;margin-bottom:1rem;">\u2705 <div><strong>Decision:</strong> use the <strong>Identity Resilience</strong> workflow (Alternate Host process) for domain controller recovery instead of VM image-level restore.</div></div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">\ud83d\udd0e</span><span><strong>Reasoning:</strong> image-level restores can cause <strong>USN rollbacks and serial number mismatches</strong>, which require manually booting into DSRM and validating the result.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">\u2699\ufe0f</span><span><strong>How it works:</strong> the Identity Resilience workflow automates recovery of AD services onto a new Windows VM, ensuring the restored controller participates properly in the domain.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">\ud83d\udcdd</span><span><strong>Requirement:</strong> recovery via this method needs a <strong>net-new Windows VM</strong> with the correct OS version and RBS already installed.</span></div>
+      </div>
+    </div>
+
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>\ud83d\udcc8 Progress &amp; Status</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">\u2601\ufe0f</span><span><strong>AWS EC2 protection:</strong> Scott is reviewing the script to verify costs and functionality before giving feedback to Professional Services.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">\u270d\ufe0f</span><span><strong>Migration services:</strong> the SOW for migrating Seagate <strong>Lyve Cloud</strong> to RCV has been signed.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">\ud83d\udcbe</span><span><strong>Cluster capacity:</strong> the Richardson cluster is approaching 80% utilization. A new capacity analysis tool has been added to the Performance tab to track the top 20 growth-causing objects.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">\ud83d\udd11</span><span><strong>Licensing:</strong> Identity Resilience licenses have been renewed through next year.</span></div>
+      </div>
+    </div>
+
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>\u26a0\ufe0f Risks &amp; Blockers</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">\ud83d\udd34</span><span><strong>RBS service failures:</strong> domain controllers are seeing the service fail on restart. The temporary workaround is setting the service to <strong>Automatic (Delayed Start)</strong>.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">\ud83d\udd34</span><span><strong>Data classification:</strong> SQL Server backups are failing or hanging because data classification processes get stuck following the upgrade.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">\ud83d\udfe0</span><span><strong>Identity tracking:</strong> issues persist with the <strong>actor identification</strong> column in the logs, preventing identification of which users made changes.</span></div>
+      </div>
+    </div>
+
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>\ud83d\udccb Action Items by Owner</h3>
+      <div style="margin-top:0.9rem;display:grid;grid-template-columns:1fr 1fr;gap:10px;"><div style="padding:10px 12px;background:#fdf2f5;border-radius:8px;border-left:3px solid var(--red);"><div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--red);margin-bottom:8px;">Bryan</div><div style="display:flex;flex-direction:column;gap:8px;"><div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Uninstall and reinstall RBS on the affected domain controllers tonight to apply the permanent fix for the service failures.</span></div></div></div><div style="padding:10px 12px;background:#eff6ff;border-radius:8px;border-left:3px solid var(--info);"><div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--info);margin-bottom:8px;">Scott</div><div style="display:flex;flex-direction:column;gap:8px;"><div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Provide the results of the AWS EC2 script review to Mark.</span></div><div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Discuss the Exocompute CIDR block change (/18) with Joe.</span></div></div></div><div style="padding:10px 12px;background:#fffbeb;border-radius:8px;border-left:3px solid var(--warning);"><div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--warning);margin-bottom:8px;">Mark</div><div style="display:flex;flex-direction:column;gap:8px;"><div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Provide a plan for which objects to unprotect for NAS Cloud Direct.</span></div></div></div></div>
+    </div>
+
+    <div class="info-card">
+      <h3>\ud83d\udce3 Announcements Reviewed</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">\ud83e\udd16</span><span><strong>AI Summit features:</strong> new MCP workflows for agent-to-agent operations, plus a private preview for red-team code analysis using Anthropic\u2019s Mythos platform.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">\ud83d\udd0d</span><span><strong>Data Impact Investigation:</strong> a new GA feature that compares snapshots to identify specific file changes or accidental deletions.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">\ud83d\udee1\ufe0f</span><span><strong>CrowdStrike integration:</strong> an Agentic Automation recovery workflow that ties into Identity Resilience.</span></div>
       </div>
     </div>
   `,
