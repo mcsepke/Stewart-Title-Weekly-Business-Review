@@ -1332,12 +1332,55 @@ const REPORTS = {
     ]
   },
   actions: `
-    <div class="section-header"><h2>Action Items</h2><p>Weekly Call \u00b7 September 24, 2026</p></div>
-    <div class="info-card" style="text-align:center;padding:2.5rem 1.5rem;">
-      <div style="font-size:2.2rem;line-height:1;margin-bottom:12px;">\ud83d\udcdd</div>
-      <div style="font-size:1.05rem;font-weight:700;color:var(--dark);margin-bottom:8px;">Action items pending</div>
-      <div style="font-size:0.88rem;color:#4b4849;line-height:1.7;max-width:520px;margin:0 auto;">
-        Notes and action items from the September 24 call will be added to this page once the meeting has concluded.
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>\ud83c\udfaf Key Outcomes</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">\ud83d\udccc</span><span>The team reviewed current cluster capacity \u2014 specifically the <strong>uptick on the Richardson cluster</strong> \u2014 and discussed the status of renewals and identity recovery testing.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">\ud83d\udccc</span><span>Mark introduced several new Rubrik features including <strong>recovery plans</strong> and the <strong>MCP connector</strong>, while Joe raised a critical security policy blocker around Exocompute network CIDR blocks.</span></div>
+      </div>
+    </div>
+
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>\ud83d\udea7 Network Security Blocker \u2014 Exocompute CIDR Scope</h3>
+      <div class="alert-box alert-red" style="margin-top:0.6rem;margin-bottom:1rem;">\ud83d\udea8 <div><strong>Blocker:</strong> a global Stewart Title security policy prohibits subnets larger than <strong>/22</strong>, but Rubrik\u2019s Exocompute defaults to <strong>/16</strong>.</div></div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">\u26a0\ufe0f</span><span>This prevents the security team from applying their global policy until a resolution is found.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">\ud83d\udd0e</span><span>Mark is consulting a cloud specialist on tomorrow\u2019s call to work through the network scope question.</span></div>
+      </div>
+    </div>
+
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>\ud83d\udcc8 Progress &amp; Status</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">\u270d\ufe0f</span><span><strong>Renewals:</strong> most renewals have been signed off with POs currently being processed. The remaining November renewals are scheduled for October.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">\ud83d\udd10</span><span><strong>Identity recovery:</strong> the team is continuing to work through the open tickets and plans to test <strong>Identity Resilience restore scenarios</strong> \u2014 the recovery process has not been exercised yet.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">\ud83d\udce6</span><span><strong>Archive migration:</strong> the PO for professional services to handle the archive migration is complete. A project manager will be assigned to coordinate scheduling.</span></div>
+      </div>
+    </div>
+
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>\u26a0\ufe0f Technical Findings &amp; Risks</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">\ud83d\udcbe</span><span><strong>Cluster capacity:</strong> the Richardson cluster is showing an uptick in usage, including an addition of roughly <strong>1.4 TB from a SQL database</strong>. This matches the Capacity Analysis on the Performance tab, which identifies <span class="mono">WmIntegration</span> as adding 1.44 TB on RICBRIK_01 and 1.45 TB on HOUBRIK_01.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">\ud83d\udd34</span><span><strong>Network security:</strong> the Exocompute /16 default conflicts with the /22 ceiling in the global security policy, as above.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">\ud83d\udfe0</span><span><strong>Backup failures:</strong> some SQL log backup failures were noted and need investigation to determine whether they relate to decommissioned assets or change controls.</span></div>
+      </div>
+    </div>
+
+    <div class="info-card" style="margin-bottom:1.5rem;">
+      <h3>\ud83d\udccb Action Items by Owner</h3>
+      <div style="margin-top:0.9rem;display:grid;grid-template-columns:1fr 1fr;gap:10px;"><div style="padding:10px 12px;background:#fdf2f5;border-radius:8px;border-left:3px solid var(--red);"><div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--red);margin-bottom:8px;">Mark</div><div style="display:flex;flex-direction:column;gap:8px;"><div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Consult with a cloud specialist (Matt) during tomorrow\u2019s call to address the Exocompute /16 network scope issue.</span></div></div></div><div style="padding:10px 12px;background:#eff6ff;border-radius:8px;border-left:3px solid var(--info);"><div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--info);margin-bottom:8px;">Bryan / Identity Team</div><div style="display:flex;flex-direction:column;gap:8px;"><div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Continue working the open recovery tickets.</span></div><div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Execute identity recovery testing.</span></div></div></div><div style="padding:10px 12px;background:#fffbeb;border-radius:8px;border-left:3px solid var(--warning);"><div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--warning);margin-bottom:8px;">Tim / Team</div><div style="display:flex;flex-direction:column;gap:8px;"><div style="display:flex;gap:8px;align-items:flex-start;font-size:0.82rem;"><span style="flex-shrink:0;">⬜</span><span>Investigate the SQL log backup failures and check for correlation with change controls.</span></div></div></div></div>
+    </div>
+
+    <div class="info-card">
+      <h3>\ud83d\udce3 Feature Announcements Reviewed</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:0.75rem;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">\ud83d\udd01</span><span><strong>Recovery Plans:</strong> multi-step recovery wizards can now be saved as reusable plans to ensure consistency.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">\u2699\ufe0f</span><span><strong>High Impact Changes:</strong> certain updates are now classified as high impact, letting users manually deploy or revert them, or wait for automatic deployment after 30 days.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">\ud83d\udd0d</span><span><strong>Impact Investigation:</strong> new visibility into mass changes between snapshots that do not necessarily trigger anomaly alerts.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">\ud83d\udd10</span><span><strong>SailPoint Integration:</strong> enables roll-forward during Active Directory recovery by validating legitimate changes made through SailPoint.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">\ud83c\udfaf</span><span><strong>Turbo Threat Hunt:</strong> now supports indexing and hashing for Azure VMs, surfacing YARA rule results across backups in roughly 60 seconds.</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;"><span style="flex-shrink:0;margin-top:2px;">\ud83e\udd16</span><span><strong>MCP Connector:</strong> a new connector for integrating Rubrik with AI platforms.</span></div>
       </div>
     </div>
   `,
